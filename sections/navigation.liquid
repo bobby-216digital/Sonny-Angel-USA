@@ -19,7 +19,8 @@
 						{% endfor %}
 						
 						<li class="nav-item {% if sub_links %}nav-item--dropdown{% endif %}">
-							<a href="{{ link.url }}" class="nav-item__link">{{ link.title }}</a>
+							<a href="{{ link.url }}" class="nav-item__link">
+                              {% if link.title == 'News' %}{{ link.title }}<span class="is-sr0nly">&nbsp;Navigation</span>{% else %}{{ link.title }}{% endif %}</a>
 							{% if sub_links %}
 								<div class="nav-child">
 									<ul class="nav-child__body">

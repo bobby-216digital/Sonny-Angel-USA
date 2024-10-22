@@ -51,7 +51,7 @@
 					{%- endfor -%}
 				</div>
 				<p class="p-product-main__wishlist">
-					<a href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{{ product | img_url: '828x' }}">
+					<a aria-label="Add {{ product.title }} to Wishlist" href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{{ product | img_url: '828x' }}">
 						<span class="c-wishlist-link__icon"></span>
 					</a>
 				</p>
@@ -66,7 +66,7 @@
 					</div>
 				</div>
 				<p class="p-product-main__wishlist">
-					<a href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{{ product | img_url: '828x' }}">
+					<a aria-label="Add {{ product.title }} to Wishlist" href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{{ product | img_url: '828x' }}">
 						<span class="c-wishlist-link__icon"></span>
 					</a>
 				</p>
@@ -151,7 +151,7 @@
 				{%- if notes_title != nil or notes_text != nil or notes_sub_text != nil -%}
 					<div class="c-att">
 						{%- if notes_title != nil -%}
-							<p class="c-att__title">
+							<p role="heading" aria-level="2" class="c-att__title"> 
 								{{ notes_title }}
 							</p>
 						{%- endif -%}
@@ -173,7 +173,7 @@
 				{%- if notes_title_diff != nil or notes_text_diff != nil or notes_sub_text_diff != nil -%}
 					<div class="c-att">
 						{%- if notes_title_diff != nil -%}
-							<p class="c-att__title">
+							<p role="heading" aria-level="2" class="c-att__title">
 								{{ notes_title_diff }}
 							</p>
 						{%- endif -%}

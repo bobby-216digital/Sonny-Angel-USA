@@ -34,7 +34,7 @@
 			</h3>
 
 			<p class="c-product-item__wishlist">
-				<a href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{%- if product.images.size > 0 -%}{{ product | img_url: '828x' }}{%- else -%}{{ 'default_thumbnail.png' | asset_url }}{%- endif -%}">
+				<a aria-label="Add {{ product.title }} to wishlist" href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{%- if product.images.size > 0 -%}{{ product | img_url: '828x' }}{%- else -%}{{ 'default_thumbnail.png' | asset_url }}{%- endif -%}">
 					<span class="c-wishlist-link__icon"></span>
 				</a>
 			</p>
@@ -121,7 +121,7 @@
 
 		<p class="c-product-item-button">
 			<a href="{{ product.url | within: collection }}" class="c-button u-mx-0">
-				<span>{{ 'general.button.detail_button_label' | t }}</span>
+				<span>{{ 'general.button.detail_button_label' | t }}<span class="is-sr0nly">&nbsp;about {{ product.title }}</span></span>
 			</a>
 		</p>
 

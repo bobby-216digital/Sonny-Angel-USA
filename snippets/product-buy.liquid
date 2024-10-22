@@ -102,7 +102,7 @@
 			{% if product.tags contains 'pre_stock' %}
 			{% else %}
 				<div class="c-buy-num quantity">
-					<button type="button" class="c-buy-num__count c-buy-num__count--minus qtybtn qtyminus_{{ section.id }}" field="updates_{{ section.id }}" aria-label="{{ 'products.general.minus' | t }}">
+					<button title="Reduce Quantity for {{ product.title }}" type="button" class="c-buy-num__count c-buy-num__count--minus qtybtn qtyminus_{{ section.id }}" field="updates_{{ section.id }}">
 					</button>
 					<div class="c-buy-num__body">
 						<!--
@@ -122,14 +122,14 @@
 						{%- if meta_num != blank and max_num > meta_num -%}
 							{%- assign max_num = meta_num -%}
 						{%- endif -%}
-						<input name="quantity" type="text" inputmode="numeric" pattern="[0-9]*" value="1" min="1" class="c-buy-num__quantity ignore quantity item-qty  updates_{{ section.id }}" field="error_{{ section.id }}" id=""{% if variant.inventory_management == 'shopify' %} max="{{ max_num }}"{% endif %}>
+						<input title="Quantity Selector" name="quantity" type="text" inputmode="numeric" pattern="[0-9]*" value="1" min="1" class="c-buy-num__quantity ignore quantity item-qty  updates_{{ section.id }}" field="error_{{ section.id }}" id=""{% if variant.inventory_management == 'shopify' %} max="{{ max_num }}"{% endif %}>
 						<label class="c-buy-alert js-buy-alert">
 							{{ 'general.cart.alert_quantity_before' | t }}<br>
 							<span class="js-buy-alert__num">{{ max_num }}</span>
 							{{ 'general.cart.alert_quantity_after' | t }}
 						</label>
 					</div>
-					<button type="button" class="c-buy-num__count c-buy-num__count--plus qtybtn qtyplus_{{ section.id }}" field="updates_{{ section.id }}" aria-label="{{ 'products.general.plus' | t }}">
+					<button title="Increase Quantity for {{ product.title }}" type="button" class="c-buy-num__count c-buy-num__count--plus qtybtn qtyplus_{{ section.id }}" field="updates_{{ section.id }}" aria-label="{{ 'products.general.plus' | t }}">
 					</button>
 				</div>
 			{% endif %}

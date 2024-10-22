@@ -28,7 +28,7 @@
 		{%- assign ranking_more_url = section.settings.ranking_more_url -%}
 		<p class="u-mx-0">
 			<a href="{{ ranking_more_url | escape }}" class="c-button">
-				<span>{{ 'general.button.more_button_label' | t }}</span>
+				<span>{{ 'general.button.more_button_label' | t }}<span class="is-sr0nly">&nbsp;about {{ 'general.headline.ranking_title' | t }}</span></span>
 			</a>
 		</p>
 	{%- endif -%}

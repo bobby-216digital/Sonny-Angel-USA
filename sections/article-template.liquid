@@ -12,9 +12,9 @@
 					<li class="p-blog-header-info__tag">
 						{%- for tag in article.tags -%}
 							{%- if forloop.index0 == 0 -%}
-								<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+								<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{% if tag == 'News' %}{{ tag }}<span class="is-sr0nly">&nbsp;tag</span>{% else %}{{ tag }}{% endif %}</a>
 							{%- else -%}
-								 ,<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+								 ,<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{% if tag == 'News' %}{{ tag }}<span class="is-sr0nly">&nbsp;tag</span>{% else %}{{ tag }}{% endif %}</a>
 							{%- endif -%}
 						{%- endfor -%}
 					</li>

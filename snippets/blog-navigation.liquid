@@ -13,7 +13,7 @@
 				{%- else -%}
 					{{ routes.root_url }}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}
 				{%- endif -%}" class="c-nav-link">
-					{{ tag }}
+					{{ tag }}<span class="is-sr0nly">&nbsp;Blog Category</span>
 				</a>
 				<span class="c-nav-link__icon"></span>
 			</li>
