@@ -1,0 +1,196 @@
+
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">MY PAGE</strong>
+	{% assign title = 'customer.account.title' | t %}
+	{%- if title != blank -%}
+		<span class="c-headline__sub">{{ title }}</span>
+	{%- endif -%}
+</h1>
+
+
+{% if customer.tags.size > 0 %}
+	<div class="container container--column c-customer-info-container">
+		<div class="c-customer-info">
+
+			{% assign customer_tags = customer.tags | join:',' %}
+			{% if customer_tags contains 'Regular' %}
+				<div class="c-customer-info__thumb">
+					<img src="{{ 'img_rank_regular.jpg' | asset_url }}" alt="Regular">
+				</div>
+			{% elsif customer_tags contains 'Angel' %}
+				<div class="c-customer-info__thumb">
+					<img src="{{ 'img_rank_angel.jpg' | asset_url }}" alt="Angel">
+				</div>
+			{% elsif customer_tags contains 'Bronze' %}
+				<div class="c-customer-info__thumb">
+					<img src="{{ 'img_rank_bronze.jpg' | asset_url }}" alt="Bronze">
+				</div>
+			{% elsif customer_tags contains 'Silver' %}
+				<div class="c-customer-info__thumb">
+					<img src="{{ 'img_rank_silver.jpg' | asset_url }}" alt="Silver">
+				</div>
+			{% elsif customer_tags contains 'Gold' %}
+				<div class="c-customer-info__thumb">
+					<img src="{{ 'img_rank_gold.jpg' | asset_url }}" alt="Gold">
+				</div>
+			{% endif %}
+
+			<div class="c-customer-info__body">
+				<h2 class="c-customer-info__title">{{ 'customer.account.info_title' | t }}</h2>
+				<p>
+					{{ 'customer.account.birth_title' | t }}&nbsp;:&nbsp;
+
+					{%- if request.locale.name == 'English' -%}
+
+						{% for tag in customer.tags %}
+							{% if tag contains "January" or tag contains "February" or tag contains "March" or tag contains "April" or tag contains "May" or tag contains "June" or tag contains "July" or tag contains "August" or tag contains "September" or tag contains "October" or tag contains "November" or tag contains "December" %}
+								{% if tag contains "-" %}
+									{% assign birthday = tag | split: '-' %}
+
+									{%- for label in birthday -%}
+										{%- if forloop.last == true -%}
+											, {{ label }}
+										{%- else -%}
+											{{ label }}
+										{%- endif -%}
+									{%- endfor -%}
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+
+					{%- else -%}
+
+						{% for tag in customer.tags %}
+							{% if tag contains "/" %}
+								{{ tag }}
+							{% endif %}
+						{% endfor %}
+
+					{%- endif -%}
+
+					{% assign birth_flag = false %}
+					{% for tag in customer.tags %}
+						{% if tag contains "January" or tag contains "February" or tag contains "March" or tag contains "April" or tag contains "May" or tag contains "June" or tag contains "July" or tag contains "August" or tag contains "September" or tag contains "October" or tag contains "November" or tag contains "December" or tag contains "/" %}
+							{% assign birth_flag = true %}
+						{%- endif -%}
+					{%- endfor -%}
+
+					{% if birth_flag == false %}
+						{%- if request.locale.primary == true -%}
+						{{ settings.birthday_none_area }}
+						{%- else -%}
+						{{ settings.birthday_none_area_diff }}
+						{%- endif -%}
+					{% endif %}
+				</p>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+
+
+
+<ul id="js-tab-account" class="c-tab u-mb-0--sp">
+	<li class="c-tab-item">
+		<a href="javascript:void(0);" data-tab="account-1" class="c-tab-item__link js-tab c-tab-item__link--active">
+			<span>{{ 'customer.orders.title' | t }}</span>
+		</a>
+	</li>
+	<li class="c-tab-item">
+		<a href="javascript:void(0);" data-tab="account-2" class="c-tab-item__link js-tab ">
+			<span>{{ 'customer.account.addresses_title' | t }}</span>
+		</a>
+	</li>
+</ul>
+
+<div class="container container-row container--column">
+
+	<div class="container-row__main">
+		<div id="account-1" class="js-tab-account">
+			{% if customer.orders.size > 0 %}
+			{% paginate customer.orders by 5 %}
+
+				{% for order in customer.orders %}
+					<div class="c-order-history-list{% if forloop.last %} c-order-history-list--last{% endif %}">
+
+						{% include 'order-history-label' %}
+
+						<div class="c-order-history-info">
+							<p class="c-order-history-info__title">{{ 'customer.orders.date' | t }}</p>
+							<p class="c-order-history-info__text">
+								{{ order.created_at | date: '%Y.%m.%d' }}
+							</p>
+						</div>
+						<div class="c-order-history-info">
+							<p class="c-order-history-info__title">{{ 'customer.orders.number' | t }}</p>
+							<p class="c-order-history-info__text">
+								{{ order.name }}
+								{% if order.cancelled %}
+									<span>{{ 'customer.order.cancelled' | t }}</span>
+								{% endif %}
+							</p>
+						</div>
+						<div class="c-order-history-info">
+							<p class="c-order-history-info__title">{{ 'customer.orders.total' | t }}</p>
+							<p class="c-order-history-info__text">
+								{{ order.total_price | money }}
+							</p>
+						</div>
+
+						<p class="c-order-history-list__detail">
+							<a class="c-link-detail-bar" href="{{ order.customer_url }}">
+								<span>{{ 'customer.orders.review' | t }}</span>
+							</a>
+						</p>
+					</div>
+				{% endfor %}
+
+				{% if paginate.pages > 1 %}
+					{% include 'pagination' %}
+				{% endif %}
+
+			{% endpaginate %}
+
+			{% else %}
+				<p class="p-order-empty-title">
+					{{ 'customer.orders.none' | t }}
+				</p>
+			{% endif %}
+
+		</div>
+
+
+		<div id="account-2" class="js-tab-account u-hidden">
+			<div class="c-address-box c-address-box--no-border">
+				<h2 class="c-address-box__title">{{ 'customer.addresses.email' | t }}</h2>
+				<div class="c-address-box__body">
+					{{ customer.email }}
+				</div>
+				{% if customer.default_address != blank %}
+					<h2 class="c-address-box__title">{{ 'customer.addresses.default' | t }}</h2>
+					<div class="c-address-box__body">
+						{{ customer.default_address | format_address }}
+					</div>
+				{% endif %}
+				{% if customer.default_address.phone != blank %}
+					<h2 class="c-address-box__title">{{ 'customer.addresses.phone' | t }}</h2>
+					<div class="c-address-box__body">
+						{{ customer.default_address.phone }}
+					</div>
+				{% endif %}
+			</div>
+
+			<p class="p-mypage-account-button">
+				<a href="{{ routes.account_addresses_url }}" class="c-button c-button--large">
+					{{ 'customer.account.view_addresses' | t }}
+				</a>
+			</p>
+		</div>
+	</div>
+
+	<div class="container-row__sub">
+		{% include 'accouunt-navigation' %}
+	</div>
+
+</div>

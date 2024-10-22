@@ -1,0 +1,160 @@
+{% comment %}
+//
+// Header Setting
+//
+{% endcomment %}
+
+
+
+<header class="header">
+	<div class="container header-container">
+
+		{%- if template == 'index' -%}
+			<h1 class="header-brand">
+				<a href="{{ routes.root_url }}" class="header-brand__link">
+					<img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}">
+					<span class="header-brand-catch">
+						{{ 'general.header.site_title' | t }}
+					</span>
+				</a>
+			</h1>
+		{%- else -%}
+			<p class="header-brand">
+				<a href="{{ routes.root_url }}" class="header-brand__link">
+					<img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}">
+					<span class="header-brand-catch">
+						{{ 'general.header.site_title' | t }}
+					</span>
+				</a>
+			</p>
+		{%- endif -%}
+
+		<ul class="header-menu">
+			<li class="header-menu-item u-hidden--sp">
+				<a href="{%- if request.locale.primary == true -%}
+					{{ routes.root_url }}pages/wishlist
+				{%- else -%}
+					{{ routes.root_url }}/pages/wishlist
+				{%- endif -%}" class="header-menu-item__link">
+					{% include 'text-header-icon-wishlist' %}
+				</a>
+			</li>
+			<li class="header-menu-item {% if customer %}{% else %}u-hidden--sp{% endif %}">
+				<a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_register_url }}{%- endif -%}" class="header-menu-item__link">
+					{%- if customer -%}
+						{% include 'text-header-icon-mypage' %}
+					{%- else -%}
+						{% include 'text-header-icon-regist' %}
+					{%- endif -%}
+				</a>
+			</li>
+			<li class="header-menu-item {% if customer %}u-hidden{% endif %}">
+				<a href="{{ routes.account_login_url }}" class="header-menu-item__link">
+					{% include 'text-header-icon-login' %}
+				</a>
+			</li>
+			<li class="header-menu-item">
+				<a href="{{ routes.cart_url }}" class="header-menu-item__link">
+					{% include 'text-header-icon-cart' %}
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</header>
+
+
+{% comment %}
+<style>
+  .announcement_color_scheme {
+    background: {{ section.settings.announcement_background_color }};
+    color: {{ section.settings.announcement_font_color }};
+  }
+  .announcement_color_scheme a {
+    color: {{ section.settings.announcement_font_color }};
+  }
+  .announcement_color_scheme a:hover {
+    color: {{ section.settings.announcement_hover_font_color }};
+  }
+  .customer_color_scheme,
+  .customer_color_scheme .account:before {
+    background: {{ section.settings.customer_background_color }};
+    color: {{ section.settings.customer_font_color }};
+  }
+  .mobile-only.no-scroll .customer_color_scheme {
+    visibility:hidden;
+  }
+  .customer-bullets ul li.borders p,
+  .customer_color_scheme a {
+    color: {{ section.settings.customer_font_color }};
+  }
+  .customer_color_scheme a:hover,
+  .customer_color_scheme a:focus, {
+    color: {{ section.settings.customer_hover_font_color }};
+  }
+  .customer_color_scheme .customer-links a,
+  .customer_color_scheme .customer-links span.icon {
+    color: {{ section.settings.customer_font_color }};
+  }
+  .customer_color_scheme .customer-links li:hover,
+  .customer_color_scheme .customer-links li:hover a,
+  .customer_color_scheme .customer-links li:hover span.icon,
+  .customer_color_scheme .customer-links li:hover.account:before,
+  .customer_color_scheme .customer-links li:focus,
+  .customer_color_scheme .customer-links li:focus a,
+  .customer_color_scheme .customer-links li:focus span.icon,
+  .customer_color_scheme .customer-links li:focus.account:before {
+    {% if section.settings.customer_font_color == '#ffffff' %}
+    background: {{ section.settings.customer_font_color }};
+    color: {{ section.settings.customer_background_color }};
+    {% else %}
+    background: #fff;
+    color: {{ section.settings.customer_hover_font_color }};
+    {% endif %}
+  }
+  #cart-dropdown {
+    background: #fff;
+  }
+</style>
+{% endcomment %}
+
+
+<script type="application/ld+json">
+	{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "{{ shop.name }}",
+		{% if section.settings.logo != blank %}"logo": "{%- capture image_size -%}{{ section.settings.logo_max_width }}x{%- endcapture -%}{{ section.settings.logo | img_url: image_size | prepend:'https:' }}",{% endif %}
+		"url": "{{ routes.root_url }}"
+	}
+</script>
+
+{% if template.name == 'index' %}
+{% assign potential_action_target = routes.root_url | append: "{{ routes.search_url }}?q={search_term_string}" %}
+	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "WebSite",
+			"name": {{ shop.name | json }},
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": {{ potential_action_target | json }},
+				"query-input": "required name=search_term_string"
+			},
+			"sameAs": [
+				"{{ settings.social_twitter_link }}",
+				"{{ settings.social_facebook_link }}",
+				"{{ settings.social_instagram_link }}"
+			],
+			"url": {{ routes.root_url | append: page.url | json }}
+		}
+	</script>
+{% endif %}
+
+{% schema %}
+{
+	"name": "Header",
+	"settings": [
+	]
+}
+{% endschema %}

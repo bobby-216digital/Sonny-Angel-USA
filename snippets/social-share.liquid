@@ -1,0 +1,19 @@
+<dl class="c-share">
+	<dt class="c-share__title">{{ 'general.other.share_title' | t }}</dt>
+	<dd class="c-share__body">
+		<ul class="c-share-list">
+			<li class="c-share-item">
+				<a target="_blank" href="//www.facebook.com/sharer.php?u={{ routes.root_url | append: share_permalink }}" role="button" aria-label="{{ 'general.social.facebook' | t }}" class="c-share-item__button c-share-item__button--facebook">
+				</a>
+			</li>
+			<li class="c-share-item">
+				<a target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ routes.root_url | append: share_permalink }}" role="button" aria-label="{{ 'general.social.twitter' | t }}" class="c-share-item__button c-share-item__button--twitter">
+				</a>
+			</li>
+			<li class="c-share-item">
+				<a target="_blank" href="https://timeline.line.me/social-plugin/share?url={{ routes.root_url | append: share_permalink }}" role="button" aria-label="{{ 'general.social.line' | t }}" class="c-share-item__button c-share-item__button--line">
+				</a>
+			</li>
+		</ul>
+	</dd>
+</dl>

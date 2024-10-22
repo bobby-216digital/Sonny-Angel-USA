@@ -1,0 +1,43 @@
+{% comment %}
+//
+// Global Navigation ( PC only )
+//
+{% endcomment %}
+
+{%- if settings.navigation != blank -%}
+	{%- assign navigation = settings.navigation -%}
+
+	<div class="nav-area u-hidden--sp">
+		<div class="nav-frame">
+			<nav class="container nav">
+				<ul class="nav__body">
+					{% for link in linklists[navigation].links %}
+						
+						{%- assign sub_links = false -%}
+						{% for sub_link in link.links %}
+							{% if link.links.size > 0 %}{%- assign sub_links = true -%}{% endif %}
+						{% endfor %}
+						
+						<li class="nav-item {% if sub_links %}nav-item--dropdown{% endif %}">
+							<a href="{{ link.url }}" class="nav-item__link">{{ link.title }}</a>
+							{% if sub_links %}
+								<div class="nav-child">
+									<ul class="nav-child__body">
+										{% for sub_link in link.links %}
+											<li class="nav-child-item">
+												<a href="{{ sub_link.url }}" class="nav-child-item__link">
+													{{ sub_link.title }}
+												</a>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+{%- endif -%}

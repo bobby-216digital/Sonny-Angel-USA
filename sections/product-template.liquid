@@ -1,0 +1,511 @@
+{% comment %}
+//
+// Product Detail Page Setting
+//
+{% endcomment %}
+
+<div class="container p-product-header u-hidden--sp">
+	<p class="p-product-header__icon">
+		{% include 'text-product-label-icon' %}
+	</p>
+	<h1 class="p-product-header__title">
+		{{ product.title }}
+	</h1>
+</div>
+
+<div id="product-id-{{ section.id }}" class="container-flex js-product-quantity" data-product-id="{{ product.id }}" data-section-id="{{ section.id }}" data-section-type="product-page" >
+	<div class="container-flex__main u-pl-0--sp u-pr-0--sp">
+
+		{%- if product.images.size > 0 -%}
+			<div class="p-product-main">
+				<div class="p-product-thumb js-product-thumb">
+					<div class="swiper-wrapper p-product-thumb__wrap">
+						{%- for image in product.images -%}
+							{%- if image.src contains 'products_' -%}
+								<p class="swiper-slide p-product-thumb__item">
+									<a href="{{ image.src | img_url: 'master' }}" data-lity data-lity-desc="">
+										<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title }}">
+									</a>
+								</p>
+							{%- endif -%}
+						{%- endfor -%}
+					</div>
+				</div>
+				<div class="p-product-thumb-nav">
+					{%- for image in product.images -%}
+						{%- if image.src contains 'products_' -%}
+							{% if forloop.first == true %}
+								<p class="p-product-thumb-nav__item">
+									<a href="javascript:void(0);" data-nav="" class="p-product-thumb-nav__link js-product-thumb-nav p-product-thumb-nav__link--active">
+										<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title }}">
+									</a>
+								</p>
+							{% else %}
+								<p class="p-product-thumb-nav__item">
+									<a href="javascript:void(0);" data-nav="" class="p-product-thumb-nav__link js-product-thumb-nav">
+										<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title }}">
+									</a>
+								</p>
+							{% endif %}
+						{%- endif -%}
+					{%- endfor -%}
+				</div>
+				<p class="p-product-main__wishlist">
+					<a href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{{ product | img_url: '828x' }}">
+						<span class="c-wishlist-link__icon"></span>
+					</a>
+				</p>
+			</div>
+		{%- else -%}
+			<div class="p-product-main">
+				<div class="p-product-thumb">
+					<div class="p-product-thumb__wrap">
+						<p class="p-product-thumb__item">
+							<img src="{{ 'default_thumbnail.png' | asset_url }}" alt="{{ product.title }}">
+						</p>
+					</div>
+				</div>
+				<p class="p-product-main__wishlist">
+					<a href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{{ product | img_url: '828x' }}">
+						<span class="c-wishlist-link__icon"></span>
+					</a>
+				</p>
+			</div>
+		{%- endif -%}
+
+		<div class="container-inner">
+
+			<div class="p-product-header u-hidden--pc">
+				<p class="p-product-header__icon">
+					{% include 'text-product-label-icon' %}
+				</p>
+				<h1 class="p-product-header__title">
+					{{ product.title }}
+				</h1>
+			</div>
+
+			<div class="u-hidden--pc">
+				{% assign customer_tags = customer.tags | join:',' %}
+				{% assign product_tags = product.tags | join:',' %}
+
+				{% if product_tags contains 'pre_Gold' %}
+					{% if customer.tags contains 'pre_Gold' %}
+						{% include 'product-buy' %}
+					{% else %}
+						{% include 'product-yoyaku' %}
+					{% endif %}
+
+				{% elsif product_tags contains 'Gold' %}
+					{% if customer.tags contains 'Gold' %}
+						{% include 'product-buy' %}
+					{% else %}
+						{% include 'product-yoyaku' %}
+					{% endif %}
+
+				{% elsif product_tags contains 'Silver' %}
+					{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' %}
+						{% include 'product-buy' %}
+					{% else %}
+						{% include 'product-yoyaku' %}
+					{% endif %}
+
+				{% elsif product_tags contains 'Bronze' %}
+					{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' or customer.tags contains 'Bronze' %}
+						{% include 'product-buy' %}
+					{% else %}
+						{% include 'product-yoyaku' %}
+					{% endif %}
+
+				{% elsif product_tags contains 'Angel' %}
+					{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' or customer.tags contains 'Bronze' or customer.tags contains 'Angel' %}
+						{% include 'product-buy' %}
+					{% else %}
+						{% include 'product-yoyaku' %}
+					{% endif %}
+
+				{% elsif product_tags contains 'Regular' %}
+					{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' or customer.tags contains 'Bronze' or customer.tags contains 'Angel' or customer.tags contains 'Regular' %}
+						{% include 'product-buy' %}
+					{% else %}
+						{% include 'product-yoyaku' %}
+					{% endif %}
+				
+				{% elsif product_tags contains 'pre_event' %}
+					{% include 'product-pre-event' %}
+
+				{% else %}
+					{% include 'product-buy' %}
+				{% endif %}
+			</div>
+
+			{%- assign notes_title = product.metafields['caution'].notes-title -%}
+			{%- assign notes_title_diff = product.metafields['caution'].notes-title-diff -%}
+			
+			{%- assign notes_text = product.metafields['caution'].notes-text -%}
+			{%- assign notes_text_diff = product.metafields['caution'].notes-text-diff -%}
+			
+			{%- assign notes_sub_text = product.metafields['caution'].notes-sub-text -%}
+			{%- assign notes_sub_text_diff = product.metafields['caution'].notes-sub-text-diff -%}
+			
+			{%- if request.locale.primary == true -%}
+				{%- if notes_title != nil or notes_text != nil or notes_sub_text != nil -%}
+					<div class="c-att">
+						{%- if notes_title != nil -%}
+							<p class="c-att__title">
+								{{ notes_title }}
+							</p>
+						{%- endif -%}
+
+						{%- if notes_text != nil -%}
+							<p class="c-att__text">
+								{{ notes_text }}
+							</p>
+						{%- endif -%}
+
+						{%- if notes_sub_text != nil -%}
+							<p class="c-att__cap">
+								{{ notes_sub_text }}
+							</p>
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			{%- else -%}
+				{%- if notes_title_diff != nil or notes_text_diff != nil or notes_sub_text_diff != nil -%}
+					<div class="c-att">
+						{%- if notes_title_diff != nil -%}
+							<p class="c-att__title">
+								{{ notes_title_diff }}
+							</p>
+						{%- endif -%}
+
+						{%- if notes_text_diff != nil -%}
+							<p class="c-att__text">
+								{{ notes_text_diff }}
+							</p>
+						{%- endif -%}
+
+						{%- if notes_sub_text_diff != nil -%}
+							<p class="c-att__cap">
+								{{ notes_sub_text_diff }}
+							</p>
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			{%- endif -%}
+
+		</div>
+
+		{%- if product.description.size > 0 -%}
+			<div class="c-toggle c-product-toggle">
+				<p class="c-product-toggle__head">
+					<a href="javascript:void(0);" class="c-product-toggle-link js-toggle js-toggle-product">
+						{{ 'products.customize.item_details' | t }}
+						<span class="c-toggle__icon c-product-toggle-link__icon c-toggle__icon--active"></span>
+					</a>
+				</p>
+				<div class="container-inner c-toggle__content c-product-toggle__content" style="display: block;">
+					{{ product.description }}
+				</div>
+			</div>
+		{%- endif -%}
+
+		{% include 'product-campaign' %}
+		
+		{% include 'product-point' %}
+
+		{%- unless settings.product_purchase == blank -%}
+			<div class="c-toggle c-product-toggle">
+				<p class="c-product-toggle__head">
+					<a href="javascript:void(0);" class="c-product-toggle-link js-toggle js-toggle-product">
+						{{ 'products.customize.purchase_return' | t }}
+						<span class="c-toggle__icon c-product-toggle-link__icon c-toggle__icon--active"></span>
+					</a>
+				</p>
+				<div class="container-inner c-toggle__content c-product-toggle__content" style="display: block;">
+					{% assign product_tags = product.tags | join:',' %}
+					{% if product_tags contains 'event' %}
+						{%- if request.locale.primary == true -%}
+							{{ settings.event_product_purchase }}
+						{%- else -%}
+							{{ settings.event_product_purchase_diff }}
+						{%- endif -%}
+					{% else %}
+						{%- if request.locale.primary == true -%}
+							{{ settings.product_purchase }}
+						{%- else -%}
+							{{ settings.product_purchase_diff }}
+						{%- endif -%}
+					{% endif %}
+				</div>
+			</div>
+		{%- endunless -%}
+
+
+	</div>
+	<div class="container-flex__sub">
+		<div class="side-stikcy">
+			
+			{% assign customer_tags = customer.tags | join:',' %}
+			{% assign product_tags = product.tags | join:',' %}
+			
+			{% if product_tags contains 'pre_Gold' %}
+				{% if customer.tags contains 'pre_Gold' %}
+					{% include 'product-buy' %}
+					{% include 'product-json' %}
+				{% else %}
+					{% include 'product-yoyaku' %}
+				{% endif %}
+				
+			{% elsif product_tags contains 'Gold' %}
+				{% if customer.tags contains 'Gold' %}
+					{% include 'product-buy' %}
+					{% include 'product-json' %}
+				{% else %}
+					{% include 'product-yoyaku' %}
+				{% endif %}
+			
+			{% elsif product_tags contains 'Silver' %}
+				{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' %}
+					{% include 'product-buy' %}
+					{% include 'product-json' %}
+				{% else %}
+					{% include 'product-yoyaku' %}
+				{% endif %}
+			
+			{% elsif product_tags contains 'Bronze' %}
+				{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' or customer.tags contains 'Bronze' %}
+					{% include 'product-buy' %}
+					{% include 'product-json' %}
+				{% else %}
+					{% include 'product-yoyaku' %}
+				{% endif %}
+				
+			{% elsif product_tags contains 'Angel' %}
+				{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' or customer.tags contains 'Bronze' or customer.tags contains 'Angel' %}
+					{% include 'product-buy' %}
+					{% include 'product-json' %}
+				{% else %}
+					{% include 'product-yoyaku' %}
+				{% endif %}
+				
+			{% elsif product_tags contains 'Regular' %}
+				{% if customer.tags contains 'Gold' or customer.tags contains 'Silver' or customer.tags contains 'Bronze' or customer.tags contains 'Angel' or customer.tags contains 'Regular' %}
+					{% include 'product-buy' %}
+					{% include 'product-json' %}
+				{% else %}
+					{% include 'product-yoyaku' %}
+				{% endif %}
+			
+			{% elsif product_tags contains 'pre_event' %}
+				{% include 'product-pre-event' %}
+				
+			{% else %}
+				{% include 'product-buy' %}
+				{% include 'product-json' %}
+			{% endif %}
+		
+		</div>
+	</div>
+</div>
+
+
+{% if section.settings.product_pickup %}
+	<h2 class="c-headline">
+		<strong class="c-headline__main">
+			{{ 'general.headline.pickup_title' | t }}
+		</strong>
+		<span class="c-headline__sub">{{ 'general.headline.pickup_sub_title' | t }}</span>
+	</h2>
+
+	<div class="container">
+		<div class="c-product-loop c-product-loop--pickup">
+			{% for block in section.blocks %}
+			{% case block.type %}
+			{% when 'image' %}
+				<div class="c-product-item">
+					<a href="{{ block.settings.pickup_link | escape }}" class="c-pickup-item__link">
+						{%- if block.settings.pickup_news -%}
+							<p class="c-label-icon c-label-icon--new c-pickup-item__icon">NEW</p>
+						{%- endif -%}
+						<p class="c-pickup-item__thumb">
+							{%- if block.settings.pickup_image != blank -%}
+								<img src="{{ block.settings.pickup_image | img_url: '360x' }}" alt="{%- if request.locale.primary == true -%}
+									{{ block.settings.pickup_heading | escape }}
+								{%- else -%}
+									{{ block.settings.pickup_heading_diff | escape }}
+								{%- endif -%}">
+							{%- endif -%}
+						</p>
+						{%- if block.settings.pickup_heading != blank -%}
+							<h3 class="c-pickup-item__title">
+								{%- if request.locale.primary == true -%}
+									{{ block.settings.pickup_heading | escape }}
+								{%- else -%}
+									{{ block.settings.pickup_heading_diff | escape }}
+								{%- endif -%}
+							</h3>
+						{%- endif -%}
+					</a>
+				</div>
+			{% endcase %}
+			{% endfor %}
+
+		</div>
+	</div>
+{% endif %}
+
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org/",
+	"@type": "Product",
+	"name": "{{ product.title | escape }}",
+	"url": "{{ routes.root_url }}{{ product.url }}",
+	{% if product.featured_image %}
+		{%- assign image_size = product.featured_image.width | append: 'x' -%}
+		"image": [
+			"https:{{ product.featured_image.src | img_url: image_size }}"
+		],
+	{% endif %}
+	"description": "{{ product.description | strip_html | escape }}",
+	{% if current_variant.sku != blank %}
+		"sku": "{{ current_variant.sku }}",
+	{% endif %}
+	"brand": {
+		"@type": "Thing",
+		"name": "{{ product.vendor | escape }}"
+	},
+	"offers": {
+		"@type": "Offer",
+		{% if variant.sku != blank %}
+		"sku": "{{ variant.sku }}",
+		{% endif %}
+		"priceCurrency": "{{ shop.currency }}",
+		"price": "{{ variant.price | divided_by: 100.00 }}",
+		"availability": "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+		"url" : "{{ routes.root_url }}{{ variant.url }}",
+		"seller": {
+			"@type": "Organization",
+			"name": "{{ shop.name }}"
+		}
+	}
+}
+</script>
+
+
+{% schema %}
+{
+	"name": "Product Pick Up",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "product_pickup",
+			"label": "Show pickup",
+			"default": true
+		}
+	],
+	"name": "Product Contents",
+	"settings": [
+		{
+			"type": "text",
+			"id": "product_point_heading",
+			"label": "Point Heading ( Primary Locale )"
+		},
+		{
+			"type": "text",
+			"id": "product_point_heading_diff",
+			"label": "Point Heading ( Secondary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_point_contents_top",
+			"label": "Point Contents Top ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_point_contents_top_diff",
+			"label": "Point Contents Top ( Secondary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_point_contents_bottom",
+			"label": "Point Contents Bottom ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_point_contents_bottom_diff",
+			"label": "Point Contents Bottom ( Secondary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_point_none_contents",
+			"label": "Point None Contents ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_point_none_contents_diff",
+			"label": "Point None Contents ( Secondary Locale )"
+		},
+		
+		{
+			"type": "text",
+			"id": "product_campaign_heading",
+			"label": "Campaign Heading ( Primary Locale )"
+		},
+		{
+			"type": "text",
+			"id": "product_campaign_heading_diff",
+			"label": "Campaign Heading ( Secondary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_campaign_contents",
+			"label": "Campaign Contents ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "product_campaign_contents_diff",
+			"label": "Campaign Contents ( Secondary Locale )"
+		}
+	],
+	"max_blocks": 4,
+	"blocks": [
+		{
+			"type": "image",
+			"name": "Image",
+			"settings": [
+				{
+					"type": "text",
+					"id": "pickup_heading",
+					"label": "Heading ( Primary Locale )"
+				},
+				{
+					"type": "text",
+					"id": "pickup_heading_diff",
+					"label": "Heading ( Secondary Locale )"
+				},
+				{
+					"type": "image_picker",
+					"id": "pickup_image",
+					"label": "recommned size : 1000 x 625"
+				},
+				{
+					"type": "url",
+					"id": "pickup_link",
+					"label": "Link"
+				},
+				{
+					"type": "checkbox",
+					"id": "pickup_news",
+					"label": "New icon",
+					"default": false
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+

@@ -1,0 +1,18 @@
+{%- assign lazy_size = size | divided_by: 3 | append: 'x' -%}
+{%- assign img_url = img_src | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+{% include 'image-style' with image: img_src, width: size, height: size, small_style: true, img_id: id %}
+<img id="image-{{ id }}"
+     class="lazywidth lazyload no-js-hide img-align {% if img_src.aspect_ratio > 1 %}landscape{% elsif img_src.aspect_ratio < 1 %}vertical{% else %}square{% endif %}"
+     src="{{ img_src | img_url: lazy_size }}"
+     data-src="{{ img_url }}"
+     data-widths="[{% if datawidth == false %}{{ size | times: 2 }}{% else %}200, 220, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900{% endif %}]"
+     data-aspectratio="{{ img_src.aspect_ratio }}"
+     data-sizes="auto"
+     {% if section.settings.zoom_enable %} data-zoom="{{ image | img_url: '1024x1024', scale: 2 }}"{% endif %}
+     alt="{{ alt }}">
+<noscript>
+  {%- assign size = size | append: 'x' -%}
+  <img class="lazywidth{% if settings.title_align %} img-align {% if img_src.aspect_ratio > 1 %}landscape{% elsif img_src.aspect_ratio < 1 %}vertical{% else %}square{% endif %}{% endif %}"
+       src="{{ img_src | img_url: size }}"
+       alt="{{ alt }}">
+</noscript>

@@ -1,0 +1,247 @@
+{%- assign hide_default_title = false -%}
+{% if product.variants.size == 1 %}
+{%- assign hide_default_title = true -%}
+{% endif %}
+
+{%- capture 'form_id' -%}add-item-form-{{ section.id }}{%- endcapture -%}
+{%- capture 'form_class' -%}{% if section.settings.go_to_cart_enable or template == 'product.quick' and settings.go_to_cart_enable %}go-to-cart {% endif %}product-form-{{ section.id }} variants clearfix{%- endcapture -%}
+
+<div class="product-variants table-center clearfix">
+{% form 'product', product, id:form_id, class:form_class %}
+
+  {% if section.settings.product_availability_enable or template == 'product.quick' and settings.product_availability_enable_quick %}
+  <div class="twelve clearfix">
+    <span id="inventory-{{ section.id }}" class="variant-inventory bottompad{% if section.settings.layout %}-quarter{% endif %}" data-inv="{% if template == 'product.quick' %}{{ settings.product_availability_total_quick }}{% else %}{{ section.settings.product_availability_total }}{% endif %}" role="status">
+      {% if variant.inventory_management == "shopify" and variant.inventory_quantity > 0 %}
+      <h4>{{ 'products.general.inv_msg_1' | t }} {{ variant.inventory_quantity }} {{ 'products.general.inv_msg_2' | t }}</h4>
+      {% endif %}
+    </span>
+  </div>
+  {% endif %}
+
+  {%- assign option_index = 0 -%}
+  {% for option in product.options %}
+  {%- capture downcased_option -%}{{ option | downcase }}{%- endcapture -%}
+  {%- assign option_index = forloop.index0 -%}
+  {%- assign how_many_options = 0 -%}
+  {%- assign current_options = '' -%}
+  {% for variant in product.variants %}
+  {%- assign current_option = variant.options[option_index] -%}
+  {% unless current_options contains current_option %}
+  {% if how_many_options > 0 %}
+  {%- assign current_options = current_options | join: '|' | append: '|' -%}
+  {% endif %}
+  {%- assign current_options = current_options | append: current_option -%}
+  {%- assign current_options = current_options | split: '|' | sort -%}
+  {%- assign how_many_options = current_options | size -%}
+  {% endunless %}
+  {% endfor %}
+  {% if current_options.size > 1 %}{%- capture count -%}{% increment count %}{%- endcapture -%}{% endif %}
+  {% endfor %}
+  {%- assign count = count | plus:1 -%}
+
+  {% if section.settings.layout %}
+  {%- capture block_width -%}{{ count }}{%- endcapture -%}
+
+  {% case block_width %}
+  {% when '0' %}
+  {%- assign block_width = 'six' -%}  
+  {% when '1' %}
+  {%- assign block_width = 'four' -%}  
+  {% when '2' %}
+  {%- assign block_width = 'three' -%}
+  {% when '3' %}
+  {%- assign block_width = 'two-half' -%}  
+  {% endcase %}
+  {% else %}
+  {%- assign block_width = 'eight center' -%}
+  {% endif %}
+
+  <div class="purchase-section{% if product.variants.size > 1 %} multiple{% endif %}{% if section.settings.layout %} banner{% endif %}">
+
+    <select id="product-select-{{ section.id }}" class="{{ block_width }} center no-js hidden no-select product-select" name="id" data-cols="{{ block_width }}" data-length="{% if section.settings.var_length_enable or template == 'product.quick' and settings.var_length_enable_quick %}0{% else %}1{% endif %}"{% if hide_default_title %} style="display:none" aria-hidden="true"{% endif %}>        
+      {% for variant in product.variants %}
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}"{% if variant.inventory_management == 'shopify' and variant.inventory_policy != 'continue' %} data-inv="{% if variant.inventory_quantity > 0 %}{{ variant.inventory_quantity }}{% else %}0{% endif %}"{% endif %}>{{ variant.title }} - {{ variant.price | money }}</option>
+      {% endfor %}
+    </select>
+
+    {%- assign variant = product.selected_or_first_available_variant -%}
+    {% if section.settings.qty_enable or template == 'product.quick' and settings.qty_enable_quick %}
+    <div class="{{ block_width }}">
+      <span class="quantity form">
+        <button type="button" class="icon icon-minus btn qtybtn qtyminus_{{ section.id }} text-center" field="updates_{{ section.id }}" aria-label="{{ 'products.general.minus' | t }}"></button>
+        <input name="quantity" type="number" inputmode="numeric" pattern="[0-9]*" value="1" min="1" class="ignore quantity item-qty text-center" field="error_{{ section.id }}" id="updates_{{ section.id }}"{% if variant.inventory_management == 'shopify' and variant.inventory_policy != 'continue' %} max="{{ variant.inventory_quantity }}"{% endif %} />                   
+        <button type="button" class="icon icon-plus btn qtybtn qtyplus_{{ section.id }} text-center" field="updates_{{ section.id }}" aria-label="{{ 'products.general.plus' | t }}"></button>       
+        <label class="stock error hidden" id="error_{{ section.id }}"></label>
+      </span>
+    </div>
+    {% endif %}
+    <div class="{{ block_width }}{% if block_width == 'six' %} negative-left negative-right{% endif %}">
+      <span class="purchase{% if block_width == 'six' %} table-center{% endif %}">
+        {% unless product.available %}
+        <input type="submit" class="btn add-to-cart addtocart auto-full-width disabled outline bottompad{% if product.available %}{% if section.settings.smart_enable or template == 'product.quick' and settings.smart_enable_quick %}-quarter{% endif %}{% endif %}" disabled="disabled" value="{{ 'products.product.unavailable' | t }}" />
+        {% else %}
+        <div class="bottompad{% if product.available %}{% if section.settings.smart_enable or template == 'product.quick' and settings.smart_enable_quick %}-quarter{% else %}-half{% endif %}{% endif %}{% if block_width == 'six' %} six{% endif %}">
+          <input type="submit" id="add-to-cart-{{ section.id }}" class="btn add-to-cart addtocart auto-full-width{% if section.settings.smart_enable or template == 'product.quick' and settings.smart_enable_quick %} smart-outline{% endif %}" name="add" value="{{ 'products.product.add_to_cart' | t }}" />
+          <div class="cart-animation hidden" aria-hidden="true"></div>
+        </div>
+        {% if section.settings.smart_enable or template == 'product.quick' and settings.smart_enable_quick %}
+        <div class="bottompad-half{% if block_width == 'six' %} six{% endif %} auto-full-width">
+          {{ form | payment_button }}
+        </div>
+        {% endif %}
+        {% endunless %}
+      </span>
+    </div>
+
+  </div>
+
+{% endform %} 
+</div><!-- End product options -->
+
+{% unless product == empty %}
+<script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product | json }}
+</script>
+{% endunless %}
+
+<script>
+  //	Based on https://gist.github.com/jonathanmoore/c0e0e503aa732bf1c05b7a7be4230c61
+  var Shopify = Shopify || {};
+  Shopify.arrayIncludes = function(e, t) {
+    for (var n = 0; n < e.length; n++)
+      if (e[n] == t) return !0;
+    return !1
+  }, Shopify.uniq = function(e) {
+    for (var t = [], n = 0; n < e.length; n++) Shopify.arrayIncludes(t, e[n]) || t.push(e[n]);
+    return t
+  }
+  Shopify.optionsMap = {};
+  Shopify.updateOptionsInSelector = function(selectorIndex) {
+    switch (selectorIndex) {
+      case 0:
+        var key = 'root';
+        var selector = $('#product-id-{{ section.id }} .single-option-selector:eq(0)');
+        break;
+      case 1:
+        var key = $('#product-id-{{ section.id }} .single-option-selector:eq(0)').val();
+        var selector = $('#product-id-{{ section.id }} .single-option-selector:eq(1)');
+        break;
+      case 2:
+        var key = $('#product-id-{{ section.id }} .single-option-selector:eq(0)').val();  
+        key += ' / ' + $('#product-id-{{ section.id }} .single-option-selector:eq(1)').val();
+        var selector = $('#product-id-{{ section.id }} .single-option-selector:eq(2)');
+    }
+    var initialValue = selector.val();
+    selector.empty();    
+    var availableOptions = Shopify.optionsMap[key];
+    for (var i=0; i<availableOptions.length; i++) {
+      var option = availableOptions[i];
+      var newOption = $('<option></option>').val(option).html(option);
+      selector.append(newOption);
+    }
+    if ($.inArray(initialValue, availableOptions) !== -1) {
+      selector.val(initialValue);
+    }
+    selector.trigger('change'); 
+  };
+  Shopify.linkOptionSelectors = function(product) {
+    for (var i=0; i<product.variants.length; i++) {
+      var variant = product.variants[i];
+      if (variant) {
+        Shopify.optionsMap['root'] = Shopify.optionsMap['root'] || [];
+        Shopify.optionsMap['root'].push(variant.option1);
+        Shopify.optionsMap['root'] = Shopify.uniq(Shopify.optionsMap['root']);
+        if (product.options.length > 1) {
+          var key = variant.option1;
+          Shopify.optionsMap[key] = Shopify.optionsMap[key] || [];
+          Shopify.optionsMap[key].push(variant.option2);
+          Shopify.optionsMap[key] = Shopify.uniq(Shopify.optionsMap[key]);
+        }
+        if (product.options.length === 3) {
+          var key = variant.option1 + ' / ' + variant.option2;
+          Shopify.optionsMap[key] = Shopify.optionsMap[key] || [];
+          Shopify.optionsMap[key].push(variant.option3);
+          Shopify.optionsMap[key] = Shopify.uniq(Shopify.optionsMap[key]);
+        }
+      }
+    }
+    Shopify.updateOptionsInSelector(0);
+    if (product.options.length > 1) Shopify.updateOptionsInSelector(1);
+    if (product.options.length === 3) Shopify.updateOptionsInSelector(2);
+    $('#product-id-{{ section.id }} .single-option-selector:eq(0)').change(function() {
+    Shopify.updateOptionsInSelector(1);
+    if (product.options.length === 3) Shopify.updateOptionsInSelector(2);
+    return true;
+  });
+  $('#product-id-{{ section.id }} .single-option-selector:eq(1)').change(function() {
+  if (product.options.length === 3) Shopify.updateOptionsInSelector(2);
+  return true;
+  });  
+  };
+  {% if product.available and product.options.size > 1 %}
+  var $addToCartForm = $('#product-id-{{ section.id }} form[action="/cart/add"]');
+  if (window.MutationObserver && $addToCartForm.length) {
+    if (typeof observer === 'object' && typeof observer.disconnect === 'function') {
+      observer.disconnect();
+    }
+    var config = { childList: true, subtree: true };
+    var observer = new MutationObserver(function() {      
+      Shopify.linkOptionSelectors({{ product | json }});
+      observer.disconnect();
+    });  
+    observer.observe($addToCartForm[0], config);
+  }
+  {% endif %}
+  var selector = $('#product-id-{{ section.id }} .single-option-selector:eq(0)');
+  selector.trigger('change'); 
+  {% if product.variants.size > 1 %}
+  $(function(){
+    var variantImages = {},
+        thumbnails,
+        variant,
+        variantImage,
+        opt_key,
+        opt_val,
+        loop_index;
+    {% for variant in product.variants %}
+    variant = {{ variant | json }};
+    if ( typeof variant.featured_image !== 'undefined' && variant.featured_image !== null ) {
+      variantImage =  variant.featured_image.src.split('?')[0].replace(/http(s)?:/,'');
+      variantImages[variantImage] = variantImages[variantImage] || {};
+      {% for option in product.options %}
+      {%- assign option_value = variant.options[forloop.index0] -%}
+      {%- assign option_key = 'option-' | append: forloop.index0 -%}
+      opt_key = {{ option_key | json }};
+      opt_val = {{ option_value | json }};
+      if (typeof variantImages[variantImage][opt_key] === 'undefined') {
+        variantImages[variantImage][opt_key] = opt_val;
+      }
+      else {
+        var oldValue = variantImages[variantImage][opt_key];
+        if ( oldValue !== null && oldValue !== opt_val )  {
+          variantImages[variantImage][opt_key] = null;
+        }
+      }
+      {% endfor %}
+    }
+    {% endfor %}
+    $(function(){
+      thumbnails = $('#product-id-{{ section.id }} img[src*="/products/"]').not(':first');               
+      if (thumbnails.length) {
+        thumbnails.bind('click', function() {
+          var image = $(this).attr('src').split('?')[0].replace(/(_50x)/,'');
+          if (typeof variantImages[image] !== 'undefined') {
+            {% for option in product.options %}
+            loop_index = 'option-{{ forloop.index0 }}';
+            if (variantImages[image][loop_index] !== null) {
+              $('#product-id-{{ section.id }} .single-option-selector:eq({{ forloop.index0 }})').val(variantImages[image][loop_index]).trigger('change');
+            }
+            {% endfor %}
+          }
+        });
+      }
+    });
+  });
+  {% endif %}
+</script>

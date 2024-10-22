@@ -1,0 +1,57 @@
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">NEWS</strong>
+	{% assign title = 'blogs.blog.title' | t %}
+	{%- if title != blank -%}
+		<span class="c-headline__sub">{{ title }}</span>
+	{%- endif -%}
+</h1>
+
+<div class="container-row">
+
+	<div class="container-row__main" data-section-id="{{ section.id }}" data-section-type="blog-page">
+
+		{% if blog.articles.size > 0 %}
+
+			{%- assign pagination_amount = section.settings.blog_per_page | downcase -%}
+			{% paginate blog.articles by pagination_amount %}
+
+			<div class="c-news-archive">
+				{% for article in blog.articles %}
+					{% include 'blog-loop-archive' %}
+				{% endfor %}
+			</div>
+
+			{% if paginate.pages > 1 %}
+				{% include 'pagination' %}
+			{% endif %}
+
+			{% endpaginate %}
+
+		{% else %}
+			<h3 class="blog-title">{{ 'homepage.onboarding.no_blog_body' | t }}</h3>
+		{% endif %}
+
+	</div>
+
+	<div class="container-row__sub">
+		{% include 'blog-navigation' %}
+	</div>
+
+</div>
+
+{% schema %}
+{
+	"name": "Blogs",
+	"settings": [
+		{
+			"type": "range",
+			"id": "blog_per_page",
+			"min": 1,
+			"max": 48,
+			"step": 1,
+			"label": "Blogs per page",
+			"default": 24
+		}
+	]
+}
+{% endschema %}

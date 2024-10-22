@@ -1,0 +1,94 @@
+{% assign title = page.metafields.page.page-title %}
+{% assign sub_title = page.metafields.page.page-sub-title %}
+{%- if title != blank -%}
+	<h1 class="c-headline c-headline--first" role="text">
+		<strong class="c-headline__main">{{ title }}</strong>
+		
+		{%- if request.locale.primary == true -%}
+			{%- if sub_title != blank -%}
+				<span class="c-headline__sub">{{ sub_title }}</span>
+			{%- endif -%}
+		{%- else -%}
+			{%- if sub_title_diff != blank -%}
+				<span class="c-headline__sub">{{ sub_title_diff }}</span>
+			{%- endif -%}
+		{%- endif -%}
+		
+	</h1>
+{%- endif -%}
+
+<div class="container container--column">
+	{{ page.content }}
+
+	<div id="wishlist" class="c-wishlist-loop js-wishlist">
+	</div>
+
+	
+</div>
+
+<script>
+	var wishlist_null_text = {{ 'general.wishlist.no_text' | t | newline_to_br | json }};
+	var wishlist_null = '<p class="p-cart-empty-title">' + wishlist_null_text + '</p>';
+
+	if ( $('#wishlist').length ) {
+		wish_list_data = localStorage.getItem('wishlist');
+		wish_list_data = JSON.parse(wish_list_data);
+
+		if ( wish_list_data === null || wish_list_data.length < 1 ) {
+			$('.js-wishlist').before( wishlist_null );
+		} else {
+			var insert = '';
+
+			wish_list_data.forEach(function(val, key) {
+				insert += '<div id="' + val['id'] + '" class="c-wishlist-item">';
+					insert += '<div class="c-wishlist-item-thumb">';
+						insert += '<a href="' + val['url'] + '" class="c-wishlist-item-thumb__link">';
+							insert += '<img src="' + val['thumb'] + '">';
+						insert += '</a>';
+					insert += '</div>';
+					insert += '<div class="c-wishlist-item__body">';
+						insert += '<p class="c-wishlist-item__title">';
+							insert += '<a href="' + val['url'] + '">' + val['title'] + '</a>';
+						insert += '</p>';
+						insert += '<p class="c-wishlist-item__remove">';
+							insert += '<a href="javascript:void(0);" class="js-wishlist-remove">{{ 'general.wishlist.remove' | t }}</a>';
+						insert += '</p>';
+					insert += '</div>';
+				insert += '</div>';
+			});
+
+			$('.js-wishlist').append(insert);
+
+		}
+
+	}
+
+	$(document).on('click', '.js-wishlist-remove', function() {
+		wish_list_data = localStorage.getItem('wishlist');
+		wish_list_data = JSON.parse(wish_list_data);
+		
+		$.when(
+			wish_list_remove( $(this).closest('.c-wishlist-item').attr('id') ),
+			$(this).closest('.c-wishlist-item').remove()
+		).done(function(){
+			localStorage.setItem('wishlist', JSON.stringify(wish_list_data));
+			if ( wish_list_data === null || wish_list_data.length < 1 ) {
+				$('.js-wishlist').before( wishlist_null );
+			}
+		});
+		
+	} );
+	
+	function wish_list_remove(id) {
+		wish_list_data.some(function(v, i){
+			if ( v.id == id ) {
+				wish_list_data.splice(i,1);
+			}
+		});
+	}
+</script>
+
+
+
+
+

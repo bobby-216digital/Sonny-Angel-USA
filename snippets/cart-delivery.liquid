@@ -1,0 +1,68 @@
+{% comment %}
+	<!-- 配送日時アプリ用 -->
+	{% include 'cart-attributes' %}
+	<p style="text-align: right;">↓↓Uchuya Shipping Cooperationのアプリ</p>
+	<div id="uchuyasc"></div>
+	<!-- /配送日時アプリ用 -->
+{% endcomment %}
+
+<div class="c-form-delivery">
+	
+		
+	{%- if section.settings.delivery_time_caution != blank -%}
+		<p class="c-form-delivery__note">
+			{%- if request.locale.primary == true -%}
+				{{ section.settings.delivery_time_caution | escape }}
+			{%- else -%}
+				{{ section.settings.delivery_time_caution_diff | escape }}
+			{%- endif -%}
+		</p>
+	{%- endif -%}
+
+	<div class="c-form-item">
+		<label for="deliverydate" class="c-form-item__title">
+			{{ 'cart.general.delivery_date' | t }}
+		</label>
+		<input id="deliverydate" type="text" name="attributes[DeliveryDate]" value="{{ cart.attributes["DeliveryDate"] }}" placeholder="{{ "now" | date: "%Y/%m/%d" }}">
+	</div>
+
+	<div class="c-form-item">
+		<label for="deliverytime" class="c-form-item__title">
+			{{ 'cart.general.delivery_time' | t }}
+		</label>
+		<select name="attributes[DeliveryTime]" value="{{ cart.attributes["DeliveryTime"] }}">
+			{% for block in section.blocks %}
+			{% case block.type %}
+			{% when 'text' %}
+				{%- if request.locale.primary == true -%}
+					<option value="{{ block.settings.delivery_time_primary | escape }}">{{ block.settings.delivery_time_primary | escape }}</option>
+				{%- else -%}
+					<option value="{{ block.settings.delivery_time_primary | escape }}">{{ block.settings.delivery_time_seconday | escape }}</option>
+				{%- endif -%}
+			{% endcase %}
+			{% endfor %}
+
+		</select>
+	</div>
+
+</div>
+
+<script>
+	$(document).ready( function() {
+		
+		var today = new Date();
+		var start_day = today.setDate(today.getDate() + 8);
+		var end_day = today.setDate(today.getDate() + 30);
+		
+		jQuery('#deliverydate').datetimepicker({
+			format: 'Y/m/d',
+			timepicker : false,
+			className: 'js-datepicker-wrap',
+			minDate: start_day,
+			maxDate: end_day,
+		});
+	});
+</script>
+
+
+

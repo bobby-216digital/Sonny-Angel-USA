@@ -1,0 +1,70 @@
+{% comment %}
+//
+// パンくずの設定
+//
+{% endcomment %}
+
+<div class="c-breadcrumbs">
+	<ol class="container c-breadcrumbs__container" itemprop="breadcrumb">
+		<li class="c-breadcrumbs-item" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+			<a href="{{ routes.root_url }}" class="c-breadcrumbs-item__link c-breadcrumbs-item__link--home" itemprop="url">
+				<span itemprop="title">HOME</span>
+			</a>
+		</li>
+		{% if template == 'article' %}
+			<li class="c-breadcrumbs-item" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="{{ blog.url }}" class="c-breadcrumbs-item__link" itemprop="url">
+					<span itemprop="title">{{ blog.title }}</span>
+				</a>
+			</li>
+			<li class="c-breadcrumbs-item c-breadcrumbs-item--current" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="{{ canonical_url }}" class="c-breadcrumbs-item__link c-breadcrumbs-item__link--home" itemprop="url">
+					<span itemprop="title">{{ article.title }}</span>
+				</a>
+			</li>
+		{% elsif template == 'product' %}
+			{%- if collection.url -%}
+				<li class="c-breadcrumbs-item" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+					<a href="{{ collection.url }}" class="c-breadcrumbs-item__link c-breadcrumbs-item__link--home" itemprop="url">
+						<span itemprop="title">{{ collection.title }}</span>
+					</a>
+				</li>
+			{%- endif -%}
+			<li class="c-breadcrumbs-item c-breadcrumbs-item--current" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="{{ canonical_url }}" class="c-breadcrumbs-item__link c-breadcrumbs-item__link--home" itemprop="url">
+					<span itemprop="title">
+						{{ product.title }}
+					</span>
+				</a>
+			</li>
+		{% else %}
+			<li class="c-breadcrumbs-item c-breadcrumbs-item--current" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="{{ canonical_url }}" class="c-breadcrumbs-item__link c-breadcrumbs-item__link--home" itemprop="url">
+					<span itemprop="title">
+						{%- if template contains 'collection' -%}
+							{{ collection.title }}
+						{%- elsif template == 'product' -%}
+							{{ product.title }}
+						{%- elsif template == 'blog' -%}
+							NEWS
+						{%- elsif template == 'customers/register' -%}
+							SIGN UP
+						{%- elsif template == 'customers/login' -%}
+							LOGIN
+						{%- elsif template == 'customers/reset_password' -%}
+							PASSWORD RESET
+						{%- elsif template == 'customers/account' -%}
+							MY PAGE
+						{%- elsif template == 'customers/addresses' -%}
+							YOUR ADDRESS
+						{%- elsif template == 'customers/order' -%}
+							ORDER
+						{%- else -%}
+							{{ page.title }}
+						{%- endif -%}
+					</span>
+				</a>
+			</li>
+		{% endif %}
+	</ol>
+</div>

@@ -1,0 +1,61 @@
+{% if section.settings.show_product_recommendations %}
+
+	<h2 class="c-headline p-product-related-headline">
+		<strong class="c-headline__main">You may also like...</strong>
+		<span class="c-headline__sub">{{ 'products.customize.related' | t }}</span>
+	</h2>
+	
+	{% assign product_qty = 0 %}
+	{% for variant in product.variants %}
+		{% if variant.inventory_quantity > 0 %}
+			{% assign product_qty = product_qty | plus: variant.inventory_quantity %}
+		{% endif %}
+	{% endfor %}
+
+	{% if product.tags contains 'pre_sale' %}
+		<div id="recommended">
+			<div class="product-recommendations">
+				<div class="container container--column c-product-loop">
+					{%- assign collection = collections['new'] -%}
+					{%- for product in collection.products limit: 6 -%}
+						{% include 'product-loop' %}
+					{%- endfor -%}
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div id="recommended">
+			<div class="product-recommendations" data-product-id="{{ product.id }}" data-limit="4">
+
+			<div class="loading margins-bottom-section margins-top-section twelve"></div>
+
+			{% if recommendations.products_count > 0 and recommendations.performed %}
+				<div data-block-id="recommended-products" class="container container--column c-product-loop c-product-loop--recommend">
+					{% for product in recommendations.products %}
+						{% include 'product-loop' %}
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			</div>
+		</div>
+	{% endif %}
+
+
+{% endif %}
+
+
+{% schema %}
+{
+	"name": "Product recommendations",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "show_product_recommendations",
+			"label": "Show dynamic recommendations",
+			"info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+			"default": true
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+{% comment %}
+//
+// Customer Only Navigation
+//
+{% endcomment %}
+
+<ul class="c-list-nav-loop">
+	<li class="c-list-nav-loop__item">
+		<a href="{%- if request.locale.primary == true -%}
+			{{ routes.root_url }}pages/wishlist
+		{%- else -%}
+			{{ routes.root_url }}/pages/wishlist
+		{%- endif -%}" class="c-nav-link">
+			{{ 'customer.navigation.wishlist' | t }}
+		</a>
+		<span class="c-nav-link__icon"></span>
+	</li>
+	<li class="c-list-nav-loop__item">
+		<a href="{{ routes.account_url }}" class="c-nav-link">
+			{{ 'customer.navigation.order' | t }}
+		</a>
+		<span class="c-nav-link__icon"></span>
+	</li>
+	<li class="c-list-nav-loop__item">
+		<a href="{{ routes.account_addresses_url }}" class="c-nav-link">
+			{{ 'customer.navigation.address' | t }}
+		</a>
+		<span class="c-nav-link__icon"></span>
+	</li>
+	<li class="c-list-nav-loop__item">
+		{{ 'layout.customer.log_out' | t | customer_logout_link | replace: 'href', 'class="c-nav-link" href' }}
+		<span class="c-nav-link__icon"></span>
+	</li>
+</ul>
+

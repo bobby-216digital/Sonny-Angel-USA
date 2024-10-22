@@ -1,0 +1,69 @@
+{% assign title = page.metafields.page.page-title %}
+{% assign sub_title = page.metafields.page.page-sub-title %}
+{% assign sub_title_diff = page.metafields.page.page-sub-title-diff %}
+{%- if title != blank -%}
+	<h1 class="c-headline c-headline--first" role="text">
+		<strong class="c-headline__main">{{ title }}</strong>
+		
+		{%- if request.locale.primary == true -%}
+			{%- if sub_title != blank -%}
+				<span class="c-headline__sub">{{ sub_title }}</span>
+			{%- endif -%}
+		{%- else -%}
+			{%- if sub_title_diff != blank -%}
+				<span class="c-headline__sub">{{ sub_title_diff }}</span>
+			{%- endif -%}
+		{%- endif -%}
+		
+	</h1>
+{%- endif -%}
+
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">Birthday Registration</strong>
+	<span class="c-headline__sub">For Membership Program</span>
+</h1>
+
+<div class="container container--column container--page editor-content">
+	{{ page.content }}
+
+	{% if customer %}
+		{% assign customer_tags = customer.tags | join:',' %}
+		
+		{% if customer_tags contains 'BD_input' %}
+			<p class="u-center">Birthday information is registered.</p>
+		{% else %}
+			<p class="u-center">Your birthday information is not registered. Please register it here.</p>
+			<div class="frcp-cf-container" data-form-slug="1078c67da4402f62"></div>
+		{% endif %}
+
+	{% else %}
+		<p class="u-center">
+			This content is protected. <a href="/account/login">Please log in with your customer account to continue</a>.
+		</p>
+	{% endif %}
+
+
+</div>
+
+<style>
+	form.frcp-cf-form {
+		margin: 2rem auto;
+	}
+</style>
+
+<script>
+// document.addEventListener('DOMContentLoaded', () => {
+// const form = document.querySelector('form');
+
+//   form.addEventListener('submit', (event) => {
+//     //event.preventDefault(); // フォームのデフォルト動作（ページのリロード）を阻止
+// 	console.log('test');
+    
+//     // 1秒後にページをリロード
+//     setTimeout(() => {
+//       window.location.reload();
+//     }, 2000);
+//   });
+
+// } );
+</script>

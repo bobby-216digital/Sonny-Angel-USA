@@ -1,0 +1,20 @@
+{% assign title = page.metafields.page.page-title %}
+{% assign sub_title = page.metafields.page.page-sub-title %}
+{%- if title != blank -%}
+	<h1 class="c-headline c-headline--first" role="text">
+		<strong class="c-headline__main">{{ title }}</strong>
+		
+		{%- if request.locale.primary == true -%}
+			{%- if sub_title != blank -%}
+				<span class="c-headline__sub">{{ sub_title }}</span>
+			{%- endif -%}
+		{%- else -%}
+			{%- if sub_title_diff != blank -%}
+				<span class="c-headline__sub">{{ sub_title_diff }}</span>
+			{%- endif -%}
+		{%- endif -%}
+		
+	</h1>
+{%- endif -%}
+
+{% section 'page-contact-template' %}

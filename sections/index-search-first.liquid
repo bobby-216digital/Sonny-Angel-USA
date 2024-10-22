@@ -1,0 +1,88 @@
+{% comment %}
+//
+// Index Search First Setting
+//
+{% endcomment %}
+
+{%- if section.blocks.size == 0 -%}
+	{%- assign section_flag = false -%}
+{%- else -%}
+	{%- assign section_flag = true -%}
+{%- endif -%}
+
+{%- assign search_first_num = section.settings.search_first_num -%}
+
+{%- if section_flag -%}
+
+	<ul id="js-tab-search-first" class="c-tab u-mb-0--sp">
+		{% for block in section.blocks %}
+		{% case block.type %}
+		{% when 'collection' %}
+			<li class="c-tab-item">
+				<a href="javascript:void(0);" data-tab="search-first-{{ forloop.index }}" class="c-tab-item__link js-tab {% if forloop.index0 == 0 %}c-tab-item__link--active{% endif %}">
+					<span>
+						{%- if block.settings.search_first_title != blank -%}
+							{{ block.settings.search_first_title | escape }}
+						{%- endif -%}
+					</span>
+				</a>
+			</li>
+		{% endcase %}
+		{% endfor %}
+	</ul>
+
+	{% for block in section.blocks %}
+	{% case block.type %}
+	{% when 'collection' %}
+		<div id="search-first-{{ forloop.index }}" class="container c-product-loop c-product-loop--large js-tab-search-first {% if forloop.index0 != 0 %}u-hidden{% endif %}">
+			{%- assign search_collection = collections[block.settings.search_first_collection] -%}
+			{%- for product in search_collection.products limit: search_first_num -%}
+				{% include 'product-loop-large' %}
+			{%- endfor -%}
+		</div>
+	{% endcase %}
+	{% endfor %}
+
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Search First",
+	"max_blocks": 3,
+	"settings": [
+		{
+			"type": "range",
+			"id": "search_first_num",
+			"min": 1,
+			"max": 5,
+			"step": 1,
+			"label": "Product Display Number",
+			"default": 2
+		}
+	],
+	"blocks": [
+		{
+			"type": "collection",
+			"name": "Search Collection",
+			"settings": [
+				{
+					"type": "text",
+					"id": "search_first_title",
+					"label": "Heading"
+				},
+				{
+					"type": "collection",
+					"id": "search_first_collection",
+					"label": "Select collection"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Search First",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

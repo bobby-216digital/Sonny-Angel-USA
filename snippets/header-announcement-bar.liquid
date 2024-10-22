@@ -1,0 +1,11 @@
+<div class="banner {{ section.settings.bar_position }}{% if section.settings.use_sticky %} sticky{% endif %}{% if section.settings.include_bar_border %} include_border {% endif %} announcement_color_scheme {{ section.settings.text_alignment }}">  
+  <div class="container full clearfix">
+    <span>
+      {% if section.settings.promo_link != blank %}
+      <a href="{{ section.settings.promo_link }}" title="{% if section.settings.promo_text != blank %}{{ section.settings.promo_text }}{% else %}{{ 'homepage.onboarding.no_title' | t }}{% endif %}">{% if section.settings.promo_text != blank %}{{ section.settings.promo_text }}{% else %}{{ 'homepage.onboarding.no_title' | t }}{% endif %}</a>
+      {% else %}
+      {% if section.settings.promo_text != blank %}{{ section.settings.promo_text }}{% else %}{{ 'homepage.onboarding.no_title' | t }}{% endif %}
+      {% endif %}
+    </span>
+  </div>
+</div>

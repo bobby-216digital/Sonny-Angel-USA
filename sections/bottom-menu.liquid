@@ -1,0 +1,220 @@
+{% comment %}
+//
+// ボトムメニューの設定 ( SP のみ使用 )
+//
+{% endcomment %}
+
+{%- assign search_link = section.settings.bottom_bar_search_link -%}
+
+<div class="bottom-bar u-hidden--pc">
+	<div class="bottom-bar__item">
+		<a href="javascript:void(0);" class="bottom-bar-link js-bottom-menu">
+			<p class="bottom-bar-link__body">
+				<span class="bar-icon bar-icon--menu">
+					<span class="bottom-menu-icon">
+						<span class="bottom-menu-icon__line"></span>
+						<span class="bottom-menu-icon__line"></span>
+						<span class="bottom-menu-icon__line"></span>
+					</span>
+				</span>
+				<span class="bar-text">
+					{{ 'general.bottom_menu.menu' | t }}
+				</span>
+			</p>
+		</a>
+	</div>
+	<div class="bottom-bar__item">
+		<a href="{%- if search_link != blank -%}{{ search_link }}{%- endif -%}" class="bottom-bar-link">
+			<p class="bottom-bar-link__body">
+				<span class="bar-icon bar-icon--search">
+				</span>
+				<span class="bar-text">
+					{{ 'general.bottom_menu.search' | t }}
+				</span>
+			</p>
+		</a>
+	</div>
+	<div class="bottom-bar__item">
+		<a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_register_url }}{%- endif -%}" class="bottom-bar-link">
+			<p class="bottom-bar-link__body">
+				<span class="bar-icon bar-icon--account">
+				</span>
+				<span class="bar-text">
+					{%- if customer -%}
+						{{ 'general.bottom_menu.mypage' | t }}
+					{%- else -%}
+						{{ 'general.bottom_menu.regist' | t }}
+					{%- endif -%}
+				</span>
+			</p>
+		</a>
+	</div>
+	<div class="bottom-bar__item">
+		<a href="{{ routes.cart_url }}" class="bottom-bar-link">
+			<p class="bottom-bar-link__body">
+				<span class="bar-icon bar-icon--cart">
+					<span class="bar-icon__num js-cart-num {% if cart.item_count < 1 %} u-hidden{% endif %}">{{ cart.item_count }}</span>
+				</span>
+				<span class="bar-text">
+					{{ 'general.bottom_menu.cart' | t }}
+				</span>
+			</p>
+		</a>
+	</div>
+</div>
+
+<nav class="bottom-menu u-hidden--pc">
+	<p class="bottom-menu-head">
+		{%- if customer -%}
+			{{ 'general.menu.customer_greeting_brfore' | t }}
+			
+			{% assign name = customer.name %}
+			{%- if name != blank -%}
+				{{ name }}
+			{%- else -%}
+				{{ 'general.menu.customer_greeting_default' | t }}
+			{%- endif -%}
+			{{ 'general.menu.customer_greeting_after' | t }}
+		{%- else -%}
+			{{ 'general.bottom_navigation.greeting_text' | t }}
+		{%- endif -%}
+	</p>
+	<div class="bottom-menu-container">
+
+		{% unless customer %}
+			<div class="bottom-menu-button">
+				<p class="bottom-menu-button__link">
+					<a href="{{ routes.account_login_url }}" class="c-small-button">
+						{{ 'general.bottom_navigation.login_button' | t }}
+					</a>
+				</p>
+				<p class="bottom-menu-button__link">
+					<a href="{{ routes.account_register_url }}" class="c-small-button">
+						{{ 'general.bottom_navigation.regist_button' | t }}
+					</a>
+				</p>
+			</div>
+		{% endunless %}
+
+
+		{%- if section.settings.bottom_nav_icon != blank -%}
+			{%- assign bottom_nav_icon = section.settings.bottom_nav_icon -%}
+			<div class="bottom-panel-nav">
+				{% for link in linklists[bottom_nav_icon].links %}
+					<div class="bottom-panel-nav-item">
+						<a href="{{ link.url }}" class="nav-icon-link">
+							<span class="nav-icon-link__icon"></span>
+							<span class="nav-icon-link__text">{{ link.title }}</span>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		{%- endif -%}
+
+
+		{%- if section.blocks.size > 0 -%}
+			{%- assign blocks = true -%}
+		{%- endif -%}
+		{%- if blocks -%}
+			{%- for block in section.blocks -%}
+				{%- case block.type -%}
+				{%- when 'menu' -%}
+					<h3 class="bottom-nav-title">
+						{%- if request.locale.primary == true -%}
+							{{ block.settings.bottom_nav_title }}
+						{%- else -%}
+							{{ block.settings.bottom_nav_title_diff }}
+						{%- endif -%}
+					</h3>
+					{%- if block.settings.bottom_nav != blank -%}
+						{%- assign bottom_nav = block.settings.bottom_nav -%}
+						<ul class="bottom-nav">
+							{% for link in linklists[bottom_nav].links %}
+								<li class="bottom-nav-item">
+									<a href="{{ link.url }}" class="bottom-nav-item__link">
+										{{ link.title }}
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+					{%- endif -%}
+				{%- endcase -%}
+			{%- endfor -%}
+		{%- endif -%}
+
+
+		{%- if section.settings.bottom_nav_secondary != blank -%}
+			{%- assign bottom_nav_secondary = section.settings.bottom_nav_secondary -%}
+			<ul class="bottom-nav-secondary">
+				{% for link in linklists[bottom_nav_secondary].links %}
+					<li class="bottom-nav-secondary__item">
+						<a href="{{ link.url }}">
+							{{ link.title }}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{%- endif -%}
+
+
+	</div>
+</nav>
+
+{% schema %}
+{
+	"name": "Bottom Menu",
+	"max_blocks": 8,
+	"settings": [
+		{
+			"type": "header",
+			"content": "Bottom Bar Setting"
+		},
+		{
+			"type": "text",
+			"id": "bottom_bar_search_link",
+			"label": "Bottom Bar Search Link"
+		},
+
+		{
+			"type": "header",
+			"content": "Bottom Navigation"
+		},
+		{
+			"type": "link_list",
+			"id": "bottom_nav_icon",
+			"label": "Bottom Icon Navigation"
+		},
+		{
+			"type": "link_list",
+			"id": "bottom_nav_secondary",
+			"label": "Bottom Navigation Secondary"
+		}
+	],
+	"blocks": [
+		{
+			"type": "menu",
+			"name": "Menu",
+			"settings": [
+				{
+					"type": "text",
+					"id": "bottom_nav_title",
+					"label": "Heading ( Primary Locale )",
+					"default": "Menu"
+				},
+				{
+					"type": "text",
+					"id": "bottom_nav_title_diff",
+					"label": "Heading ( Secondary Locale )",
+					"default": "Menu"
+				},
+				{
+					"type": "link_list",
+					"id": "bottom_nav",
+					"label": "Menu",
+					"info": "This menu won't show dropdown items"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

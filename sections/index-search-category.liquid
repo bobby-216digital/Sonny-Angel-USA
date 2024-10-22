@@ -1,0 +1,84 @@
+{% comment %}
+//
+// Index Search Category Setting
+//
+{% endcomment %}
+
+{%- if section.blocks.size == 0 -%}
+	{%- assign section_flag = false -%}
+{%- else -%}
+	{%- assign section_flag = true -%}
+{%- endif -%}
+
+{%- if section_flag -%}
+	<div class="container">
+		<div class="c-category">
+
+			{%- for block in section.blocks -%}
+				{%- case block.type -%}
+				{%- when 'image' -%}
+					<div class="c-category__item">
+						<a href="{{ block.settings.search_category_url | escape }}" class="c-category-link">
+							{%- if block.settings.search_category_image != blank -%}
+								<p class="c-category-link__thumb">
+									<img src="{{ block.settings.search_category_image | img_url: '288x128' }}" alt="{{ block.settings.search_category_title | escape }}">
+								</p>
+							{%- endif -%}
+							
+							{% include 'title-search-category' %}
+							
+						</a>
+					</div>
+				{%- endcase -%}
+			{%- endfor -%}
+
+		</div>
+	</div>
+{%- endif -%}
+
+
+{% schema %}
+{
+	"name": "Search Category",
+	"max_blocks": 8,
+	"blocks": [
+		{
+			"type": "image",
+			"name": "Search Category",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "search_category_image",
+					"label": "Recommended Size 288px x 128px"
+				},
+				{
+					"type": "text",
+					"id": "search_category_title",
+					"label": "Title ( Default )"
+				},
+				{
+					"type": "text",
+					"id": "search_category_title_diff",
+					"label": "Title ( Multilingual )"
+				},
+				{
+					"type": "text",
+					"id": "search_category_sub_title",
+					"label": "Sub Title ( Default )"
+				},
+				{
+					"type": "url",
+					"id": "search_category_url",
+					"label": "Search Second More Url"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Search Category",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

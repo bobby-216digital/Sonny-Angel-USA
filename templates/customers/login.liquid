@@ -1,0 +1,145 @@
+
+<h1 id="js-login-title" class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">LOGIN</strong>
+	{% assign title = 'customer.login.title' | t %}
+	{%- if title != blank -%}
+		<span class="c-headline__sub">
+			{{ title }}
+		</span>
+	{%- endif -%}
+</h1>
+
+<h1 id="js-password-title" class="c-headline c-headline--first u-hidden" role="text">
+	<strong class="c-headline__main">PASSWORD RESET</strong>
+	{% assign password_title = 'customer.recover_password.title' | t %}
+	{%- if password_title != blank -%}
+		<span class="c-headline__sub">
+			{{ password_title }}
+		</span>
+	{%- endif -%}
+</h1>
+
+<div class="container container--column container--small">
+
+	<div id="reset_success" class="u-hidden">
+		<div class="success c-form-reset-access">
+			<p class="c-form-reset-access__text">
+				{{ 'customer.recover_password.success' | t }}
+			</p>
+			<p class="c-form-reset-access__button">
+				<a href="{{ routes.account_login_url }}" class="c-button c-button--large">
+					{{ 'customer.register.login_submit' | t }}
+				</a>
+			</p>
+		</div>
+	</div>
+
+	<!-- Customer Login -->
+	<div class="customer-login" id="customer-login">
+
+		{% form 'customer_login' %}
+
+			{% include 'form-errors-custom' %}
+
+			<div class="c-form-intro">
+				<p class="c-form-intro__text">
+					{{ 'customer.login.intro_text' | t }}
+				</p>
+			</div>
+
+			<div class="c-form-item">
+				<label for="customer_email" class="c-form-item__title">
+					{{ 'customer.login.email' | t }}
+				</label>
+				<input type="email" value="" name="customer[email]" id="customer_email" placeholder="{{ 'customer.login.ph_email' | t }}"  autocorrect="off" autocapitalize="off" autofocus required>
+			</div>
+
+			<div class="c-form-item">
+				<label for="customer_password" class="c-form-item__title">
+					{{ 'customer.login.password' | t }}
+				</label>
+				<input type="password" value="" name="customer[password]" id="customer_password" placeholder="{{ 'customer.login.ph_password' | t }}" required>
+			</div>
+
+			<p class="c-form-submit">
+				<button class="c-button-action" type="submit">{{ 'customer.login.sign_in' | t }}</button>
+			</p>
+
+			{% if form.password_needed %}
+				<p class="c-form-or-nav">
+					<a href="javascript:void(0)" id="js-recover-password-btn">
+						{{ 'customer.login.forgot_password' | t }}
+					</a>
+				</p>
+			{% endif %}
+			
+			{% if request.host == 'sonnyangelusa.com' %}
+				<p>
+
+				</p>
+			{% endif %}
+
+		{% endform %}
+
+	</div>
+	<!-- /End Customer Login -->
+
+	<!-- Password reset -->
+	<div class="u-hidden" id="recover_password">
+
+		{% form 'recover_customer_password' %}
+
+			{% include 'form-errors-custom' %}
+
+			<div class="c-form-intro">
+				<p class="c-form-intro__text">
+					{{ 'customer.recover_password.subtext' | t }}
+				</p>
+			</div>
+
+			<div class="c-form-item">
+				<input type="email" value="" name="email" id="recover-email" class="{% if form.posted_successfully? %}reset-success {% endif %}{% if form.errors %}reset-error {% endif %}clearfix" placeholder="{{ 'customer.recover_password.ph_email' | t }}" autocorrect="off" autocapitalize="off" required>
+			</div>
+			<p class="c-form-submit">
+				<button class="c-button-action" type="submit">
+					{{ 'customer.recover_password.submit' | t }}
+				</button>
+			</p>
+
+			<p class="c-form-or-nav">
+				<a href="javascript:void(0)" id="js-customer-login-btn">
+					{{ 'customer.recover_password.cancel' | t }}
+				</a>
+			</p>
+
+		{% endform %}
+	</div>
+	<!-- /End Password reset -->
+
+	<!-- Guest Login -->
+	<div class="guest-login" id="js-guest-login">
+		{% if shop.checkout.guest_login %}
+			<h2 class="c-heading-devider">
+				<span>{{ 'customer.login.guest_title' | t }}</span>
+			</h2>
+			{% form 'guest_login' %}
+				<p class="u-mx-0">
+					<button class="c-button c-button--large" type="submit">
+						{{ 'customer.login.guest_continue' | t }}
+					</button>
+				</p>
+			{% endform %}
+		{% else %}
+			<h2 class="c-heading-devider">
+				<span>{{ 'customer.login.guest_title' | t }}</span>
+			</h2>
+			<p class="u-mx-0">
+				<a href="{{ routes.account_register_url }}" class="c-button c-button--large">
+					{{ 'customer.login.register_submit' | t }}
+				</a>
+			</p>
+		{% endif %}
+	</div>
+	<!-- /End Guest Login -->
+
+</div>

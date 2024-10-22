@@ -1,0 +1,82 @@
+
+{% if product.tags contains 'Sale' %}
+	<span class="c-label-icon c-label-icon--sale">SALE</span>
+{% endif %}
+
+{% if product.tags contains 'New' %}
+	<span class="c-label-icon c-label-icon--new">NEW</span>
+{% endif %}
+
+{% if product.tags contains 'pre_sale' or product.tags contains 'pre_stock' %}
+	{%- if product.metafields['products'].label-icon-release != nil -%}
+		{%- assign label_release = product.metafields['products'].label-icon-release -%}
+		{%- assign label_release_diff = product.metafields['products'].label-icon-re-diff -%}
+		{%- if label_release != blank -%}
+			<span class="c-label-icon c-label-icon--release">
+				{%- if request.locale.primary == true -%}
+					{{ label_release }}
+				{%- else -%}
+					{{ label_release_diff }}
+				{%- endif -%}
+			</span>
+		{%- endif -%}
+	{%- endif -%}
+{% endif %}
+
+
+
+{%- if product.metafields['products'].label-icon-quantity != nil -%}
+	{%- assign label_quantity = product.metafields['products'].label-icon-quantity -%}
+	{%- assign label_quantity = label_quantity | escape -%}
+	{%- if label_quantity == 'quantity' -%}
+		<span class="c-label-icon c-label-icon--limited">
+			{%- if request.locale.primary == true -%}
+				{{ settings.label_icon_quantity }}
+			{%- else -%}
+				{{ settings.label_icon_quantity_diff }}
+			{%- endif -%}
+		</span>
+	{%- endif -%}
+{%- endif -%}
+
+
+
+{%- if product.metafields['products'].label-icon-store != nil -%}
+	{%- assign label_store = product.metafields['products'].label-icon-store -%}
+	{%- assign label_store = label_store | escape -%}
+	{%- if label_store == 'store' -%}
+		<span class="c-label-icon c-label-icon--store">
+			{%- if request.locale.primary == true -%}
+				{{ settings.label_icon_store_only }}
+			{%- else -%}
+				{{ settings.label_icon_store_only_diff }}
+			{%- endif -%}
+		</span>
+	{%- endif -%}
+{%- endif -%}
+
+
+{% assign sold_out = true %}
+{% if product.available %}
+	{% assign sold_out = false %}
+{% endif %}
+
+{%- if product.tags contains 'pre_sale' -%}
+{%- else -%}
+	{% if sold_out %}
+		{% if product.tags contains 'now_sale' %}
+			<span class="c-label-icon c-label-icon--stock">
+				SOLD OUT
+			</span>
+		{% endif %}
+		{% if product.tags contains 'end_sale' %}
+			<span class="c-label-icon c-label-icon--stock">
+				{%- if request.locale.primary == true -%}
+					{{ settings.label_icon_stock_zero }}
+				{%- else -%}
+					{{ settings.label_icon_stock_zero_diff }}
+				{%- endif -%}
+			</span>
+		{% endif %}
+	{% endif %}
+{%- endif -%}

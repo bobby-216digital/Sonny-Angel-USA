@@ -1,0 +1,435 @@
+{% comment %}
+//
+// Shopping Cart Page Setting
+//
+{% endcomment %}
+
+{%- assign op_product = cart.items | where: 'vendor', "Order Protection" -%}
+{%- assign cart_awe_total = cart.item_count | minus: op_product.size %}
+{%- assign op_price = op_product.first.final_price -%}
+{%- assign the_final_price = cart.total_price | minus: op_price -%}
+
+{% assign sale_flag = '' %}
+
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">MY CART</strong>
+	{% assign title = 'cart.general.title' | t %}
+	{%- if title != blank -%}
+		<span class="c-headline__sub">{{ title }}</span>
+	{%- endif -%}
+</h1>
+
+{%- comment -%}
+---------------------------------------------------------------------
+        同時購入禁止
+---------------------------------------------------------------------
+{%- endcomment -%}
+{%- for item in cart.items -%}
+
+	{% assign ProductTags = item.product.tags | join: ',' %}
+	
+	{%- if ProductTags contains 'FromJP' -%}
+		{% assign fromJP = true %}
+		<!-- フロムJP -->
+	{%- else -%}
+		{% assign fromUS = true %}
+		<!-- フロム non -->
+	{%- endif -%}
+
+{%- endfor -%}
+
+<div data-section-id="{{ section.id }}" data-section-type="cart-page">
+	<div id="cart-table" class="container container--page p-cart-table">
+
+		<div class="form{% unless cart.item_count > 0 %} u-hidden{% endunless %}">
+		
+			{%- if fromJP == true and fromUS == true -%}
+				{%- if request.locale.primary == true -%}
+					{%- if section.settings.sim_pur_att_msg_html != blank -%}
+						<div class="p-cart-sim-pur-attention">
+							{{ section.settings.sim_pur_att_msg_html }}
+						</div>
+					{%- endif -%}
+				{%- else -%}
+					{%- if section.settings.sim_pur_att_msg_html_diff != blank -%}
+						<div class="p-cart-sim-pur-attention">
+							{{ section.settings.sim_pur_att_msg_html_diff }}
+						</div>
+					{%- endif -%}
+				{%- endif -%}
+			{%- endif -%}
+		
+			<form action="{{ routes.cart_url }}" method="post">
+
+				<p class="c-order-total-num">
+					{{ 'cart.general.carttotal_before' | t }} <span class="js-total-num">{{ cart_awe_total }}</span> {{ 'cart.general.carttotal_after' | t }}
+				</p>
+				<div class="c-order-list">
+					{% for item in cart.items %}
+
+						{%- assign item_id = item.key -%}
+						
+						{% if item.product.tags contains 'pre_sale' %}
+							{% assign sale_flag = 'pre_sale' %}
+						{% endif %}
+						
+						{% if item.product.tags contains 'event' %}
+							{% assign sale_flag = 'pre_sale' %}
+						{% endif %}
+						
+						<div id="product-id-{{ item_id }}" class="item c-order-list__item js-product-quantity" data-product-id="{{ item_id }}" style="{% if item.product.title == "Order Protection" %} display: none{% endif %}">
+							<div class="c-order-item">
+
+								{% if item.image.size > 0 %}
+									<p class="c-order-item__thumb">
+										<a href="{{ item.product.url }}" title="{{ item.title }}">
+											<img id="image-{{ item_id }}" src="{{ item.image | img_url: '280x' }}" alt="{{ item.title | escape }}">
+										</a>
+									</p>
+								{% endif %}
+
+								<div class="c-order-item__body">
+									<h2 class="c-order-item-title">
+										<a href="{{ item.product.url | within: collections.all }}" title="{{ item.title }}">
+											<span class="c-order-item-title__main">
+												{{ item.variant.title }}
+											</span>
+											
+											{% comment %}
+												{%- if request.locale.primary == true -%}
+													{%- assign variant_label = item.variant.metafields['products'].variant-label -%}
+													{%- assign variant_label_small = item.variant.metafields['products'].variant-label-small -%}
+												{%- else -%}
+													{%- assign variant_label = item.variant.metafields['products'].variant-label-diff -%}
+													{%- assign variant_label_small = item.variant.metafields['products'].variant-label-small-diff -%}
+												{%- endif -%}
+
+												<span class="c-order-item-title__unit">
+													{{ item.variant.title }}
+												</span>
+											{% endcomment %}
+											
+										</a>
+									</h2>
+
+									<p class="c-order-item-price">
+										{% if item.original_line_price != item.final_line_price %}
+											<span class="total-item total-discount-item">
+												{{ item.final_line_price | money }}
+												<del>{{ item.original_line_price | money }}</del>
+											</span>
+										{% else %}
+											<span class="total-item total{% if item.product.compare_at_price > item.original_price %}-sale{% else %}-price{% endif %}-item"{% if item.product.compare_at_price > item.original_price %} data-sale="{{ item.product.compare_at_price }}"{% endif %}>
+												{{ item.original_line_price | money }}
+												{% if item.product.compare_at_price > item.original_price %}
+													<del>{{ item.product.compare_at_price | times: item.quantity | money }}</del>
+												{% endif %}
+											</span>
+										{% endif %}
+									</p>
+
+									<div class="c-order-item-control">
+										<div class="c-order-item-control__quantity">
+											<div class="quantity form c-buy-num c-buy-num--left">
+												<button type="button" class="c-buy-num__count c-buy-num__count--minus qtybtn qtyminus_multi" field="updates_{{ item_id }}" aria-label="{{ 'products.general.minus' | t }}"></button>
+												<div class="c-buy-num__body">
+													{%- assign max_num = item.variant.inventory_quantity -%}
+													
+													{%- assign meta_num = item.variant.metafields.limit-number.variant-quantity -%}
+													
+													{% for tag in item.product.tags %}
+														{%- assign target = item.sku | append: '-' -%}
+														{%- if tag contains target -%}
+															{%- assign tag_num = tag | remove: target -%}
+															{%- assign meta_num = tag_num | plus:0 -%}
+														{%- endif -%}
+													{% endfor %}
+													
+													{%- if meta_num != blank and max_num > meta_num -%}
+														{%- assign max_num = meta_num -%}
+													{%- endif -%}
+													<input name="updates[]" type="text" inputmode="numeric" pattern="[0-9]*" value="{{ item.quantity }}" min="0" class="quantity item-qty c-buy-num__quantity" field="error_{{ item_id }}" id="updates_{{ item_id }}"{% if item.variant.inventory_management == 'shopify' %} max="{{ max_num }}"{% endif %} />
+													<label class="c-buy-alert js-buy-alert">
+														{{ 'general.cart.alert_quantity_before' | t }}<br>
+														{{ max_num }}{{ 'general.cart.alert_quantity_after' | t }}
+													</label>
+												</div>
+												<button type="button" class="c-buy-num__count c-buy-num__count--plus qtybtn qtyplus_multi" field="updates_{{ item_id }}" aria-label="{{ 'products.general.plus' | t }}"></button>
+											</div>
+										</div>
+										<p class="c-order-item-control__delete">
+											<a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">
+												{%- if request.locale.name == 'English' -%}
+													Delete
+												{%- else -%}
+													削除
+												{%- endif -%}
+											</a>
+										</p>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+
+				{% comment %}
+					<!-- discount code ? -->
+					{% if cart.cart_level_discount_applications.size > 0 %}
+						<p>{{ 'cart.general.subtotal' | t }}</p>
+						<p><span id="cart-total">{{ cart.original_total_price | money }}</span></p>
+						<p>{% if cart.cart_level_discount_applications.size > 1 %}{{ 'cart.general.discounts' | t }}{% else %}{{ 'cart.general.discount' | t }}{% endif %}</p>
+						{% for discount_application in cart.cart_level_discount_applications %}
+							<h5>{{ discount_application.title }}:</h5>
+							<h5><span id="discount-cart-{{ discount_application.title | handleize }}" class="discount-cart">-{{ discount_application.total_allocated_amount | money }}</span></h5>
+						{% endfor %}
+					{% endif %}
+					<!-- /discount code ? -->
+				{% endcomment %}
+
+
+				<div class="p-cart-nav">
+					<p class="p-cart-nav__item">
+						<a href="{{ routes.all_products_collection_url }}" class="p-cart-link-continue">
+							<span class="p-cart-link-continue__icon"></span>
+							{{ 'cart.general.continue_shopping' | t }}
+						</a>
+					</p>
+					<p class="p-cart-nav__item">
+						<a href="javascript:void(0);" class="p-cart-link-reload js-reload">
+							<span class="p-cart-link-reload__icon"></span>
+							{{ 'cart.general.update' | t }}
+						</a>
+					</p>
+				</div>
+
+				<div class="c-order-total">
+					<p class="c-order-total__title">{{ 'cart.general.carttotal_html' | t }}</p>
+					<p class="c-order-total__price">{{ the_final_price | money }}</p>
+				</div>
+
+				{% assign total_msg = 'cart.general.total_msg' | t %}
+				{%- if total_msg != blank -%}
+					<p class="p-cart-total-note">
+						{{ 'cart.general.total_msg' | t }}
+					</p>
+				{%- endif -%}
+				
+				{% if section.settings.delivery_setting %}
+					<div class="p-cart-supp">
+						<div class="p-cart-supp__delivery">
+							{% if sale_flag == 'pre_sale' %}
+							{% else %}
+								{% unless section.settings.delivery_hidden %}
+									{% include 'cart-delivery' %}
+								{% endunless %}
+							{% endif %}
+						</div>
+						<div class="p-cart-supp__info">
+							<div class="c-form-item">
+								<label for="cart-note" class="c-form-item__title">
+									{{ 'cart.general.note' | t }}
+								</label>
+								<input id="cart-note" type="text" name="note" value="{{ cart.note }}" placeholder="{{ 'cart.general.note_placeholder' | t }}" data-max-length="24">
+							</div>
+						</div>
+					</div>
+				{% endif %}
+				
+				{%- if request.locale.primary == true -%}
+					{%- if section.settings.att_msg_html_before != blank -%}
+						<div class="p-cart-attention p-cart-attention--before">
+							{{ section.settings.att_msg_html_before }}
+						</div>
+					{%- endif -%}
+				{%- else -%}
+					{%- if section.settings.att_msg_html_before_diff != blank -%}
+						<div class="p-cart-attention p-cart-attention--after">
+							{{ section.settings.att_msg_html_before_diff }}
+						</div>
+					{%- endif -%}
+				{%- endif -%}
+
+
+				{%- if fromJP == true and fromUS == true -%}
+				{%- else -%}
+					<p class="p-cart-submit">
+						<input type="submit" name="checkout" value="{{ 'cart.general.checkout' | t }}" class="c-button js-purchase-submit">
+					</p>
+					{% if additional_checkout_buttons %}
+						<div class="additional-checkout-buttons">
+							{{ content_for_additional_checkout_buttons }}
+						</div>
+					{% endif %}
+
+					{%- if request.locale.primary == true -%}
+						{%- if section.settings.att_msg_html != blank -%}
+							<div class="p-cart-attention">
+								{{ section.settings.att_msg_html }}
+							</div>
+						{%- endif -%}
+					{%- else -%}
+						{%- if section.settings.att_msg_html_diff != blank -%}
+							<div class="p-cart-attention">
+								{{ section.settings.att_msg_html_diff }}
+							</div>
+						{%- endif -%}
+					{%- endif -%}
+				{%- endif -%}
+
+				
+			</form>
+		</div>
+
+
+		<!-- cart empty -->
+		<div class="empty-form{% if cart.item_count > 0 %} u-hidden{% endif %}">
+			<p class="p-cart-empty-title">
+				{{ 'cart.general.empty' | t }}
+			</p>
+			<p class="p-cart-empty-link">
+				<a href="{{ routes.root_url }}" class="c-button-action c-button-action--secondary">
+					{{ 'cart.general.continue_browsing_html' | t }}
+				</a>
+			</p>
+		</div>
+		<!-- /cart empty -->
+
+	</div>
+
+
+{% if section.settings.recently_viewed %}
+	<div class="container">
+
+		<div id="recently-viewed-products" class="p-cart-recommned">
+			<h2 class="c-heading p-cart-recommned-title">
+				{{ 'cart.general.recently_viewed' | t }}
+			</h2>
+			<div class="c-product-loop c-product-loop--reverse js-row">
+				<script id="recently-viewed-product-template" type="text/x-jquery-tmpl">
+					<div id="product-${handle}" class="c-product-item">
+						<div class="c-product-item-thumb">
+							<a href="${url}" title="Buy ${title}" class="c-product-item-thumb__link">
+								<img data-img="${featured_image}" src="${Shopify.Products.resizeImage(featured_image, "672x")}">
+							</a>
+						</div>
+						<div class="c-product-item-main">
+							<h3 class="c-product-item__title">
+								<a href="${url}">${title}</a>
+							</h3>
+						</div>
+					</div>
+				</script>
+			</div>
+		</div>
+
+	</div>
+{% endif %}
+
+</div>
+
+<script>
+	$(document).ready(function() {
+		$(document).on('change keyup focus', '[data-max-length]', function() {
+			var arr = $(this).val().split('');
+			var len = 0;
+			var maxlen = parseInt($(this).attr('data-max-length'));
+			var str = '';
+			
+			for (i in arr) {
+				len += (escape(arr[i]).match(/%u..../) && !(arr[i]).match(/^[ｦ-ﾟ]$/)) ? 2 : 1;
+				if (len <= maxlen) {
+					str += arr[i];
+				}
+			}
+			$(this).val(str);
+			return;
+		});
+	});
+</script>
+
+{% schema %}
+{
+	"name": "Cart",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "recently_viewed",
+			"label": "Show recently viewed products",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "delivery_time_caution",
+			"label": "Delivery Time Note ( Primary Locale )"
+		},
+		{
+			"type": "text",
+			"id": "delivery_time_caution_diff",
+			"label": "Delivery Time Note ( Secondary Locale )"
+		},
+		{
+			"type": "checkbox",
+			"id": "delivery_setting",
+			"label": "Show delivery date, Invoice",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "delivery_hidden",
+			"label": "Hide delivery date, time",
+			"default": false
+		},
+		{
+			"type": "html",
+			"id": "att_msg_html_before",
+			"label": "Attention Contents 1 ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "att_msg_html_before_diff",
+			"label": "Attention Contents 1 ( Secondary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "att_msg_html",
+			"label": "Attention Contents 2 ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "att_msg_html_diff",
+			"label": "Attention Contents 2 ( Secondary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "sim_pur_att_msg_html",
+			"label": "Simultaneous Purchase Attention Contents ( Primary Locale )"
+		},
+		{
+			"type": "html",
+			"id": "sim_pur_att_msg_html_diff",
+			"label": "Simultaneous Purchase Attention Contents ( Secondary Locale )"
+		}
+	],
+	"blocks": [
+		{
+			"type": "text",
+			"name": "Delivery Time",
+			"settings": [
+				{
+					"type": "text",
+					"id": "delivery_time_primary",
+					"label": "Time zone ( Primary Locale )"
+				},
+				{
+					"type": "text",
+					"id": "delivery_time_seconday",
+					"label": "Time zone ( Secondary Locale )"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

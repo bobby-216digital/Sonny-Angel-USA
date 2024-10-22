@@ -1,0 +1,52 @@
+{% comment %}
+//
+// SNS エリアの設定
+// ※SPのみ利用
+//
+{% endcomment %}
+
+{%- if settings.social_twitter_link != blank or settings.social_facebook_link != blank or settings.social_instagram_link != blank -%}
+	<h2 class="c-social-title u-hidden--pc">
+		{% if request.host == 'sonnyangelusa.com' %}
+			OFFICIAL SOCIAL MEDIA
+		{% else %}
+			OFFICIAL SNS
+		{% endif %}
+	</h2>
+{%- endif -%}
+
+<ul class="c-social u-hidden--pc">
+
+	{%- if settings.social_twitter_link != blank -%}
+		<li class="c-social__item">
+			<a href="{{ settings.social_twitter_link | escape }}" class="c-social-link">
+				<p class="c-social-link__icon">
+					<img src="{{ 'icon_sns_twitter.svg' | asset_url }}" alt="Twitter">
+				</p>
+				<p class="c-social-link__text">Twitter</p>
+			</a>
+		</li>
+	{%- endif -%}
+
+	{%- if settings.social_facebook_link != blank -%}
+		<li class="c-social__item">
+			<a href="{{ settings.social_facebook_link | escape }}" class="c-social-link">
+				<p class="c-social-link__icon">
+					<img src="{{ 'icon_sns_facebook.svg' | asset_url }}" alt="Facebook">
+				</p>
+				<p class="c-social-link__text">Facebook</p>
+			</a>
+		</li>
+	{%- endif -%}
+
+	{%- if settings.social_instagram_link != blank -%}
+		<li class="c-social__item">
+			<a href="{{ settings.social_instagram_link | escape }}" class="c-social-link">
+				<p class="c-social-link__icon">
+					<img src="{{ 'icon_sns_instagram.svg' | asset_url }}" alt="Instagram">
+				</p>
+				<p class="c-social-link__text">Instagram</p>
+			</a>
+		</li>
+	{%- endif -%}
+</ul>

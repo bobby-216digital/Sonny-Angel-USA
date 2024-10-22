@@ -1,0 +1,37 @@
+{% comment %}
+//
+// Index Heading Setting
+//
+{% endcomment %}
+
+<h3 class="c-heading">
+	{%- if request.locale.primary == true -%}
+		{{ section.settings.heading }}
+	{%- else -%}
+		{{ section.settings.heading_diff }}
+	{%- endif -%}
+</h3>
+
+{% schema %}
+{
+	"name": "Heading",
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Title ( Primary Locale )"
+		},
+		{
+			"type": "text",
+			"id": "heading_diff",
+			"label": "Title ( Secondary Locale )"
+		}
+	],
+	"presets": [
+		{
+			"name": "Heading",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,31 @@
+{% comment %}
+//
+// Products Loop Item
+//
+{% endcomment %}
+
+<div class="c-ranking-item">
+	<div class="c-ranking-item-thumb">
+		<a href="{{ product.url | within: collection }}" class="c-ranking-item-thumb__link" data-img="{%- if product.images.size > 2 and product.images[1] contains 'products_thumbnail' -%}multi{%- endif -%}">
+			{%- if product.images.size > 0 -%}
+				{%- for image in product.images -%}
+					{%- if forloop.index0 == 0 -%}
+						<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title | escape }}" class="c-ranking-item-thumb__img c-ranking-item-thumb__img--main">
+					{%- elsif forloop.index0 == 1 -%}
+						<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title | escape }}" class="c-ranking-item-thumb__img c-ranking-item-thumb__img--sub">
+					{%- endif -%}
+				{%- endfor -%}
+			{%- endif -%}
+		</a>
+	</div>
+	<div class="c-ranking-item__body">
+		<p class="c-ranking-item__icon">
+			<span class="c-ranking-icon c-ranking-icon--{{ forloop.index }}">
+				<span class="c-ranking-icon__img"></span>{{ forloop.index }}
+			</span>
+		</p>
+		<h3 class="c-ranking-item__title">
+			<a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+		</h3>
+	</div>
+</div>

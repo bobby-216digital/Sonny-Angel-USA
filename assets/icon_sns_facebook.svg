@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>Rectangle</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="TOP-nologin" transform="translate(-1152.000000, -7424.000000)">
+            <g id="footer" transform="translate(0.000000, 7258.000000)">
+                <g id="sns" transform="translate(1152.000000, 90.000000)">
+                    <g id="sns-icon" transform="translate(0.000000, 76.000000)">
+                        <g id="img">
+                            <path d="M13.5470005,27 L13.5470005,17.4209697 L10,17.4209697 L10,13.6877847 L13.5470005,13.6877847 L13.5470005,10.9346997 C13.5470005,7.73971242 15.694108,6 18.8303291,6 C20.332509,6 21.6235882,6.1016709 22,6.14708452 L22,9.48600519 L19.8247457,9.486932 C18.1192158,9.486932 17.7890014,10.2234668 17.7890014,11.304311 L17.7890014,13.6877847 L21.8566147,13.6877847 L21.3269255,17.4209697 L17.7890014,17.4209697 L17.7890014,27 L13.5470005,27 Z" id="Fill-15" fill="#6A6E6F"></path>
+                            <rect id="icon_sns_facebook" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="32" height="32"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

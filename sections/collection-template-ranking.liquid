@@ -1,0 +1,38 @@
+{% comment %}
+//
+// Collection Page Setting
+//
+{% endcomment %}
+
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">{{ collection.title }}</strong>
+</h1>
+
+{%- if collection.description.size > 0 -%}
+	<div class="container">
+		{{ collection.description }}
+	</div>
+{%- endif -%}
+
+{%- assign pagination_amount = 12 | downcase -%}
+{% if collection.products.size > 0 %}
+
+	{% paginate collection.products by pagination_amount %}
+
+		{%- if current_tags -%}
+			{%- assign canon = canonical_url | split: '/' | last -%}
+			{%- assign canon_last = canon | split: '_' | last -%}
+		{%- endif -%}
+
+		<div id="collection" class="container c-product-loop p-collection-loop">
+			{% for product in collection.products %}
+				{%- assign cycleIndex = collection.handle -%}
+					{% include 'ranking-loop' %}
+			{% endfor %}
+		</div>
+
+	{% endpaginate %}
+
+{% else %}
+	<p>{{ 'collections.general.no_matches' | t }}</p>
+{% endif %}

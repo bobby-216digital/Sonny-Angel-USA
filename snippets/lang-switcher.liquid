@@ -1,0 +1,56 @@
+{% comment %}
+//
+// Language Switch
+//
+{% endcomment %}
+
+{% if request.host != 'sonnyangelusa.com' %}
+
+	{%- if request.locale.primary == true -%}
+		<ul id="primary" class="lang-list">
+			{% for locale in shop.published_locales reversed %}
+				<li>
+					{%- if locale.primary == true -%}
+						<a href="javascript:void(0);">{{ locale.name }}</a>
+					{%- else -%}
+						<a href="{{ locale.root_url }}{{ request.path }}">
+							{%- if locale.name == '英語' or locale.name == '英文' -%}
+								English
+							{%- else -%}
+								{{ locale.name }}
+							{%- endif -%}
+						</a>
+					{%- endif -%}
+				</li>
+			{% endfor %}
+		</ul>
+	{%- else -%}
+		<ul id="secondary" class="lang-list">
+			{% for locale in shop.published_locales reversed %}
+				<li>
+					{%- if locale.primary == true -%}
+						{% assign url_array = request.path | split: '/' %}
+						<a href="{%- if template == 'index' -%}
+							/
+						{%- else -%}
+							{%- for url in url_array offset:2 -%}
+								/{{ url }}
+							{%- endfor -%}
+						{%- endif -%}">
+							{%- if locale.name == 'Japanese' -%}
+								日本語
+							{%- elsif locale.name == 'Chinese (Traditional)' -%}
+								繁體中文
+							{%- else -%}
+								{{ locale.name }}
+							{%- endif -%}
+						</a>
+					{%- else -%}
+						<a href="javascript:void(0);">{{ locale.name }}</a>
+					{%- endif -%}
+				</li>
+			{% endfor %}
+		</ul>
+	{%- endif -%}
+
+{% endif %}

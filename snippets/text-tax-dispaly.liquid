@@ -1,0 +1,7 @@
+
+{%- if request.locale.primary == true -%}
+	{{ settings.product_tax | escape }}
+{%- else -%}
+	{{ settings.product_tax_diff | escape }}
+{%- endif -%}
+

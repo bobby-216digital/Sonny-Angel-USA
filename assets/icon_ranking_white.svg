@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="26px" viewBox="0 0 34 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>icon_ranking</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0">
+        <g id="TOP-nologin" transform="translate(-382.000000, -1542.000000)" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3">
+            <g id="rank-item" transform="translate(48.000000, 1535.000000)">
+                <g id="icon" transform="translate(324.000000, 0.000000)">
+                    <g id="Group-3" transform="translate(10.000000, 7.000000)">
+                        <path d="M27.3630798,23 L7.90951346,23 L4,8.75392894 L9.49546902,11.7175434 C10.0411165,12.0117451 10.6967779,11.8631598 11.0942886,11.3555061 L17.6363636,3 L24.1785057,11.3555061 C24.5759493,11.8632341 25.2318117,12.0116708 25.7772583,11.7175434 L31.2727273,8.75392894 L27.3630798,23 Z" id="Path"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

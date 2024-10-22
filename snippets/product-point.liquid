@@ -1,0 +1,75 @@
+<!-- area test -->
+
+<div class="c-toggle c-product-toggle">
+	<p class="c-product-toggle__head">
+		<a href="javascript:void(0);" class="c-product-toggle-link js-toggle js-toggle-product">
+			{%- if request.locale.primary == true -%}
+				{{ section.settings.product_point_heading }}
+			{%- else -%}
+				{{ section.settings.product_point_heading_diff }}
+			{%- endif -%}
+			<span class="c-toggle__icon c-product-toggle-link__icon c-toggle__icon--active"></span>
+		</a>
+	</p>
+	<div class="container-inner c-toggle__content c-product-toggle__content" style="display: block;">
+	
+		{%- assign point_flag = false -%}
+		
+		{% for variant in product.variants %}
+			{%- if variant.metafields.number.variant-point != blank -%}
+				{%- assign point_flag = true -%}
+			{%- endif -%}
+		{% endfor %}
+		
+		
+		{%- if point_flag == true -%}
+		
+			{%- if request.locale.primary == true -%}
+				{{ section.settings.product_point_contents_top }}
+			{%- else -%}
+				{{ section.settings.product_point_contents_top_diff }}
+			{%- endif -%}
+			
+			<div class="c-point-list">
+				{% for variant in product.variants %}
+					{%- assign point_num = variant.metafields.number.variant-point -%}
+					{%- if point_num != blank -%}
+						<div class="c-point-list-item">
+							<p class="c-point-list-item__thumb">
+								{% if variant.image.src != blank %}
+									<img src="{{ variant.image | img_url: '176x176' }}" alt="{{ variant.option1 }}">
+								{% else %}
+									<img src="{{ 'default_thumbnail_480x480.png' | asset_url }}" alt="{{ variant.option1 }}">
+								{% endif %}
+							</p>
+							<p class="c-point-list-item__title">
+								{{ variant.option1 }}
+							</p>
+							<p class="c-point-list-item__point">
+								SA Point
+								<strong>{{ point_num }}</strong>
+							</p>
+						</div>
+					{%- endif -%}
+				{% endfor %}
+			</div>
+			
+			{%- if request.locale.primary == true -%}
+				{{ section.settings.product_point_contents_bottom }}
+			{%- else -%}
+				{{ section.settings.product_point_contents_bottom_diff }}
+			{%- endif -%}
+			
+		{%- else -%}
+		
+			{%- if request.locale.primary == true -%}
+				{{ section.settings.product_point_none_contents }}
+			{%- else -%}
+				{{ section.settings.product_point_none_contents_diff }}
+			{%- endif -%}
+		
+		{%- endif -%}
+		
+		
+	</div>
+</div>

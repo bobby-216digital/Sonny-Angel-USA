@@ -1,0 +1,72 @@
+{% comment %}
+//
+// Headline : Pick Up
+//
+{% endcomment %}
+
+{% comment %}
+// get language ( langify original ) start
+{% endcomment %}
+{%- assign multilingual = nil -%}
+{%- assign english = '' -%}
+{%- assign default = '' -%}
+
+{%- if cart.attributes["language"] != '' -%}
+	{%- for language in shop.metafields.languages -%}
+		{% assign key = language | first %}
+		{% assign value = language | last %}
+
+		{%- if key == 'default' -%}
+			{%- assign default = language | last -%}
+		{%- endif -%}
+		{%- if value == 'English' -%}
+			{%- assign english = language | first -%}
+		{%- endif -%}
+	{%- endfor -%}
+{%- endif -%}
+
+{%- if default == english -%}
+	{%- assign multilingual = nil -%}
+	{% assign language = cart.attributes["language"] %}
+	{%- if language != english -%}
+		{%- assign multilingual = true -%}
+	{%- endif -%}
+{%- else -%}
+	{% assign language = cart.attributes["language"] %}
+	{%- if language == english -%}
+		{%- assign multilingual = nil -%}
+	{%- else -%}
+		{%- assign multilingual = true -%}
+	{%- endif -%}
+{%- endif -%}
+{% comment %}
+// get language ( langify original ) end
+{% endcomment %}
+
+{%- assign default_text = block.settings.search_category_title -%}
+{%- assign multilingual_text = block.settings.search_category_title_diff -%}
+{%- assign nil_text = '' -%}
+
+<h3 class="c-category-link__title">
+	{%- if default_text != blank -%}
+		{%- if multilingual == true -%}
+			{{ default_text | escape }}
+		{%- else -%}
+			{%- if multilingual_text != blank -%}
+				{{ multilingual_text | escape }}
+			{%- else -%}
+				{{ nil_text | escape }}
+			{%- endif -%}
+		{%- endif -%}
+	{%- else -%}
+		{{ nil_text | escape }}
+	{%- endif -%}
+</h3>
+
+{%- assign default_sub_text = block.settings.search_category_sub_title -%}
+{%- if multilingual == true -%}
+	{%- if default_sub_text != blank -%}
+		<p class="c-category-link__sub-title">{{ default_sub_text | escape }}</p>
+	{%- endif -%}
+{%- endif -%}
+

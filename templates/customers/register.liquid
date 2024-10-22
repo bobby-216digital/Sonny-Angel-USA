@@ -1,0 +1,180 @@
+
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">SIGN UP</strong>
+	{% assign title = 'customer.register.title' | t %}
+	{%- if title != blank -%}
+		<span class="c-headline__sub">{{ title }}</span>
+	{%- endif -%}
+</h1>
+
+<div class="container container--column container--small">
+
+	{% form 'create_customer' %}
+
+		{{ form.errors | default_errors }}
+
+		<div class="c-form-intro">
+			<p class="c-form-intro__text">
+				{{ 'customer.register.intro_text' | t }}
+			</p>
+			
+			{% assign required_guide = 'general.validation.required_guide' | t %}
+			{%- if required_guide != blank -%}
+				<p class="c-form-intro__text">
+					<strong class="c-text--alert">{{ required_guide }}</strong>
+				</p>
+			{%- endif -%}
+			
+		</div>
+
+		<div class="c-form-item c-form-item--flex">
+			{%- if request.locale.name == 'English' -%}
+				<div id="first_name" class="c-form-item__col">
+					<label for="first_name" class="c-form-item__title">
+						{{ 'customer.register.first_name' | t }}
+					</label>
+					<input type="text" name="customer[first_name]" id="first_name" placeholder="{{ 'customer.register.ph_first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+				</div>
+				<div id="last_name" class="c-form-item__col">
+					<label for="last_name" class="c-form-item__title"></label>
+					<input type="text" name="customer[last_name]" id="last_name" placeholder="{{ 'customer.register.ph_last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+				</div>
+			{%- else -%}
+				<div id="last_name" class="c-form-item__col">
+					<label for="last_name" class="c-form-item__title">
+						{{ 'customer.register.first_name' | t }}
+					</label>
+					<input type="text" name="customer[last_name]" id="last_name" placeholder="{{ 'customer.register.ph_last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words" autofocus>
+				</div>
+				<div id="first_name" class="c-form-item__col">
+					<label for="first_name" class="c-form-item__title"></label>
+					<input type="text" name="customer[first_name]" id="first_name" placeholder="{{ 'customer.register.ph_first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words">
+				</div>
+			{%- endif -%}
+		</div>
+
+		<div id="email" class="c-form-item">
+			<label for="email" class="c-form-item__title">
+				{{ 'customer.register.email' | t }}<span class="c-form-require">*</span>
+			</label>
+			<input required type="email" name="customer[email]" id="email" placeholder="{{ 'customer.register.ph_email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+		</div>
+
+		{% comment %}
+			<div id="phone" class="c-form-item">
+				<label for="phone" class="c-form-item__title">
+					{{ 'customer.register.phone' | t }}<span class="c-form-require">*</span>
+				</label>
+				<input required type="tel" name="customer[note][phone]" id="phone" placeholder="{{ 'customer.register.ph_phone' | t }}" {% if form.phone %} value="{{ form.phone }}"{% endif %} autocorrect="off" autocapitalize="off">
+			</div>
+		{% endcomment %}
+
+		<div id="password" class="c-form-item">
+			<label for="password" class="c-form-item__title">
+				{{ 'customer.register.password' | t }}<span class="c-form-require">*</span>
+			</label>
+			<input required type="password" name="customer[password]" id="password" placeholder="{{ 'customer.register.ph_password' | t }}" />
+		</div>
+		
+		<div id="bitrh" class="c-form-item">
+			<label for="birthday" class="c-form-item__title">
+				{{ 'customer.register.birthday' | t }}
+			</label>
+			
+			
+			{%- if request.locale.name == 'English' -%}
+				{% assign birthday = "January,February,March,April,May,June,July,August,September,October,November,December" | split: ','%}
+				<div class="c-form-birth js-birthday">
+					<div class="c-form-birth__item c-form-birth__month c-form-birth__month--en">
+						<select name="month">
+							<option value="">--</option>
+							{% for month in birthday %}
+								<option value="{{month}}">{{month}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="c-form-birth__item c-form-birth__day c-form-birth__day--en">
+						<select name="day">
+							<option value="">--</option>
+							{% for i in (1..31) %}
+								<option value="{{ i }}">{{ i }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="c-form-birth__item c-form-birth__year c-form-birth__year--en">
+						<select name="year">
+							<option value="">--</option>
+							{% for i in (1920..2020) reversed %}
+								<option value="{{ i }}">{{ i }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			{%- else -%}
+				<div class="c-form-birth js-birthday">
+					<div class="c-form-birth__item c-form-birth__year">
+						<select name="year">
+							<option value="">--</option>
+							{% for i in (1920..2020) reversed %}
+								<option value="{{ i }}">{{ i }}年</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="c-form-birth__item c-form-birth__month">
+						<select name="month">
+							<option value="">--</option>
+							<option value="January">1月</option>
+							<option value="February">2月</option>
+							<option value="March">3月</option>
+							<option value="April">4月</option>
+							<option value="May">5月</option>
+							<option value="June">6月</option>
+							<option value="July">7月</option>
+							<option value="August">8月</option>
+							<option value="September">9月</option>
+							<option value="October">10月</option>
+							<option value="November">11月</option>
+							<option value="December">12月</option>
+						</select>
+					</div>
+					<div class="c-form-birth__item c-form-birth__day">
+						<select name="day">
+							<option value="">--</option>
+							{% for i in (1..31) %}
+								<option value="{{ i }}">{{ i }}日</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			{%- endif -%}
+			
+			
+		</div>
+
+		<input type="hidden" id="customer_tags" name="customer[tags]" value="" class="{%- if request.locale.name == 'English' -%}js-customer-tags-en{%- endif -%}">
+		
+		<input type="hidden" name="customer[accepts_marketing]" value="true">
+		<input type="hidden" name="customer [accepts_marketing]" id="accepts_marketing" class="" value="true">
+
+		<p class="c-form-submit">
+			<button class="c-button-action" type="submit">{{ 'customer.register.submit' | t }}</button>
+		</p>
+		
+		{% assign agree_html = 'customer.register.agree_html' | t %}
+		{%- if agree_html != blank -%}
+			<p class="c-form-submit-shoulder">{{ agree_html }}</p>
+		{%- endif -%}
+
+	{% endform %}
+
+	<h2 class="c-heading-devider">
+		<span>{{ 'customer.register.login' | t }}</span>
+	</h2>
+	<p class="u-mx-0">
+		<a href="{{ routes.account_login_url }}" class="c-button c-button--large">
+			{{ 'customer.register.login_submit' | t }}
+		</a>
+	</p>
+
+
+</div>

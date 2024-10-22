@@ -1,0 +1,13 @@
+{% comment %}
+//
+// Pager Setting
+//
+{% endcomment %}
+
+{% if paginate.pages > 1 %}
+	<div class="container c-pager">
+		<div class="c-pager__body">
+			{{ paginate | default_pagination }}
+		</div>
+	</div>
+{% endif %}

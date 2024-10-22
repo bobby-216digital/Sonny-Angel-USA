@@ -1,0 +1,251 @@
+{% comment %}
+//
+// Product Buying Area
+//
+{% endcomment %}
+
+
+{%- capture 'form_id' -%}add-item-form-{{ section.id }}{%- endcapture -%}
+{%- capture 'form_class' -%}go-to-cart product-form-{{ section.id }} variants{%- endcapture -%}
+
+<div class="c-buy">
+	{% form 'product', product, id:form_id, class:form_class %}
+
+
+		<div class="c-buy-select js-buy-select">
+			{% for variant in product.variants %}
+				{%- assign max_num = variant.inventory_quantity -%}
+				
+				{%- assign meta_num = variant.metafields.limit-number.variant-quantity -%}
+				{% for tag in product.tags %}
+					{%- assign target = variant.sku | append: '-' -%}
+					{%- if tag contains target -%}
+						{%- assign tag_num = tag | remove: target -%}
+						{%- assign meta_num = tag_num | plus:0 -%}
+					{%- endif -%}
+				{% endfor %}
+				
+				{%- if meta_num != blank and max_num > meta_num -%}
+					{%- assign max_num = meta_num -%}
+				{%- endif -%}
+				<div class="c-buy-select-item">
+					<a href="javascript:void(0);" class="c-buy-select-item__link js-select-item {% if variant == product.selected_or_first_available_variant %}c-buy-select-item__link--active{% endif %}" data-value="{{ variant.id }}" data-max="{{ max_num }}">
+						<div class="c-buy-variant">
+							<p class="c-buy-variant__thumb">
+								{% if variant.image.src != blank %}
+									<img src="{{ variant.image | img_url: '176x176' }}" alt="{{ variant.option1 }}">
+								{% else %}
+									<img src="{{ 'default_thumbnail_480x480.png' | asset_url }}" alt="{{ variant.option1 }}">
+								{% endif %}
+							</p>
+							<div class="c-buy-variant__body">
+								
+								{%- if request.locale.primary == true -%}
+									{%- assign variant_label = variant.metafields['products'].variant-label -%}
+								{%- else -%}
+									{%- assign variant_label = variant.metafields['products'].variant-label-diff -%}
+								{%- endif -%}
+								
+								{%- if variant_label != nil -%}
+									<p class="c-buy-variant__unit">{{ variant_label }}</p>
+								{%- endif -%}
+								<p class="c-buy-variant__title">{{ variant.option1 }}</p>
+								<p class="c-buy-variant__price">
+									{%- if variant.compare_at_price > 0 -%}
+										<i>
+											{{ variant.compare_at_price | money_with_currency }}
+										</i>
+									{%- endif -%}
+									
+									{%- assign display_tax = settings.display_tax -%}
+									{%- assign display_tax = display_tax | plus: 0 -%}
+									{%- if display_tax > 0 -%}
+										{%- assign display_tax_div = display_tax | divided_by: 100.00 -%}
+										{%- assign display_tax_fin = display_tax_div | plus: 1 -%}
+										{%- assign display_tax_price = variant.price | times: display_tax_fin -%}
+										{{ display_tax_price | money }}
+										<span> ({{ 'products.customize.tax_excluded_price' | t }} {{ variant.price | money }} ) </span>
+									{% else %}
+										{{ variant.price | money_with_currency }}
+									{%- endif -%}
+								</p>
+								<p class="c-buy-variant__sku">
+									{{ 'products.customize.item_number' | t }} : {{ variant.sku }}
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+		
+		{% assign product_qty = 0 %}
+		{% for variant in product.variants %}
+			{% if variant.inventory_quantity > 0 %}
+				{% assign product_qty = product_qty | plus: variant.inventory_quantity %}
+			{% endif %}
+		{% endfor %}
+		
+
+		<div class="u-hidden">
+			<select id="product-select-{{ section.id }}" class="product-select js-variant-select" name="id" data-length="0" style="display:none" aria-hidden="true">
+				{% for variant in product.variants %}
+					<option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}"{% if variant.inventory_management == 'shopify' and variant.inventory_policy != 'continue' %} data-inv="{% if variant.inventory_quantity > 0 %}{{ variant.inventory_quantity }}{% else %}0{% endif %}"{% endif %}>{{ variant.option1 }} - {{ variant.price | money }}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+
+		{% if product_qty > 0 %}
+			{%- assign variant = product.selected_or_first_available_variant -%}
+			
+			{% if product.tags contains 'pre_stock' %}
+			{% else %}
+				<div class="c-buy-num quantity">
+					<button type="button" class="c-buy-num__count c-buy-num__count--minus qtybtn qtyminus_{{ section.id }}" field="updates_{{ section.id }}" aria-label="{{ 'products.general.minus' | t }}">
+					</button>
+					<div class="c-buy-num__body">
+						<!--
+							<input name="quantity" type="number" inputmode="numeric" pattern="[0-9]*" value="1" min="1" class="ignore quantity item-qty c-buy-num__quantity" field="error_{{ section.id }}" id="updates_{{ section.id }}"{% if variant.inventory_management == 'shopify' and variant.inventory_policy != 'continue' %} max="{{ variant.inventory_quantity }}"{% endif %}>
+						-->
+						{%- assign max_num = variant.inventory_quantity -%}
+
+						{%- assign meta_num = variant.metafields.limit-number.variant-quantity -%}
+						{% for tag in product.tags %}
+							{%- assign target = variant.sku | append: '-' -%}
+							{%- if tag contains target -%}
+								{%- assign tag_num = tag | remove: target -%}
+								{%- assign meta_num = tag_num | plus:0 -%}
+							{%- endif -%}
+						{% endfor %}
+
+						{%- if meta_num != blank and max_num > meta_num -%}
+							{%- assign max_num = meta_num -%}
+						{%- endif -%}
+						<input name="quantity" type="text" inputmode="numeric" pattern="[0-9]*" value="1" min="1" class="c-buy-num__quantity ignore quantity item-qty  updates_{{ section.id }}" field="error_{{ section.id }}" id=""{% if variant.inventory_management == 'shopify' %} max="{{ max_num }}"{% endif %}>
+						<label class="c-buy-alert js-buy-alert">
+							{{ 'general.cart.alert_quantity_before' | t }}<br>
+							<span class="js-buy-alert__num">{{ max_num }}</span>
+							{{ 'general.cart.alert_quantity_after' | t }}
+						</label>
+					</div>
+					<button type="button" class="c-buy-num__count c-buy-num__count--plus qtybtn qtyplus_{{ section.id }}" field="updates_{{ section.id }}" aria-label="{{ 'products.general.plus' | t }}">
+					</button>
+				</div>
+			{% endif %}
+		{% endif %}
+
+
+		{%- if request.locale.primary == true -%}
+			{%- assign free_html = product.metafields.products.free-display -%}
+		{%- else -%}
+			{%- assign free_html = product.metafields.products.free-display-diff -%}
+		{%- endif -%}
+
+		{%- if free_html != nil -%}
+			<div class="c-buy-free">
+				{{ free_html }}
+			</div>
+		{%- endif -%}
+
+
+		{% unless product.available %}
+			
+			{% if product.tags contains 'pre_sale' %}
+				{% if product_tags contains 'Gold' or product_tags contains 'Silver' or product_tags contains 'Bronze' or product_tags contains 'Angel' or product_tags contains 'Regular' %}
+					<input type="submit" disabled="disabled" value="{{ 'products.product.unavailable' | t }}" />
+				{% else %}
+					{%- if product.metafields['products'].label-icon-release != nil -%}
+						{%- assign label_release = product.metafields['products'].label-icon-release -%}
+						{%- assign label_release_diff = product.metafields['products'].label-icon-re-diff -%}
+						{%- if label_release != blank -%}
+							<div class="c-button-cart c-button-cart--pre-sale">
+								{%- if request.locale.primary == true -%}
+									{{ label_release }}
+								{%- else -%}
+									{{ label_release_diff }}
+								{%- endif -%}
+							</div>
+						{%- endif -%}
+					{%- endif -%}
+				{% endif %}
+				
+			{% else %}
+				<input type="submit" disabled="disabled" value="{{ 'products.product.unavailable' | t }}" />
+			{% endif %}
+			
+		{% else %}
+			{% if product_qty > 0 %}
+				{% if product.tags contains 'pre_stock' %}
+					{%- if product.metafields['products'].label-icon-release != nil -%}
+						{%- assign label_release = product.metafields['products'].label-icon-release -%}
+						{%- assign label_release_diff = product.metafields['products'].label-icon-re-diff -%}
+						{%- if label_release != blank -%}
+							<div class="c-button-cart c-button-cart--pre-sale">
+								{%- if request.locale.primary == true -%}
+									{{ label_release }}
+								{%- else -%}
+									{{ label_release_diff }}
+								{%- endif -%}
+							</div>
+						{%- endif -%}
+					{%- endif -%}
+				{% else %}
+					<a href="javascript:void(0);" id="add-to-cart-{{ section.id }}" class="c-button-cart js-cart-add">
+						{% assign product_tags = product.tags | join:',' %}
+						{% if product_tags contains 'event' %}
+							{%- if request.locale.primary == true -%}
+								{{ settings.event_cart_button_label }}
+							{%- else -%}
+								{{ settings.event_cart_button_label_diff }}
+							{%- endif -%}
+						{% else %}
+							<span>{{ 'products.product.add_to_cart' | t }}</span>
+						{% endif %}
+					</a>
+					<div class="cart-animation hidden" aria-hidden="true"></div>
+				{% endif %}
+			{% else %}
+			
+				{% if product.tags contains 'pre_sale' %}
+					{% if product_tags contains 'Gold' or product_tags contains 'Silver' or product_tags contains 'Bronze' or product_tags contains 'Angel' or product_tags contains 'Regular' %}
+						<input type="submit" disabled="disabled" value="{{ 'products.product.unavailable' | t }}" />
+					{% else %}
+						{%- if product.metafields['products'].label-icon-release != nil -%}
+							{%- assign label_release = product.metafields['products'].label-icon-release -%}
+							{%- assign label_release_diff = product.metafields['products'].label-icon-re-diff -%}
+							{%- if label_release != blank -%}
+								<div class="c-button-cart c-button-cart--pre-sale">
+									{%- if request.locale.primary == true -%}
+										{{ label_release }}
+									{%- else -%}
+										{{ label_release_diff }}
+									{%- endif -%}
+								</div>
+							{%- endif -%}
+						{%- endif -%}
+					{% endif %}
+					
+				{% else %}
+					<input type="submit" disabled="disabled" value="{{ 'products.product.unavailable' | t }}" />
+				{% endif %}
+				
+			{% endif %}
+
+			{% if product.tags contains 'pre_stock' %}
+			{% else %}
+				{% if product.tags contains 'pre_sale' and product_qty > 0 %}
+					{% if product.tags contains 'promotion' %}
+					{% else %}
+						<div class="c-buy-payment-button">
+							{% include 'product-buy-payment' %}
+						</div>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+
+		{% endunless %}
+
+
+	{% endform %}
+</div>

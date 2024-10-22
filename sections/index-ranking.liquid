@@ -1,0 +1,61 @@
+{% comment %}
+//
+// Index Ranking Setting
+//
+{% endcomment %}
+
+{%- if section.settings.ranking != blank -%}
+
+	<h2 class="c-headline">
+		<strong class="c-headline__main">
+			{{ 'general.headline.ranking_title' | t }}
+		</strong>
+		<span class="c-headline__sub">{{ 'general.headline.ranking_sub_title' | t }}</span>
+	</h2>
+
+	{%- assign ranking = collections[section.settings.ranking] -%}
+
+	<div class="container c-ranking-loop">
+
+		{%- for product in ranking.products limit: 3 -%}
+			{% include 'ranking-loop' %}
+		{%- endfor -%}
+
+
+	</div>
+
+	{%- if section.settings.ranking_more_url != blank -%}
+		{%- assign ranking_more_url = section.settings.ranking_more_url -%}
+		<p class="u-mx-0">
+			<a href="{{ ranking_more_url | escape }}" class="c-button">
+				<span>{{ 'general.button.more_button_label' | t }}</span>
+			</a>
+		</p>
+	{%- endif -%}
+
+{%- endif -%}
+
+
+{% schema %}
+{
+	"name": "Ranking",
+	"settings": [
+		{
+			"type": "collection",
+			"id": "ranking",
+			"label": "Select Collection"
+		},
+		{
+			"type": "url",
+			"id": "ranking_more_url",
+			"label": "Ranking More Url"
+		}
+	],
+	"presets": [
+		{
+			"name": "Ranking",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

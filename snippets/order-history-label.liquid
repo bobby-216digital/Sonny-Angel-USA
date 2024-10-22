@@ -1,0 +1,34 @@
+{% comment %}
+//
+// Order Label
+//
+{% endcomment %}
+
+<ul class="c-order-history-label">
+	{%- assign financial_class = '' -%}
+	{%- if order.financial_status == 'paid' or order.financial_status == 'authorized' -%}
+		{%- assign financial_class = 'c-order-history-label__icon--fin' -%}
+	{%- elsif order.financial_status == 'pending' -%}
+		{%- assign financial_class = 'c-order-history-label__icon--primary' -%}
+	{%- elsif order.financial_status == 'partially_paid' -%}
+		{%- assign financial_class = 'c-order-history-label__icon--secondary' -%}
+	{%- elsif order.financial_status == 'refunded' or order.financial_status == 'partially_refunded' -%}
+		{%- assign financial_class = 'c-order-history-label__icon--secondary' -%}
+	{%- endif -%}
+	<li class="c-order-history-label__icon {{ financial_class }}">
+		{{ order.financial_status_label }}
+	</li>
+	{%- assign fulfillment_class = '' -%}
+	{%- if order.fulfillment_status == 'shipped' or order.fulfillment_status == 'fulfilled' -%}
+		{%- assign fulfillment_class = 'c-order-history-label__icon--fin' -%}
+	{%- elsif order.fulfillment_status == 'unshipped' or order.fulfillment_status == 'unfulfilled' -%}
+		{%- assign fulfillment_class = 'c-order-history-label__icon--primary' -%}
+	{%- elsif order.fulfillment_status == 'partial' -%}
+		{%- assign fulfillment_class = 'c-order-history-label__icon--secondary' -%}
+	{%- elsif order.fulfillment_status == 'any' -%}
+		{%- assign fulfillment_class = 'c-order-history-label__icon--tertiary' -%}
+	{%- endif -%}
+	<li class="c-order-history-label__icon {{ fulfillment_class }}">
+		{{ order.fulfillment_status_label }}
+	</li>
+</ul>

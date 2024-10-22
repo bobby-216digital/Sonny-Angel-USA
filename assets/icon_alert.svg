@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>icon_alert</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="LOGIN_error" transform="translate(-76.000000, -548.000000)" fill="#F92620" fill-rule="nonzero">
+            <g id="icon_alert" transform="translate(76.000000, 548.000000)">
+                <path d="M18,3 C26.271,3 33,9.729 33,18 C33,26.271 26.271,33 18,33 C9.729,33 3,26.271 3,18 C3,9.729 9.729,3 18,3 Z M18,0 C8.0595,0 0,8.0595 0,18 C0,27.9405 8.0595,36 18,36 C27.9405,36 36,27.9405 36,18 C36,8.0595 27.9405,0 18,0 Z M16.5,9 L19.5,9 L19.5,21 L16.5,21 L16.5,9 Z M18,27.375 C16.965,27.375 16.125,26.535 16.125,25.5 C16.125,24.465 16.965,23.625 18,23.625 C19.035,23.625 19.875,24.465 19.875,25.5 C19.875,26.535 19.035,27.375 18,27.375 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

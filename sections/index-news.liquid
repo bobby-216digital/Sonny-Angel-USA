@@ -1,0 +1,62 @@
+{% comment %}
+//
+// Index News Setting
+//
+{% endcomment %}
+
+{%- assign news_num = section.settings.news_num -%}
+
+{%- assign blog = blogs.News -%}
+
+{%- if blog -%}
+	<div class="container c-news-loop">
+		{%- paginate blog.articles by news_num -%}
+			{%- for article in blog.articles -%}
+
+				{% include 'blog-loop' %}
+
+			{%- endfor -%}
+		{%- endpaginate -%}
+	</div>
+
+	{%- if section.settings.news_more_url != blank -%}
+		{%- assign news_more_url = section.settings.news_more_url -%}
+		<div class="container container--column">
+			<p class="u-mx-0">
+				<a href="{{ news_more_url | escape }}" class="c-button">
+					<span>{{ 'general.button.more_button_label' | t }}</span>
+				</a>
+			</p>
+		</div>
+	{%- endif -%}
+
+{%- endif -%}
+
+
+{% schema %}
+{
+	"name": "News",
+	"settings": [
+		{
+			"type": "range",
+			"id": "news_num",
+			"min": 4,
+			"max": 12,
+			"step": 4,
+			"label": "News Display Number",
+			"default": 4
+		},
+		{
+			"type": "url",
+			"id": "news_more_url",
+			"label": "News More Url"
+		}
+	],
+	"presets": [
+		{
+			"name": "News",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

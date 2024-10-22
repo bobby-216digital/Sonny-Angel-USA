@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56px" height="40px" viewBox="0 0 56 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>icon_global_cn</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-11.6%" y="-16.2%" width="123.2%" height="132.5%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.32 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-2" x="0" y="0" width="56" height="40" rx="2"></rect>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="footer-sp" transform="translate(-522.000000, -1164.000000)">
+            <g id="footer">
+                <g id="global" transform="translate(48.000000, 1132.000000)">
+                    <g id="CN" filter="url(#filter-1)" transform="translate(474.000000, 32.000000)">
+                        <mask id="mask-3" fill="white">
+                            <use xlink:href="#path-2"></use>
+                        </mask>
+                        <use id="Mask" fill="#FFFFFF" xlink:href="#path-2"></use>
+                        <rect id="Mask" fill="#F1361D" mask="url(#mask-3)" x="0" y="0" width="56" height="40"></rect>
+                        <path d="M24.2542875,19.445799 L23.4979345,19.5272832 L24.7537913,17.0602212 L24.4418045,14.3244595 L26.9800545,15.5450945 L29.7947576,15.2418577 L28.5389007,17.7089197 L28.8508875,20.4446814 L26.3126376,19.2240464 L24.3748829,19.4328068 L24.4074768,22.1215488 L25.9633076,24.4214637 L23.1315632,24.4538927 L20.7652834,25.9660885 L20.7319187,23.2137634 L19.176088,20.9138485 L22.0078323,20.8814196 L24.2542875,19.445799 Z M23.6985748,8.92142101 L21.7272578,7.17644282 L18.9355963,6.71385461 L20.8424399,4.67881501 L21.3183763,1.96544869 L23.4121377,3.81881279 L26.2037992,4.281401 L24.2969556,6.3164406 L23.839475,8.92458848 L26.1489604,8.97650614 L28.5680964,7.54549742 L28.5026144,10.2972776 L29.9749154,12.6485663 L27.1437316,12.5849207 L24.7245956,14.0159295 L24.7900777,11.2641493 L23.3177767,8.9128606 L23.6985748,8.92142101 Z" id="Star-2" fill="#FFDC42" mask="url(#mask-3)"></path>
+                        <polygon id="Star-8" fill="#FFDC42" mask="url(#mask-3)" points="13.5 16.7572236 8.86474508 20 10.5749999 14.671689 6 11.3475242 11.6922505 11.2972233 13.5 6 15.3077495 11.2972233 21 11.3475242 16.4250001 14.671689 18.1352549 20"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

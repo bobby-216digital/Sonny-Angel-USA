@@ -1,0 +1,46 @@
+{{ 'cart-attributes.scss.css' | asset_url | stylesheet_tag }}
+<div class="cart-attribute__field cart-attributes-delivery-datetime" style="display: none;">
+    <label for="delivery-date">配送希望日</label>
+    <input id="delivery-date" type="date" name="attributes[配送希望日]" value="{{ cart.attributes["配送希望日"] }}" min='{{ "now" | date: "%Y-%m-%d" }}'>
+</div>
+
+<div class="cart-attribute__field cart-attributes-delivery-datetime" style="display: none;">
+    <label>配送時間帯</label>
+    <select id="delivery-time" name="attributes[配送時間帯]">
+        <option value="指定なし" {% if cart.attributes["配送時間帯"] == "指定なし" %} selected{% endif %}>指定なし</option>
+        {% for  delivery_timezone in shop.metafields.cart_delivery_app['delivery_timezones_key'] %}
+        <option value="{{ delivery_timezone }}" {% if cart.attributes["配送時間帯"] == delivery_timezone %} selected{% endif %}>{{ delivery_timezone }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<script>
+    window.onload = function() {
+        var ua = window.navigator.userAgent.toLowerCase();
+        var is_chrome = ua.indexOf('chrome') > -1;
+        var is_pc_safari = !is_chrome && ua.indexOf('safari') > -1 && ua.indexOf('mobile') == -1;
+        var is_ie = ua.indexOf('trident') > -1 || ua.indexOf('msie') > -1;
+        if (is_ie || is_pc_safari) {
+            // カレンダー機能を使えない
+            $('#delivery-date').remove();
+            var select_tag = "<select id=\"delivery-date\" name=\"attributes[配送希望日]\">\n";
+            {% if cart.attributes["配送希望日"] == "" %}
+            select_tag += "<option value=\"\" selected>指定なし</option>"
+            {% else %}
+            select_tag += "<option value=\"\">指定なし</option>"
+            {% endif %}
+            {% for i in (1..30) %}
+            {% assign plus_seconds = 86400 | times:i %}
+            {% assign option_date = "now" | date:'%s' | plus:plus_seconds | date:"%Y-%m-%d" %}
+            {% assign option_date_string = "now" | date:'%s' | plus:plus_seconds | date:"%Y-%m-%d (%a)" %}
+            {% if cart.attributes["配送希望日"] == option_date %}
+            select_tag += "<option value='{{ option_date }}' selected>{{ option_date_string }}</option>"
+            {% else %}
+            select_tag += "<option value='{{ option_date }}'>{{ option_date_string }}</option>"
+            {% endif %}
+            {% endfor %}
+            select_tag += "</select>";
+            $('label[for=delivery-date]').after(select_tag)
+        }
+    }
+</script>

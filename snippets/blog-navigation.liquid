@@ -1,0 +1,23 @@
+{% comment %}
+//
+// Blog Only Navigation
+//
+{% endcomment %}
+
+{% if blog.all_tags %}
+	<ul class="c-list-nav-loop">
+		{% for tag in blog.all_tags %}
+			<li class="c-list-nav-loop__item">
+				<a href="{%- if request.locale.primary == true -%}
+					{{ routes.root_url }}blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}
+				{%- else -%}
+					{{ routes.root_url }}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}
+				{%- endif -%}" class="c-nav-link">
+					{{ tag }}
+				</a>
+				<span class="c-nav-link__icon"></span>
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+

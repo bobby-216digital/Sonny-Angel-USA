@@ -1,0 +1,38 @@
+{% comment %}
+//
+// Index Main Visual Setting
+//
+{% endcomment %}
+
+{%- if section.settings.home_main != blank -%}
+	{%- assign img_src = section.settings.home_main -%}
+	<div class="p-index-main" style="background-image: url({{ img_src | img_url: '1000x' }})">
+		<img src="{{ img_src | img_url: 'master' }}" alt="{{ shop.name }}" class="u-hidden--sp">
+	</div>
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Main Visual",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "home_main",
+			"label": "Recommended Size 0 x 0"
+		},
+		{
+			"type": "richtext",
+			"id": "home_main_catch",
+			"label": "Copy"
+		}
+	],
+	"presets": [
+		{
+			"name": "Main Visual",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}
+
+

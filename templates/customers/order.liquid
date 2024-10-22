@@ -1,0 +1,188 @@
+
+<h1 class="c-headline c-headline--first" role="text">
+	<strong class="c-headline__main">ORDER</strong>
+	{% assign title = 'customer.order.title' | t %}
+	{%- if title != blank -%}
+		<span class="c-headline__sub">{{ title }}</span>
+	{%- endif -%}
+</h1>
+
+
+<div class="container container-row container--column">
+
+	<div class="container-row__main">
+		{% if order.cancelled %}
+			<div id="order-cancelled" class="errors">
+				<p>{{ 'customer.order.cancelled' | t }}</p>
+				<dl>
+					<dt>{{ 'customer.order.cancelled_date' | t }}</dt>
+					<dd>
+						{{ order.cancelled_at | date: '%Y.%m.%d' }} {{ order.cancelled_at | date: '%H:%M' }}
+					</dd>
+				</dl>
+				<dl>
+					<dt>{{ 'customer.order.cancelled_reason' | t }}</dt>
+					<dd>
+						{{ order.cancel_reason_label }}
+					</dd>
+				</dl>
+			</div>
+		{% endif %}
+		
+		{% include 'order-history-label' %}
+		
+		<div class="c-order-history-info">
+			<p class="c-order-history-info__title">{{ 'customer.order.date' | t }}</p>
+			<p class="c-order-history-info__text">
+				{{ order.created_at | date: '%Y.%m.%d' }} {{ order.created_at | date: '%H:%M' }}
+			</p>
+		</div>
+		
+		<div class="c-order-history-info">
+			<p class="c-order-history-info__title">{{ 'customer.order.title' | t }}</p>
+			<p class="c-order-history-info__text">
+				{{ order.name }}
+			</p>
+		</div>
+		
+		
+		<h2 class="c-heading c-order-title">
+			{{ 'customer.order.orders_title' | t }}
+		</h2>
+		
+		<div class="c-order-list">
+			{% assign images = false %}
+			{% for line_item in order.line_items %}
+			<div id="{{ line_item.id }}" class="c-order-list__item">
+				<div class="c-order-item">
+		
+					{% if line_item.product.images.size > 0 %}
+						<div class="c-order-item__thumb">
+							<a href="{{ line_item.product.url }}" title="{{ line_item.title }}">
+								<img src="{{ line_item.image | img_url: '100x' }}" alt="{{ line_item.title | escape }}">
+							</a>
+						</div>
+						{% assign images = true %}
+					{% endif %}
+					<div class="c-order-item__body">
+						<h2 class="c-order-item-title">
+							<a href="{{ line_item.product.url }}" title="{{ line_item.title | escape }}">
+								<span class="c-order-item-title__main">
+									{{ line_item.title }}
+								</span>
+								{% unless item.variant.title == 'Default Title' %}
+									{%- if request.locale.primary == true -%}
+										{%- assign variant_label = variant.metafields['products'].variant-label -%}
+									{%- else -%}
+										{%- assign variant_label = variant.metafields['products'].variant-label-diff -%}
+									{%- endif -%}
+									{%- if variant_label != nil -%}
+										<span class="c-order-item-title__unit">
+											{{ variant_label }}
+										</span>
+									{%- endif -%}
+								{% endunless %}
+							</a>
+						</h2>
+		
+						{% if line_item.sku != blank or line_item.line_level_discount_allocations != blank or line_item.fulfillment%}
+							<p class="c-order-item-sku">
+								{% if line_item.sku != blank %}
+									{{ 'customer.order.sku' | t }} : {{ line_item.sku }}
+								{% endif %}
+								{% comment %}
+									{% if line_item.line_level_discount_allocations != blank %}
+										{% for discount_allocation in line_item.line_level_discount_allocations %}
+											{{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+										{% endfor %}
+									{% endif %}
+									{% if line_item.fulfillment %}
+										{{ 'customer.order.fulfilled_at' | t }}
+										{{ line_item.fulfillment.created_at | date: settings.month_day_year }}
+										{% if line_item.fulfillment.tracking_number %}
+											{{ 'customer.order.tracking' | t }} 
+											<a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</a>
+										{% endif %}
+									{% endif %}
+								{% endcomment %}
+							</p>
+						{% endif %}
+		
+						<p class="c-order-item-price">
+							<span class="order-money">
+								<strong>{% if line_item.original_price != line_item.final_price %}{% if line_item.final_price > 0 %}{{ line_item.final_price | money }}{% else %}{{ 'cart.general.free' | t }}{% endif %} <del>{% if line_item.original_price > 0 %}{{ line_item.original_price | money }}{% else %}{{ 'cart.general.free' | t }}{% endif %}</del>{% else %}{{ line_item.original_price | money }}{% endif %}</strong>
+							</span> x 
+							<span class="order-quantity"> <strong>{{ line_item.quantity }}</strong></span> = 
+							<span class="order-total"> <strong>{% if line_item.original_line_price != line_item.final_line_price %}{% if line_item.final_line_price > 0 %}{{ line_item.final_line_price | money }}{% else %}{{ 'cart.general.free' | t }}{% endif %} <del>{% if line_item.original_line_price > 0 %}{{ line_item.original_line_price | money }}{% else %}{{ 'cart.general.free' | t }}{% endif %}</del>{% else %}{{ line_item.original_line_price | money }}{% endif %}</strong></span>
+						</p>
+		
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		
+		
+		<div class="c-order-sub-total">
+			<p class="c-order-sub-total__title">{{ 'customer.order.subtotal' | t }}</p>
+			<p class="c-order-sub-total__price">{{ order.line_items_subtotal_price | money }}</p>
+		</div>
+		
+		{% if order.cart_level_discount_applications != blank %}
+			{% for discount_application in order.cart_level_discount_applications %}
+				<div class="c-order-breakdown-total c-order-breakdown-total--discount">
+					<p class="c-order-breakdown-total__title">{{ discount_application.title }}</p>
+					<p class="c-order-breakdown-total__price">-{{ discount_application.total_allocated_amount | money }}</p>
+				</div>
+			{% endfor %}
+		{% endif %}
+		
+		{% for shipping_method in order.shipping_methods %}
+			<div class="c-order-breakdown-total">
+				<p class="c-order-breakdown-total__title">{{ shipping_method.title }}</p>
+				<p class="c-order-breakdown-total__price">{{ shipping_method.price | money }}</p>
+			</div>
+		{% endfor %}
+		
+		{% if order.tax_lines != blank %}
+			{% for tax_line in order.tax_lines %}
+				<div class="c-order-breakdown-total">
+					<p class="c-order-breakdown-total__title">{{ 'customer.order.tax' | t }}</p>
+					<p class="c-order-breakdown-total__price">{{ tax_line.price | money }}</p>
+				</div>
+			{% endfor %}
+		{% endif %}
+		
+		<div class="c-order-total">
+			<p class="c-order-total__title">{{ 'customer.order.total' | t }}</p>
+			<p class="c-order-total__price">{{ order.total_price | money }}</p>
+		</div>
+		
+		
+		<div class="c-order-address">
+			<div class="c-order-address__item">
+				<h3 class="c-order-address__title u-mt-0">{{ 'customer.order.billing_address' | t }}</h3>
+				{{ order.billing_address | format_address }}
+			</div>
+			
+			{% if order.shipping_address %}
+				<div class="c-order-address__item">
+					<h3 class="c-order-address__title">{{ 'customer.order.shipping_address' | t }}</h3>
+					{{ order.shipping_address | format_address }}
+				</div>
+			{% endif %}
+		</div>
+		
+		<p class="c-order-back">
+			<a href="{{ routes.account_url }}" class="c-link-back">
+				<span class="c-link-back__icon"></span>
+				{{ 'customer.account.return' | t }}
+			</a>
+		</p>
+	</div>
+
+	<div class="container-row__sub">
+		{% include 'accouunt-navigation' %}
+	</div>
+
+</div>

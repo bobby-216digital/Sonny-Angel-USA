@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="26px" viewBox="0 0 24 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>icon_reload</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="CART" transform="translate(-678.000000, -1380.000000)" fill="#6A6E6F" fill-rule="nonzero">
+            <g id="Group-2" transform="translate(678.000000, 1380.000000)">
+                <path d="M20.4,5.6 C18.3,3.35 15.3,2 12,2 C5.4,2 0,7.4 0,14 C0,20.6 5.4,26 12,26 C17.55,26 22.2,22.1 23.55,17 L20.4,17 C19.2,20.45 15.9,23 12,23 C7.05,23 3,18.95 3,14 C3,9.05 7.05,5 12,5 C14.55,5 16.65,6.05 18.3,7.7 L11.5,10.5 L24,12.5 L24,0 L20.4,5.6 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="52px" height="48px" viewBox="0 0 52 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>icon-login</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="_COLOR" transform="translate(-486.000000, -504.000000)" fill="#6A6E6F">
+            <g id="icon-login" transform="translate(486.000000, 504.000000)">
+                <rect id="Rectangle" x="14" y="4" width="28" height="3"></rect>
+                <rect id="Rectangle" x="14" y="41" width="28" height="3"></rect>
+                <rect id="Rectangle" x="40" y="4" width="3" height="40"></rect>
+                <polygon id="Path" fill-rule="nonzero" points="21.7689453 14 20.01413 15.7921077 27.0967147 23.0384 6 23.0384 6 25.9460923 27.0967147 25.9460923 19.9990226 33.2074077 21.75431 35 32 24.4922462"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

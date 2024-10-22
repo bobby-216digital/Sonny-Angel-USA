@@ -1,0 +1,91 @@
+{% comment %}
+//
+// Product Buying Area
+//
+{% endcomment %}
+
+
+{%- capture 'form_id' -%}add-item-form-{{ section.id }}{%- endcapture -%}
+{%- capture 'form_class' -%}go-to-cart product-form-{{ section.id }} variants{%- endcapture -%}
+
+<div class="c-buy">
+	{% form 'product', product, id:form_id, class:form_class %}
+
+
+		<div class="c-buy-select js-buy-select">
+			{% for variant in product.variants %}
+				{%- assign max_num = variant.inventory_quantity -%}
+				
+				{%- assign meta_num = variant.metafields.limit-number.variant-quantity -%}
+				{% for tag in product.tags %}
+					{%- assign target = variant.sku | append: '-' -%}
+					{%- if tag contains target -%}
+						{%- assign tag_num = tag | remove: target -%}
+						{%- assign meta_num = tag_num | plus:0 -%}
+					{%- endif -%}
+				{% endfor %}
+				
+				{%- if meta_num != blank and max_num > meta_num -%}
+					{%- assign max_num = meta_num -%}
+				{%- endif -%}
+				<div class="c-buy-select-item">
+					<a href="javascript:void(0);" class="c-buy-select-item__link" data-value="{{ variant.id }}" data-max="{{ max_num }}">
+						<div class="c-buy-variant">
+							<p class="c-buy-variant__thumb">
+								{% if variant.image.src != blank %}
+									<img src="{{ variant.image | img_url: '176x176' }}" alt="{{ variant.option1 }}">
+								{% else %}
+									<img src="{{ 'default_thumbnail_480x480.png' | asset_url }}" alt="{{ variant.option1 }}">
+								{% endif %}
+							</p>
+							<div class="c-buy-variant__body">
+								
+								{%- if request.locale.primary == true -%}
+									{%- assign variant_label = variant.metafields['products'].variant-label -%}
+								{%- else -%}
+									{%- assign variant_label = variant.metafields['products'].variant-label-diff -%}
+								{%- endif -%}
+								
+								{%- if variant_label != nil -%}
+									<p class="c-buy-variant__unit">{{ variant_label }}</p>
+								{%- endif -%}
+								<p class="c-buy-variant__title">{{ variant.option1 }}</p>
+								<p class="c-buy-variant__price">
+									{%- if variant.compare_at_price > 0 -%}
+										<i>
+											{{ variant.compare_at_price | money_with_currency }}
+										</i>
+									{%- endif -%}
+									
+									{%- assign display_tax = settings.display_tax -%}
+									{%- assign display_tax = display_tax | plus: 0 -%}
+									{%- if display_tax > 0 -%}
+										{%- assign display_tax_div = display_tax | divided_by: 100.00 -%}
+										{%- assign display_tax_fin = display_tax_div | plus: 1 -%}
+										{%- assign display_tax_price = variant.price | times: display_tax_fin -%}
+										{{ display_tax_price | money }}
+										<span> ({{ 'products.customize.tax_excluded_price' | t }} {{ variant.price | money }} ) </span>
+									{% else %}
+										{{ variant.price | money }}
+									{%- endif -%}
+								</p>
+								<p class="c-buy-variant__sku">
+									{{ 'products.customize.item_number' | t }} : {{ variant.sku }}
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+		
+		<div class="c-button-cart c-button-cart--pre-sale">
+			{%- if request.locale.primary == true -%}
+				{{ settings.event_start_label }}
+			{%- else -%}
+				{{ settings.event_start_label_diff }}
+			{%- endif -%}
+		</div>
+
+	{% endform %}
+</div>

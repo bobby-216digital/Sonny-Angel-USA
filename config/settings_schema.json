@@ -1,0 +1,359 @@
+[
+	{
+		"name": "theme_info",
+		"theme_name": "Sonnyangel",
+		"theme_author": "Dreams",
+		"theme_version": "1.0.0",
+		"theme_documentation_url": "https://www.sonnyangelstore.com",
+		"theme_support_url": "https://www.sonnyangelstore.com"
+	},
+	{
+		"name": "Favicon",
+		"settings": [
+			{
+				"type": "image_picker",
+				"id": "favicon",
+				"label": "Favicon image",
+				"info": "Will be scaled down to 16x16, 32x32, 108x108"
+			}
+		]
+	},
+	{
+		"name": "Navigation",
+		"settings": [
+			{
+				"type": "link_list",
+				"id": "navigation",
+				"label": "Global Navigation",
+				"info": "PC only"
+			}
+		]
+	},
+	{
+		"name": "Sign Up Area",
+		"settings": [
+			{
+				"type": "html",
+				"id": "sign_up_area",
+				"label": "Sign Up Area Editor ( Primary Locale )"
+			},
+			{
+				"type": "html",
+				"id": "sign_up_area_diff",
+				"label": "Sign Up Area Editor ( Secondary Locale )"
+			}
+		]
+	},
+	{
+		"name": "Birthday",
+		"settings": [
+			{
+				"type": "html",
+				"id": "birthday_none_area",
+				"label": "Text when birthday is not entered ( Primary Locale )"
+			},
+			{
+				"type": "html",
+				"id": "birthday_none_area_diff",
+				"label": "Text when birthday is not entered ( Secondary Locale )"
+			}
+		]
+	},
+	{
+		"name": "Product Setting",
+		"settings": [
+			{
+				"type": "text",
+				"id": "product_tax",
+				"label": "Tax Display ( Primary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "product_tax_diff",
+				"label": "Tax Display ( Secondary Locale )"
+			}
+		]
+	},
+	{
+		"name": "Product Label Icon Setting",
+		"settings": [
+			{
+				"type": "text",
+				"id": "label_icon_stock_zero",
+				"label": "Label Icon Stock ( Primary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "label_icon_stock_zero_diff",
+				"label": "Label Icon Stock ( Secondary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "label_icon_quantity",
+				"label": "Label Icon Limited Quantity ( Primary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "label_icon_quantity_diff",
+				"label": "Label Icon Limited Quantity ( Secondary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "label_icon_store_only",
+				"label": "Label Icon Store Only ( Primary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "label_icon_store_only_diff",
+				"label": "Label Icon Store Only ( Secondary Locale )"
+			}
+		]
+	},
+	{
+		"name": "Official SNS",
+		"settings": [
+			{
+				"type": "text",
+				"id": "social_twitter_link",
+				"label": "Twitter"
+			},
+			{
+				"type": "text",
+				"id": "social_facebook_link",
+				"label": "Facebook"
+			},
+			{
+				"type": "text",
+				"id": "social_instagram_link",
+				"label": "Instagram"
+			}
+		]
+	},
+	{
+		"name": "Product Display Tax",
+		"settings": [
+			{
+				"type": "range",
+				"id": "display_tax",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "%",
+				"label": "tax",
+				"default": 10
+			}
+		]
+	},
+	{
+		"name": "Product How to Purchase / Return",
+		"settings": [
+			{
+				"type": "html",
+				"id": "product_purchase",
+				"label": "How to purchase / return ( Primary Locale )"
+			},
+			{
+				"type": "html",
+				"id": "product_purchase_diff",
+				"label": "How to purchase / return ( Secondary Locale )"
+			}
+		]
+	},
+	{
+		"name": "Product Event Setting",
+		"settings": [
+			{
+				"type": "text",
+				"id": "event_start_label",
+				"label": "Event Only Guide Label ( Primary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "event_start_label_diff",
+				"label": "Event Only Guide Label ( Secondary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "event_cart_button_label",
+				"label": "Event Only Cart Button Label ( Primary Locale )"
+			},
+			{
+				"type": "text",
+				"id": "event_cart_button_label_diff",
+				"label": "Event Only Cart Button Label ( Secondary Locale )"
+			},
+			{
+				"type": "html",
+				"id": "event_product_purchase",
+				"label": "Event Only How to purchase / return ( Primary Locale )"
+			},
+			{
+				"type": "html",
+				"id": "event_product_purchase_diff",
+				"label": "Event Only How to purchase / return ( Secondary Locale )"
+			}
+		]
+	},
+	{
+		"name": "Collections",
+		"settings": [
+			{
+				"type": "header",
+				"content": "Navigation",
+				"info": "Provides relationship for collections and sub collections for use in collection page sub menus and breadcrumbs for collections and product pages."
+			},
+			{
+				"type": "link_list",
+				"label": "Navigation",
+				"id": "menu",
+				"default": "main-menu"
+			}
+		]
+	},
+	{
+		"name": "Product grid",
+		"settings": [
+			{
+				"type": "checkbox",
+				"id": "borders_enable",
+				"label": "Enable borders",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "image_hover",
+				"label": "Show rollover image",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "title_align",
+				"label": "Enable product title alignment",
+				"info": "Consider if product images are not the same size",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "reviews_enable",
+				"label": "Show product reviews",
+				"info": "Install the free Shopify [Product Reviews](https://apps.shopify.com/product-reviews) app to add product reviews.",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "vendor_enable",
+				"label": "Show product vendor",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "quick_collection_hover",
+				"label": "Enable product button hover",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"id": "go_to_cart_enable",
+				"label": "Product add to cart redirection",
+				"info": "Use to stay on the product page after clicking add to cart",
+				"default": true
+			},
+			{
+				"type": "header",
+				"content": "Quick view"
+			},
+			{
+				"type": "checkbox",
+				"id": "quick_view_enable",
+				"label": "Enable quick view",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "sku_enable_quick",
+				"label": "Show product SKU",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "product_availability_enable_quick",
+				"label": "Show product availability",
+				"default": true
+			},
+			{
+				"type": "range",
+				"id": "product_availability_total_quick",
+				"min": 2,
+				"max": 100,
+				"step": 1,
+				"label": "Minimum number of products remaining to display remaining stock",
+				"default": 15
+			},
+			{
+				"type": "checkbox",
+				"id": "var_length_enable_quick",
+				"label": "Show single option variant",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"id": "qty_enable_quick",
+				"label": "Show product quantity",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"id": "smart_enable_quick",
+				"label": "Show dynamic checkout button",
+				"info": "Each customer will see their preferred payment method from those available on your store, such as PayPal or Apple Pay. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+				"default": true
+			}
+		]
+	},
+	{
+		"name": "General",
+		"settings": [
+			{
+				"type": "header",
+				"content": "Date format"
+			},
+			{
+				"type": "select",
+				"id": "month_day_year",
+				"label": "Date",
+				"default": "%b %e, '%y",
+				"options": [
+					{
+						"value": "%b %e, '%y",
+						"label": "Feb 6, '77"
+					},
+					{
+						"value": "%B %d, %Y",
+						"label": "February 6, 1977"
+					},
+					{
+						"value": "%Y-%-m-%e",
+						"label": "1977-2-6"
+					},
+					{
+						"value": "%-m/%e/%y",
+						"label": "2/6/77"
+					},
+					{
+						"value": "%e/%-m/%y",
+						"label": "6/2/77"
+					}
+				]
+			},
+			{
+				"type": "header",
+				"content": "Gift card"
+			},
+			{
+				"type": "image_picker",
+				"id": "gift-card",
+				"label": "Choose a custom image to be used on the gift card page"
+			}
+		]
+	}
+]

@@ -1,0 +1,38 @@
+{% comment %}
+//
+// Blog Loop Item
+//
+{% endcomment %}
+
+<div class="c-news-item">
+
+	{%- if article.image -%}
+		<p class="c-news-item__thumb">
+			<a href="{{article.url}}">
+				<img src="{{ article.image.src | img_url: '252x' }}" alt="{{ article.title | escape }}">
+			</a>
+		</p>
+	{%- endif -%}
+
+	<div class="c-news-item__body">
+		<ul class="c-news-item-info">
+			<li class="c-news-item-info__item c-news-item-info__item--date">
+				{{ article.published_at | date: '%Y.%m.%d' }}
+			</li>
+			{%- if article.tags.size != 0 -%}
+				<li class="c-news-item-info__item">
+					{%- for tag in article.tags -%}
+						{%- if forloop.index0 == 0 -%}
+							<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+						{%- else -%}
+							 ,<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+						{%- endif -%}
+					{%- endfor -%}
+				</li>
+			{%- endif -%}
+		</ul>
+		<h3 class="c-news-item__title">
+			<a href="{{article.url}}">{{ article.title }}</a>
+		</h3>
+	</div>
+</div>

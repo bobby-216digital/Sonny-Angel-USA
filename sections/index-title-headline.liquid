@@ -1,0 +1,49 @@
+{% comment %}
+//
+// Index Headline Setting
+//
+{% endcomment %}
+
+<h2 class="c-headline">
+	<strong class="c-headline__main">
+		{{ section.settings.headline }}
+	</strong>
+
+	<span class="c-headline__sub">
+		{%- if request.locale.primary == true -%}
+			{{ section.settings.headline_sub_title }}
+		{%- else -%}
+			{{ section.settings.headline_sub_title_diff }}
+		{%- endif -%}
+	</span>
+</h2>
+
+
+{% schema %}
+{
+	"name": "Headline",
+	"settings": [
+		{
+			"type": "text",
+			"id": "headline",
+			"label": "Title"
+		},
+		{
+			"type": "text",
+			"id": "headline_sub_title",
+			"label": "Sub Title ( Primary Locale )"
+		},
+		{
+			"type": "text",
+			"id": "headline_sub_title_diff",
+			"label": "Sub Title ( Secondary Locale )"
+		}
+	],
+	"presets": [
+		{
+			"name": "Headline",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

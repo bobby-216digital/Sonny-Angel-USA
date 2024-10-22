@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+/* ----------------------------------------------------------------
+* 追加 CSS
+---------------------------------------------------------------- */
+
+/* 注意エリアカスタマイズ用 */
+.c-gift {
+	border: #E25463 solid 2px;
+	background: #fff;
+}
+
+@media print, only screen and (min-width: 961px) {
+	.c-gift {
+		margin-bottom: 4rem;
+	}
+}
+
+/* Youtube埋め込みサイズ */
+.responsive-video {
+ padding-bottom: 56.25%; /* for 16:9 ratio */
+ padding-top: 25px;
+ position: relative;
+ height: 0;
+}
+.responsive-video iframe,
+.responsive-video object,
+.responsive-video embed {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+}

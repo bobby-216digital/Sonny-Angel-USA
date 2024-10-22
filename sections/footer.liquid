@@ -1,0 +1,248 @@
+{% comment %}
+//
+// Footer Setting
+//
+{% endcomment %}
+
+<footer class="footer">
+	<p class="page-top">
+		<a href="javascript:void(0);" class="page-top__link js-page-top">
+			<span class="page-top-icon"></span>
+		</a>
+	</p>
+	
+	<div class="container footer-container">
+	
+		{%- if section.settings.sp_footer_menu != blank -%}
+			{%- assign sp_footer_menu = section.settings.sp_footer_menu -%}
+			<div class="footer-menu u-hidden--pc">
+				<ul class="footer-menu__body">
+					{% for link in linklists[sp_footer_menu].links %}
+						<li class="footer-menu-item">
+							<a href="{{ link.url }}" class="footer-menu-item__link">
+								{{ link.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{%- endif -%}
+
+		{% if section.blocks.size > 0 %}
+			{%- assign blocks = true -%}
+		{% endif %}
+		{% if blocks %}
+			<div class="footer-menu-contents u-hidden--sp">
+				{% for block in section.blocks %}
+					<div class="footer-menu-contents__item">
+						{% case block.type %}
+							{% when 'menu' %}
+								{%- if block.settings.pc_footer_menu_title != blank -%}
+									<h3 class="footer-menu-contents__title">
+										{{ block.settings.pc_footer_menu_title }}
+									</h3>
+								{%- endif -%}
+								{%- if block.settings.pc_footer_menu != blank -%}
+									{%- assign pc_footer_menu = block.settings.pc_footer_menu -%}
+									<div class="footer-menu">
+										<ul class="footer-menu__body">
+											{% for link in linklists[pc_footer_menu].links %}
+												<li class="footer-menu-item">
+													<a href="{{ link.url }}" class="footer-menu-item__link">
+														{{ link.title }}
+													</a>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+								{%- endif -%}
+						{% endcase %}
+					</div>
+				{% endfor %}
+				<div class="footer-menu-contents__item">
+					<h3 class="footer-menu-contents__title">
+						{% if request.host == 'sonnyangelusa.com' %}
+							OFFICIAL SOCIAL MEDIA
+						{% else %}
+							OFFICIAL SNS
+						{% endif %}
+					</h3>
+					
+					{%- if settings.social_twitter_link != blank -%}
+						<div class="footer-sns">
+							<a href="{{ settings.social_twitter_link | escape }}" target="_blank" class="footer-sns__link">
+								<p class="footer-sns__img">
+									<img src="{{ 'icon_sns_twitter.svg' | asset_url }}" alt="Twitter">
+								</p>
+								<p class="footer-sns__title">Twitter</p>
+							</a>
+						</div>
+					{%- endif -%}
+					
+					{%- if settings.social_facebook_link != blank -%}
+						<div class="footer-sns">
+							<a href="{{ settings.social_facebook_link | escape }}" target="_blank" class="footer-sns__link">
+								<p class="footer-sns__img">
+									<img src="{{ 'icon_sns_facebook.svg' | asset_url }}" alt="Facebook">
+								</p>
+								<p class="footer-sns__title">Facebook</p>
+							</a>
+						</div>
+					{%- endif -%}
+					
+					{%- if settings.social_instagram_link != blank -%}
+						<div class="footer-sns">
+							<a href="{{ settings.social_instagram_link | escape }}" target="_blank" class="footer-sns__link">
+								<p class="footer-sns__img">
+									<img src="{{ 'icon_sns_instagram.svg' | asset_url }}" alt="Instagram">
+								</p>
+								<p class="footer-sns__title">Instagram</p>
+							</a>
+						</div>
+					{%- endif -%}
+					
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="footer-bottom">
+			{%- if section.settings.footer_bottom_menu != blank -%}
+				{%- assign footer_bottom_menu = section.settings.footer_bottom_menu -%}
+				<div class="footer-bottom__item footer-bottom__item--menu">
+					<ul class="footer-bottom-menu">
+						{% for link in linklists[footer_bottom_menu].links %}
+							<li class="footer-bottom-menu__item">
+								<a href="{{ link.url }}">
+									{{ link.title }}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{%- endif -%}
+
+			<div class="footer-bottom__item footer-bottom__item--lang">
+				{% include 'lang-switcher' %}
+			</div>
+
+			<div class="footer-bottom__item footer-bottom__item--site">
+				<dl class="footer-site">
+					<dt class="footer-site__title">Global Site</dt>
+					<dd class="footer-site__body">
+						<ul class="footer-site-global">
+							<li class="footer-site-global__item">
+								<a href="{%- if request.locale.name == 'English' -%}
+										https://www.sonnyangelstore.com/en/
+									{%- else -%}
+										https://www.sonnyangelstore.com/
+									{%- endif -%}">
+									<img src="{{ 'icon_global_ja.svg' | asset_url }}" alt="Japan">
+								</a>
+							</li>
+							<li class="footer-site-global__item">
+								<a href="https://store.sonnyangelusa.com/" target="_blank">
+									<img src="{{ 'icon_global_us.svg' | asset_url }}" alt="USA">
+								</a>
+							</li>
+							<li class="footer-site-global__item">
+								<a href="http://sonnyangel.co.kr/" target="_blank">
+									<img src="{{ 'icon_global_kr.svg' | asset_url }}" alt="Korea">
+								</a>
+							</li>
+							<li class="footer-site-global__item">
+								<a href="https://sonnyangel.tmall.com/" target="_blank">
+									<img src="{{ 'icon_global_cn.svg' | asset_url }}" alt="China">
+								</a>
+							</li>
+							<li class="footer-site-global__item">
+								<a href="{%- if request.locale.name == 'English' -%}
+										https://www.sonnyangelstore.com.hk/en/
+									{%- else -%}
+										https://www.sonnyangelstore.com.hk/
+									{%- endif -%}" target="_blank">
+									<img src="{{ 'icon_global_hk.svg' | asset_url }}" alt="Hong Kong">
+								</a>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="footer-brand">
+		<p class="footer-brand__logo">
+			<a href="{{ routes.root_url }}">
+				<img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}">
+			</a>
+		</p>
+		
+		<p class="footer-brand__text">
+			{{ 'general.footer.brand_text' | t }}
+		</p>
+		
+	</div>
+	<p class="footer-copy">
+		{%- if section.settings.copyright != blank -%}
+			{{ section.settings.copyright }}
+		{%- else -%}
+			Copyright &copy; Dreams Inc. All Rights Reserved.
+		{%- endif -%}
+	</p>
+</footer>
+
+
+{% schema %}
+{
+	"name": "Footer",
+	"max_blocks": 4,
+	"settings": [
+		{
+			"type": "header",
+			"content": "Common setting"
+		},
+		{
+			"type": "link_list",
+			"id": "footer_bottom_menu",
+			"label": "Footer bottom menu"
+		},
+		{
+			"type": "header",
+			"content": "Mobile only"
+		},
+		{
+			"type": "link_list",
+			"id": "sp_footer_menu",
+			"label": "Mobile Footer Menu"
+		},
+		{
+			"type": "text",
+			"id": "copyright",
+			"label": "Copyright Label"
+		}
+	],
+	"blocks": [
+		{
+			"type": "menu",
+			"name": "Menu",
+			"settings": [
+				{
+					"type": "text",
+					"id": "pc_footer_menu_title",
+					"label": "Heading",
+					"default": "Menu",
+					"info": "English Only"
+				},
+				{
+					"type": "link_list",
+					"id": "pc_footer_menu",
+					"label": "Menu",
+					"default": "footer",
+					"info": "This menu won't show dropdown items"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

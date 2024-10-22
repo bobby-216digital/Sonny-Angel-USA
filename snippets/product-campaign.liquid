@@ -1,0 +1,31 @@
+{% assign campaign_heading = '' %}
+{%- if request.locale.primary == true -%}
+	{% assign campaign_heading = section.settings.product_campaign_heading %}
+{%- else -%}
+	{% assign campaign_heading = section.settings.product_campaign_heading_diff %}
+{%- endif -%}
+
+{% assign campaign_contents = '' %}
+{%- if request.locale.primary == true -%}
+	{% assign campaign_contents = section.settings.product_campaign_contents %}
+{%- else -%}
+	{% assign campaign_contents = section.settings.product_campaign_contents_diff %}
+{%- endif -%}
+
+
+{%- if campaign_contents != blank -%}
+	<div class="c-toggle c-product-toggle">
+		{%- if campaign_heading != blank -%}
+			<p class="c-product-toggle__head">
+				<a href="javascript:void(0);" class="c-product-toggle-link js-toggle js-toggle-product">
+					{{ campaign_heading }}
+					<span class="c-toggle__icon c-product-toggle-link__icon c-toggle__icon--active"></span>
+				</a>
+			</p>
+		{%- endif -%}
+		<div class="container-inner c-toggle__content c-product-toggle__content" style="display: block;">
+			{{ campaign_contents }}
+		</div>
+	</div>
+{%- endif -%}
+

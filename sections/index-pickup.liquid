@@ -1,0 +1,147 @@
+{% comment %}
+//
+// Index Pick Up Setting
+//
+{% endcomment %}
+
+<h2 class="c-headline u-mt-0">
+	<strong class="c-headline__main">
+		{{ 'general.headline.pickup_title' | t }}
+	</strong>
+	<span class="c-headline__sub">{{ 'general.headline.pickup_sub_title' | t }}</span>
+</h2>
+
+<div class="container c-pickup">
+	<div class="c-pickup__inner">
+		<div class="swiper-container c-pickup-carousel js-pickup-carousel">
+			<div class="swiper-wrapper">
+
+				{% for block in section.blocks %}
+				{% case block.type %}
+				{% when 'image' %}
+					<div class="swiper-slide c-pickup-item">
+						<a href="{{ block.settings.pickup_link | escape }}" class="c-pickup-item__link">
+							{%- if block.settings.pickup_news -%}
+								<p class="c-label-icon c-label-icon--new c-pickup-item__icon">NEW</p>
+							{%- endif -%}
+							<p class="c-pickup-item__thumb">
+								{%- if block.settings.pickup_image != blank -%}
+									<img src="{{ block.settings.pickup_image | img_url: '360x' }}" alt="{%- if request.locale.primary == true -%}
+										{{ block.settings.pickup_heading | escape }}
+									{%- else -%}
+										{{ block.settings.pickup_heading_diff | escape }}
+									{%- endif -%}">
+								{%- endif -%}
+							</p>
+							{%- if block.settings.pickup_heading != blank -%}
+								<h3 class="c-pickup-item__title">
+									{%- if request.locale.primary == true -%}
+										{{ block.settings.pickup_heading | escape }}
+									{%- else -%}
+										{{ block.settings.pickup_heading_diff | escape }}
+									{%- endif -%}
+								</h3>
+							{%- endif -%}
+						</a>
+					</div>
+				{% endcase %}
+				{% endfor %}
+
+			</div>
+		</div>
+		<div class="c-pickup-nav">
+			<div class="c-pickup-nav-arrow c-pickup-nav-arrow--prev">
+				<span class="c-pickup-nav-arrow__icon c-pickup-nav-arrow__icon--reverse"></span>
+			</div>
+			<div class="c-pickup-nav-pagination"></div>
+			<div class="c-pickup-nav-arrow c-pickup-nav-arrow--next">
+				<span class="c-pickup-nav-arrow__icon"></span>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Pick Up",
+	"max_blocks": 8,
+	"blocks": [
+		{
+			"type": "image",
+			"name": "Image",
+			"settings": [
+				{
+					"type": "text",
+					"id": "pickup_heading",
+					"label": "Heading ( Primary Locale )"
+				},
+				{
+					"type": "text",
+					"id": "pickup_heading_diff",
+					"label": "Heading ( Secondary Locale )"
+				},
+				{
+					"type": "image_picker",
+					"id": "pickup_image",
+					"label": "Recommended Size 360px x 240px"
+				},
+				{
+					"type": "url",
+					"id": "pickup_link",
+					"label": "Link"
+				},
+				{
+					"type": "checkbox",
+					"id": "pickup_news",
+					"label": "New icon",
+					"default": false
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Pick Up",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}
+
+<script>
+	$(function() {
+		var swiperPickup = new Swiper('.js-pickup-carousel', {
+			slidesPerView: 3,
+			paginationClickable: true,
+			spaceBetween: 32,
+			grabCursor: true,
+			simulateTouch: true,
+			centeredSlides: false,
+			freeMode: false,
+			loop: false,
+			roundLengths: true,
+			//autoplay: {
+				//delay: 4000,
+				//disableOnInteraction: false,
+			//},
+			pagination: {
+				el: '.c-pickup-nav-pagination',
+			},
+			navigation: {
+				nextEl: '.c-pickup-nav-arrow--next',
+				prevEl: '.c-pickup-nav-arrow--prev',
+			},
+			breakpoints: {
+				767: {
+					slidesPerView: 'auto',
+					spaceBetween: 2,
+					freeMode: false,
+					centeredSlides: false,
+				},
+			}
+		});
+	});
+</script>
+
+{% javascript %}
+{% endjavascript %}

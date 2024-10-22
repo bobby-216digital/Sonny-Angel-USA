@@ -1,0 +1,129 @@
+{% comment %}
+//
+// Products Loop Item
+//
+{% endcomment %}
+
+<div class="c-product-item">
+	<div class="c-product-item-thumb">
+		<a href="{{ product.url | within: collection }}" class="c-product-item-thumb__link" data-img="{%- if product.images.size > 2 and product.images[1] contains 'thumbnail_' -%}multi{%- endif -%}">
+			{%- if product.images.size > 0 -%}
+				{%- for image in product.images -%}
+					{%- if image.src contains 'thumbnail_' -%}
+						{% if forloop.first == true %}
+							<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title | escape }}" class="c-product-item-thumb__img c-product-item-thumb__img--main">
+						{% else %}
+							<img src="{{ image.src | img_url: '828x' }}" alt="{{ product.title | escape }}" class="c-product-item-thumb__img c-product-item-thumb__img--sub">
+						{%- endif -%}
+					{%- endif -%}
+				{%- endfor -%}
+			{%- else -%}
+				<img src="{{ 'default_thumbnail.png' | asset_url }}" alt="{{ product.title | escape }}" class="c-product-item-thumb__img">
+			{%- endif -%}
+		</a>
+	</div>
+	<div class="c-product-item__body">
+
+		<p class="c-product-item-icon">
+			{% include 'text-product-label-icon' %}
+		</p>
+
+		<div class="c-product-item-main">
+			<h3 class="c-product-item__title">
+				<a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+			</h3>
+
+			<p class="c-product-item__wishlist">
+				<a href="javascript:void(0);" class="c-wishlist-link js-wishlist-link" data-wl-id="{{ product.id }}" data-wl-title="{{ product.title }}" data-wl-url="{{ product.url }}" data-wl-thumb="{%- if product.images.size > 0 -%}{{ product | img_url: '828x' }}{%- else -%}{{ 'default_thumbnail.png' | asset_url }}{%- endif -%}">
+					<span class="c-wishlist-link__icon"></span>
+				</a>
+			</p>
+
+		</div>
+		{%- if product.metafields.global.description_tag != blank -%}
+			<p class="c-product-item__text">{{ product.metafields.global.description_tag }}</p>
+		{%- endif -%}
+
+		<div class="c-product-item-info">
+			{%- for variant in product.variants -%}
+				{%- if variant.sku contains 'assort' or variant.sku contains 'display' -%}
+					<p class="c-product-item-info__price">
+						{%- if request.locale.primary == true -%}
+							{%- assign variant_label = variant.metafields['products'].variant-label-small -%}
+						{%- else -%}
+							{%- assign variant_label = variant.metafields['products'].variant-label-small-diff -%}
+						{%- endif -%}
+						{%- if variant_label != nil -%}
+							<span class="c-product-item-info__text">
+								{{ variant_label }}&nbsp;:&nbsp;
+							</span>
+						{%- endif -%}
+
+						{%- if request.locale.primary == true -%}
+							{%- assign variant_label = variant.metafields['products'].variant-label -%}
+						{%- else -%}
+							{%- assign variant_label = variant.metafields['products'].variant-label-diff -%}
+						{%- endif -%}
+						{%- if variant_label != nil -%}
+							<span class="c-product-item-info__text--large">
+								{{ variant_label }}&nbsp;:&nbsp;
+							</span>
+						{%- endif -%}
+
+						{%- if variant.compare_at_price > 0 -%}
+							<span class="c-product-item-info__compare-price">
+								{{ variant.compare_at_price | money_with_currency }}
+							</span>
+						{%- endif -%}
+						
+						{%- assign display_tax = settings.display_tax -%}
+						{%- assign display_tax = display_tax | plus: 0 -%}
+						{%- if display_tax > 0 -%}
+							{%- assign display_tax_div = display_tax | divided_by: 100.00 -%}
+							{%- assign display_tax_fin = display_tax_div | plus: 1 -%}
+							{%- assign display_tax_price = variant.price | times: display_tax_fin -%}
+							{{ display_tax_price | money }}
+						{% else %}
+							{{ variant.price | money_with_currency }}
+						{%- endif -%}{%- include 'text-tax-dispaly' -%}
+					</p>
+				{%- else -%}
+					<p class="c-product-item-info__price">
+						{%- if request.locale.primary == true -%}
+							{%- assign variant_label = variant.metafields['products'].variant-label-small -%}
+						{%- else -%}
+							{%- assign variant_label = variant.metafields['products'].variant-label-small-diff -%}
+						{%- endif -%}
+						{%- if variant_label != nil -%}
+							{{ variant_label }}&nbsp;:&nbsp;
+						{%- endif -%}
+						
+						{%- if variant.compare_at_price > 0 -%}
+							<span class="c-product-item-info__compare-price">
+								{{ variant.compare_at_price | money_with_currency }}
+							</span>
+						{%- endif -%}
+						
+						{%- assign display_tax = settings.display_tax -%}
+						{%- assign display_tax = display_tax | plus: 0 -%}
+						{%- if display_tax > 0 -%}
+							{%- assign display_tax_div = display_tax | divided_by: 100.00 -%}
+							{%- assign display_tax_fin = display_tax_div | plus: 1 -%}
+							{%- assign display_tax_price = variant.price | times: display_tax_fin -%}
+							{{ display_tax_price | money }}
+						{% else %}
+							{{ variant.price | money_with_currency }}
+						{%- endif -%}{%- include 'text-tax-dispaly' -%}
+					</p>
+				{%- endif -%}
+			{%- endfor -%}
+		</div>
+
+		<p class="c-product-item-button">
+			<a href="{{ product.url | within: collection }}" class="c-button u-mx-0">
+				<span>{{ 'general.button.detail_button_label' | t }}</span>
+			</a>
+		</p>
+
+	</div>
+</div>

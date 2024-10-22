@@ -1,0 +1,149 @@
+{% comment %}
+//
+// Sing Up Area
+//
+{% endcomment %}
+
+{%- if request.locale.primary == true -%}
+	<div class="container">
+		{{ settings.sign_up_area }}
+	</div>
+{%- else -%}
+	<div class="container">
+		{{ settings.sign_up_area_diff }}
+	</div>
+{%- endif -%}
+
+{% comment %}
+	<!-- sample code -->
+	<div class="c-signup-area">
+		<h3 class="c-signup-area-title">
+			<strong class="c-signup-area-title___main">Let's Sign Up!!</strong>
+			<span class="c-signup-area-title___sub">会員登録のメリット</span>
+		</h3>
+		<ul class="c-signup-area-list">
+			<li class="c-signup-area-list__item">
+				<div class="c-signup-area-contents">
+					<p class="c-signup-area-contents__point c-signup-area-contents__point--1">
+						<strong>1</strong>
+						<span>Present</span>
+					</p>
+					<p class="c-signup-area-contents__body">
+						2019年のソニーエンジェルカレンダーを無料配信します！
+					</p>
+				</div>
+			</li>
+			<li class="c-signup-area-list__item">
+				<div class="c-signup-area-contents">
+					<p class="c-signup-area-contents__point c-signup-area-contents__point--2">
+						<strong>2</strong>
+						<span>Present</span>
+					</p>
+					<p class="c-signup-area-contents__body">
+						毎月○日に、特別カレンダー画像をプレゼント！
+					</p>
+				</div>
+			</li>
+			<li class="c-signup-area-list__item">
+				<div class="c-signup-area-contents">
+					<p class="c-signup-area-contents__point c-signup-area-contents__point--3">
+						<strong>3</strong>
+						<span>Present</span>
+					</p>
+					<p class="c-signup-area-contents__body">
+						年賀状がもらえる！
+					</p>
+				</div>
+			</li>
+			<li class="c-signup-area-list__item">
+				<div class="c-signup-area-contents">
+					<p class="c-signup-area-contents__point c-signup-area-contents__point--4">
+						<strong>4</strong>
+						<span>Present</span>
+					</p>
+					<p class="c-signup-area-contents__body">
+						ゴールド会員になると限定商品が購入可能に!?
+					</p>
+				</div>
+			</li>
+		</ul>
+		<p class="c-signup-area__button">
+			<a href="/account/register" class="c-button-action">会員登録はこちら</a>
+		</p>
+	</div>
+	<!-- sample code -->
+{% endcomment %}
+
+
+
+{% comment %}
+<div class="c-signup-area">
+	<h3 class="c-signup-area-title">
+		<strong class="c-signup-area-title___main">Let's Sign Up!!</strong>
+		<span class="c-signup-area-title___sub">Advantages of member registration</span>
+	</h3>
+	<ul class="c-signup-area-list">
+		<li class="c-signup-area-list__item">
+			<div class="c-signup-area-contents">
+				<p class="c-signup-area-contents__point c-signup-area-contents__point--1">
+					<strong>1</strong>
+					<span>Present</span>
+				</p>
+				<p class="c-signup-area-contents__body">
+					We will deliver the Sony Angel Calendar for 2019 for free!
+				</p>
+			</div>
+		</li>
+		<li class="c-signup-area-list__item">
+			<div class="c-signup-area-contents">
+				<p class="c-signup-area-contents__point c-signup-area-contents__point--2">
+					<strong>2</strong>
+					<span>Present</span>
+				</p>
+				<p class="c-signup-area-contents__body">
+					A special calendar image will be given as a gift every ○ day every month!
+				</p>
+			</div>
+		</li>
+		<li class="c-signup-area-list__item">
+			<div class="c-signup-area-contents">
+				<p class="c-signup-area-contents__point c-signup-area-contents__point--3">
+					<strong>3</strong>
+					<span>Present</span>
+				</p>
+				<p class="c-signup-area-contents__body">
+					Get a New Year's card!
+				</p>
+			</div>
+		</li>
+		<li class="c-signup-area-list__item">
+			<div class="c-signup-area-contents">
+				<p class="c-signup-area-contents__point c-signup-area-contents__point--4">
+					<strong>4</strong>
+					<span>Present</span>
+				</p>
+				<p class="c-signup-area-contents__body">
+					Become a Gold member to purchase limited products!?
+				</p>
+			</div>
+		</li>
+	</ul>
+	<p class="c-signup-area__button">
+		<a href="/en/account/register" class="c-button-action">here to signup</a>
+	</p>
+</div>
+{% endcomment %}
+
+
+{% schema %}
+{
+	"name": "Sign Up",
+	"presets": [
+		{
+			"name": "Sign Up",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}
+

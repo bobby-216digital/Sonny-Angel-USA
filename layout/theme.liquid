@@ -1,0 +1,304 @@
+{%- comment %}<locksmith:c16e>{% endcomment -%}
+  {%- include 'locksmith' -%}
+{%- comment %}</locksmith:c16e>{% endcomment -%}
+
+<!DOCTYPE html>
+<!--[if lt IE 10]><html lang="en" class="ie_oldie"></html><![endif]-->
+<html lang="{{ shop.locale }}">
+<head>
+
+
+
+{{ locksmith_initializations }}
+{{ 'order-protection.css' | asset_url | stylesheet_tag }}
+
+
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<meta name="viewport" content="width=device-width">
+
+{% include 'head' %}
+
+{{ content_for_header }}
+{%- render 'bold-common' -%}
+
+
+</head>
+
+<body data-section-type="main-body">
+
+	{% comment %}
+		// debug
+		{{ cart.attributes["language"] }}
+	{% endcomment %}
+
+	<div class="wrap">
+		{% section 'header' %}
+		
+		{% section 'navigation' %}
+		
+		{%- if template != 'index' and template != 'cart' -%}
+			{% section 'breadcrumbs' %}
+		{%- endif -%}
+
+		<div id="content" class="content frame {% if template == 'cart' %}frame--shadow{% endif %}" role="main">
+			{{ content_for_layout}}
+		</div>
+
+		{% section 'footer' %}
+
+		{% include 'no-script' %}
+	</div>
+
+	<div id="ajaxBusy"><div class="fancybox-loading"></div></div>
+
+	{%- if template != 'cart' and template != 'customers/register' and template != 'customers/login' -%}
+		{% section 'bottom-menu' %}
+	{%- endif -%}
+
+
+ <script>var ShopifyAPI = ShopifyAPI || {};var langify = langify || {};langify.tools = langify.tools || {compareJQueryVersion: function(a,b) {if (a === b) {return 0;}var a_components = a.split(".");var b_components = b.split(".");var len = Math.min(a_components.length, b_components.length);for (var i = 0; i < len; i++) {if (parseInt(a_components[i]) > parseInt(b_components[i])) {return 1;}if (parseInt(a_components[i]) < parseInt(b_components[i])) {return -1;}}if (a_components.length > b_components.length) {return 1;}if (a_components.length < b_components.length) {return -1;}return 0;}};langify.helper = langify.helper || {getSelectedLanguage: function() {var selectedLanguage = 'ly78725';if(selectedLanguage == '') {selectedLanguage = 'ly78725';}return selectedLanguage;},saveLanguage: function(language) {ShopifyAPI.getCart(function (cart) {var note = cart.note;if(note == 'null') {note = '';}ShopifyAPI.updateCartNote(note, function () {ShopifyAPI.updateCartAttributes({'language': language}, function() {langify.loader.reload();});});});}};langify.loader = langify.loader || {loadScript: function(url, callback) {var script = document.createElement('script');script.type = 'text/javascript';if(script.readyState) {script.onreadystatechange = function () {if(script.readyState == 'loaded' || script.readyState == 'complete') {script.onreadystatechange = null;callback();}};} else {script.onload = function () {callback();};}script.src = url;document.getElementsByTagName('head')[0].appendChild(script);},reload: function() {window.location.reload();}};langify.switcher = langify.switcher || {getSlickSwitcher: function() {var switcher = langify.jquery('select[id="ly-slick-languages-switcher"]');if(switcher.length > 0) {return switcher;}return undefined;},getSwitcher: function() {var switcher = $('select[id="ly-languages-switcher"]');if (switcher.length > 0) {return switcher;}return undefined;},init: function() {var slickSwitcher = langify.switcher.getSlickSwitcher();if(slickSwitcher) {var selectedLanguage = langify.helper.getSelectedLanguage();if(selectedLanguage != '') {slickSwitcher.val(selectedLanguage);}langify.loader.loadScript('//cdn.shopify.com/s/files/1/0082/3168/2103/t/12/assets/ly-select-box.js?17808', function () {slickSwitcher.ddslick({onSelected: function (data) {langify.helper.saveLanguage(data.selectedData.value);}});});}var switcher = langify.switcher.getSwitcher();if(switcher) {var selectedLanguage = langify.helper.getSelectedLanguage();if(selectedLanguage != '') {switcher.val(selectedLanguage);}switcher.change(function () {langify.helper.saveLanguage(switcher.val());});}$('.ly-languages-switcher-link').click(function () {langify.helper.saveLanguage(this.id);});}};langify.translator = langify.translator || {init:function() { 
+var customContents = [];
+var customTranslations = [];
+
+
+var translateTextNode = function(node) {
+if(node.textContent && node.textContent.trim().length > 0) {
+var src = node.textContent.trim().replace(/(\r\n|\n|\r)/gm,"").replace(/\s+/g," ").toUpperCase();
+if(customContents[src] && node.textContent !== customContents[src]) {
+var newContent = node.textContent.replace(node.textContent.trim(), customContents[src]); if (newContent != node.textContent) { node.textContent = newContent }
+}
+}
+}
+try {var textNodes = $('body').find('*').addBack().not('script').not('style').contents().filter(function() {
+if(this.nodeType === 3) {
+translateTextNode(this);
+}
+});
+} catch(e) {};var target = document.querySelector('body');
+var observer = new MutationObserver(function(mutations) {
+mutations.forEach(function(mutation) {
+var newNodes = mutation.addedNodes;
+if(newNodes) {
+for(i = 0; i < newNodes.length; i++) {
+try {var textNodes = $(newNodes[i]).find('*').addBack().not('script').not('style').contents().filter(function() {
+if(this.nodeType === 3) {
+translateTextNode(this);
+}
+});
+} catch(e) {};}
+}
+if(mutation.type === 'characterData') {
+translateTextNode(mutation.target);
+}
+});
+});
+var config = { childList: true, characterData: true, subtree: true }
+observer.observe(target, config);
+}};langify.currency = langify.currency || {getHasSelectedCurrency: function() {return '' == 'true';},getCurrencyForLanguage: function(language) {var languageToCurrencies = [];return languageToCurrencies[language];},getCurrencySwitcher: function() {var currencySwitcher = $('#currencies');if(currencySwitcher.length) {return currencySwitcher;} else {return null;}},init: function() {if(!langify.currency.getHasSelectedCurrency()) { var currencySwitcher = langify.currency.getCurrencySwitcher();if(typeof Currency != 'undefined' && currencySwitcher) {currencySwitcher.change(function() {ShopifyAPI.getCart(function (cart) {var note = cart.note;if(note == 'null') {note = '';}ShopifyAPI.updateCartNote(note, function () {ShopifyAPI.updateCartAttributes({'custom_currency': 'true'},function() {});});});});var selectedLanguage = langify.helper.getSelectedLanguage();var currencyForLanguage = langify.currency.getCurrencyForLanguage(selectedLanguage);if(currencyForLanguage) {var currentCurrency = Currency.cookie.read();Currency.currentCurrency = currencyForLanguage;Currency.cookie.write(currencyForLanguage);Currency.convertAll(currentCurrency, currencyForLanguage);currencySwitcher.val(currencyForLanguage);var selectedCurrencySpan = $('span.selected-currency');if(selectedCurrencySpan.length) {selectedCurrencySpan.text(currencyForLanguage);}}} }}};langify.core = langify.core || {onComplete: function() {ShopifyAPI.attributeToString = function(attribute) {if((typeof attribute) !== 'string') {attribute += '';if(attribute === 'undefined') {attribute = '';}}return jQuery.trim(attribute);};ShopifyAPI.getCart = function(callback) {jQuery.getJSON('/cart.js', function (cart, textStatus) {if((typeof callback) === 'function') {callback(cart);}});};ShopifyAPI.updateCartNote = function(note, callback) {var params = {type: 'POST',url: '/cart/update.js',data: 'note=' + this.attributeToString(note),dataType: 'json',success: function(cart) {if((typeof callback) === 'function') {callback(cart);}},error: this.onError};jQuery.ajax(params);};ShopifyAPI.updateCartAttributes = function(attributes, callback) {var data = '';var that = this;if(jQuery.isArray(attributes)) {jQuery.each(attributes, function(indexInArray, valueOfElement) {var key = that.attributeToString(valueOfElement.key);if (key !== '') {data += 'attributes[' + key + ']=' + that.attributeToString(valueOfElement.value) + '&';}});} else if ((typeof attributes === 'object') && attributes !== null) {jQuery.each(attributes, function(key, value) {data += 'attributes[' + that.attributeToString(key) + ']=' + that.attributeToString(value) + '&';});}var params = {type: 'POST',url: '/cart/update.js',data: data,dataType: 'json',success: function(cart) {if((typeof callback) === 'function') {callback(cart);}},error: this.onError};jQuery.ajax(params);};ShopifyAPI.onError = function(XMLHttpRequest, textStatus) {};langify.switcher.init();langify.translator.init();langify.currency.init();
+if((typeof langifyCompleteCallback) === 'function') {var languages = [];languages["ly78725"] = {name: "English"};languages["ly80996"] = {name: "日本語"};langifyCompleteCallback({protocol: "https://",useDomains: false,languages: languages,saveLanguage: langify.helper.saveLanguage || langify.helper.changeLanguage,currentLanguage: langify.helper.getSelectedLanguage()});}
+var LySwitcherDrawer = LySwitcherDrawer || {
+  templateList: new Array(),
+  init: function() {
+    LySwitcherDrawer._fetchDrawerData();
+    setTimeout(function() {
+      for(var i=0; i<LySwitcherDrawer.templateList.length; i++) {
+        var template = LySwitcherDrawer.templateList[i];
+
+        if(template.target){
+          var $orientationTargets = $('body').find(template.target);
+        } else {
+          var $orientationTargets = $('body').find('a[href="/cart"], a[href="#cart"], .cart-toggle, .site-header__cart');
+        }
+
+        $orientationTargets.each(function() {
+          LySwitcherDrawer._draw(template, $(this));
+        });
+      }
+      LySwitcherDrawer._bindSwitcherEvents();
+    }, 500);
+  },
+  _fetchDrawerData: function() {
+    var me = this;
+    $('.ly-drawer-template').each(function(i) {
+      me.templateList.push({
+        id: i,
+        align: $(this).data('align'),
+        target: $(this).data('target'),
+        targetIsContainer: $(this).data('target-is-container'),
+        type: $(this).data('type'),
+        css: $(this).data('css'),
+        class: $(this).data('class'),
+        template: $(this).html()
+      });
+      $(this).remove();
+    });
+  },
+
+
+  _draw: function(template, $orientationTarget) {
+    var $switcherElem = null;
+    var switcherHtml = template.template;
+    var $target = $orientationTarget;
+    if(template.targetIsContainer === true) {
+      if(template.align === 'left') {
+        $switcherElem = $orientationTarget.prepend(switcherHtml);
+      } else if(template.align === 'right') {
+        $switcherElem = $orientationTarget.append(switcherHtml);
+      } else {
+        $switcherElem = $orientationTarget.append(switcherHtml);
+      }
+    } else {
+      if(template.align === 'left') {
+        $switcherElem = $orientationTarget.before(switcherHtml);
+      } else if(template.align === 'right') {
+        $switcherElem = $orientationTarget.after(switcherHtml);
+      } else {
+        $switcherElem = $orientationTarget.after(switcherHtml);
+      }
+    }
+    $switcherElem.find('.ly-languages-switcher-dropdown, .ly-languages-image-dropdown-switcher, .ly-languages-image-dropdown-icons-switcher, .ly-languages-links-switcher, .ly-languages-links-icons-switcher').attr('style', template.css);
+  },
+  _bindSwitcherEvents: function() {
+    $('.ly-languages-image-dropdown-switcher, .ly-languages-image-dropdown-icons-switcher').click(function(e) {
+      e.preventDefault();
+      var dropdownList = $(this).find('ul');
+      if($(this).data('dropup') === true) {
+        dropdownList.css('bottom', $(this).outerHeight());
+      } else {
+        dropdownList.css('top', $(this).outerHeight());
+      }
+      if($(this).hasClass('ly-is-open')) {
+        $(this).removeClass('ly-is-open');
+        dropdownList.attr('style', 'display:none !important;')
+      } else {
+        $(this).addClass('ly-is-open');
+        if($(this).data('dropup') === true) {
+          dropdownList.attr('style', 'display:inline-block !important;bottom:' + $(this).outerHeight() + 'px')
+        } else {
+          dropdownList.attr('style', 'display:inline-block !important;top:' + $(this).outerHeight() + 'px')
+        }
+      }
+    });
+    $('.ly-languages-link').click(function (e) {
+      langify.helper.saveLanguage(this.id);
+    });
+    $('.ly-languages-switcher-dropdown').change(function(e) {
+      langify.helper.saveLanguage($(this).val());
+    });
+  },
+};
+LySwitcherDrawer.init();},init: function() {if(typeof jQuery === 'undefined') {langify.loader.loadScript('//cdn.jsdelivr.net/jquery/1.9.1/jquery.min.js', function() {langify.jquery = $;langify.core.onComplete();});} else if(langify.tools.compareJQueryVersion(jQuery.fn.jquery, '1.7.0') <= 0) {langify.loader.loadScript('//cdn.jsdelivr.net/jquery/1.9.1/jquery.min.js', function() {langify.jquery = jQuery.noConflict(true);langify.core.onComplete();});} else {langify.jquery = $;langify.core.onComplete();}}};
+!function(e,t){typeof module!="undefined"?module.exports=t():typeof define=="function"&&typeof define.amd=="object"?define(t):this[e]=t()}("domready",function(){var e=[],t,n=typeof document=="object"&&document,r=n&&n.documentElement.doScroll,i="DOMContentLoaded",s=n&&(r?/^loaded|^c/:/^loaded|^i|^c/).test(n.readyState);return!s&&n&&n.addEventListener(i,t=function(){n.removeEventListener(i,t),s=1;while(t=e.shift())t()}),function(t){s?setTimeout(t,0):e.push(t)}})
+try {domready(langify.core.init);} catch(error) {langify.core.init();}</script>
+
+
+
+{% include 'zinrelo-integration' %}
+
+  {%- render 'bold-loyalties-widget' -%}
+
+
+{% comment %} ** BEGIN CUSTOMER SHIPPING RULES ** {% endcomment %}
+{% comment %} -- This code was automatically added by the Customer Shipping Rules App {% endcomment %}
+{% comment %} -- See https://customershippingrules.com for more info {% endcomment %}
+{% include 'customer-shipping-rules-theme' %}
+{% comment %} ** END CUSTOMER SHIPPING RULES ** {% endcomment %}
+
+
+
+<!-- **BEGIN** Hextom TMS Translator // Main Include - DO NOT MODIFY -->
+    <script src="{{ 'tms-translator.js' | asset_url }}" defer="defer"></script>
+    <!-- **END** Hextom TMS Translator // Main Include - DO NOT MODIFY -->
+        
+<style>
+    input[type=checkbox]+span {
+     padding-left: .4rem;
+    }
+     input[type=checkbox]+span:after {
+      position: realtive !important;
+      top: 0% !important;
+      left: 1.5px;
+    }
+
+  input[type=checkbox]:checked+span:before {
+    background: #ffffff !important;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 2.6rem;
+    top: 1px !important;
+    left: 0;
+  }
+  input[type=checkbox]+span:before {
+    top: 1px !important;
+  }
+  
+    input.__op-checkbox:checked+.__op-checkbox-switch {
+        background:#e25463 !important;
+  }
+ 
+ #__op__ {
+   font-family: Noto Sans Japanese, \30d2\30e9\30ae\30ce\89d2\30b4 ProN, Hiragino Kaku Gothic ProN, \30e1\30a4\30ea\30aa, Meiryo, sans-serif !important;
+   lettspacing: .05em !important;
+ } 
+
+.__op-font-medium {
+    font-weight: 400 !important;
+    lettspacing: .05em !important;
+}
+
+</style>
+            
+<!--Order Protection Widget-->    
+<script src="https://cdn.orderprotection.com/widget/shopify/5.28.0/orderprotection.js"></script>
+<script defer>
+  const widget = OrderProtection.createOrderProtectionWidget({
+    text: {
+      LOGO_TEXT: "Sonny Angel Protection",
+    },  
+    locations: [
+      {
+        sibling: {
+          position: "after",
+          selector: ".c-order-total",
+          styles: {
+            "max-width": "450px", 
+            "margin-left": "auto",            
+          }
+        }
+      }
+    ]
+  });
+  widget.addPlugin({afterInit: async () => {
+      const cartItems = widget.cart.cart.items
+      if (cartItems.length === 0) return;
+      const opItems = cartItems.filter((item) => item.vendor === 'Order Protection')
+      if (opItems.length === 0) return;
+      const correctVariant = opItems.find((item) => item.id === widget.currentVariantID)
+      const duplicateCorrectVariant = correctVariant.quantity > 1
+      if (opItems.length === 1 && !duplicateCorrectVariant) return;
+      const wrongVariant = opItems.find((item) => item.id !== widget.currentVariantID)
+      await fetch('https://sonnyangelusa.com/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Source': 'orderprotection'
+        },
+        body: JSON.stringify({
+          updates: {
+            ...(wrongVariant ? { [wrongVariant.id]: 0 } : {}),
+            [correctVariant.id]: 1,
+          }
+        })
+      })
+    }})
+  widget.init();
+  widget.init();
+</script>
+<!-- Order Protection Widget -->      
+        
+                      
+</body>
+</html>

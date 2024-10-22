@@ -1,0 +1,83 @@
+{% if request.host != 'sonnyangelusa.com' %}
+
+	{%- if customer -%}
+		{%- if customer.tags contains "English" -%}
+
+	<script>
+		var $lang = localStorage.getItem('lang');
+		var $url = location.href;
+		var $path = location.pathname;
+
+		if ( $lang != 'en' ) {
+
+			if ( $path ) {
+				if ( $path == '/' ) {
+					var $redirect_url = $url.replace('.com', '.com/en');
+				} else {
+					var $redirect_path = '/en' + $path;
+					var $redirect_url = $url.replace($path, $redirect_path);
+				}
+			} else {
+				var $redirect_url = $url.replace('.com', '.com/en');
+			}
+
+			location.href = $redirect_url;
+			localStorage.setItem('lang', 'en');
+
+		} else if ( $lang == 'en' ) {
+			if ( $path.indexOf('en/en') != -1) {
+				var $redirect_url = $url.replace('en/en', 'en');
+				location.href = $redirect_url;
+			}
+		}
+
+	</script>
+
+		{%- endif -%}
+	{%- endif -%}
+
+	{%- if request.locale.name == 'English' -%}
+		<script>
+			$(function() {
+				if ( $('#secondary').hasClass('lang-list') ) {
+					$('.footer a').each(function() {
+						$href = $(this).attr('href');
+						//$text = $(this).text('');
+						if ( $href == 'https://www.dreams6.com/' ) {
+							$(this).attr('href', 'https://www.dreams6.com/e/');
+						}
+						if ( $href == 'https://sonnyangel.com' || $href == 'https://www.sonnyangel.com/' ) {
+							$(this).attr('href', 'https://www.sonnyangel.com/en/');
+						}
+						
+						if ( $href.indexOf('/account#orders') != -1 ) {
+							$(this).attr('href', '/en/account#orders');
+						}
+						if ( $href.indexOf('/blogs/news/tagged/calendar') != -1 ) {
+							$(this).attr('href', '/en/blogs/news/tagged/calendar');
+						}
+					} );
+					
+					$('.bottom-menu a').each(function() {
+						$href = $(this).attr('href');
+						if ( $href == 'https://www.dreams6.com/' ) {
+							$(this).attr('href', 'https://www.dreams6.com/e/');
+						}
+						if ( $href == 'https://sonnyangel.com' || $href == 'https://www.sonnyangel.com/' ) {
+							$(this).attr('href', 'https://www.sonnyangel.com/en/');
+						}
+						
+						if ( $href.indexOf('/account#orders') != -1 ) {
+							$(this).attr('href', '/en/account#orders');
+						}
+						if ( $href.indexOf('/blogs/news/tagged/calendar') != -1 ) {
+							$(this).attr('href', '/en/blogs/news/tagged/calendar');
+						}
+					} );
+				}
+			} );
+		</script>
+	{%- endif -%}
+
+{% endif %}
+

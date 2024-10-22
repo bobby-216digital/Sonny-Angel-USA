@@ -1,0 +1,103 @@
+{% comment %}
+//
+// Index Search Second Setting
+//
+{% endcomment %}
+
+{%- if section.blocks.size == 0 -%}
+	{%- assign section_flag = false -%}
+{%- else -%}
+	{%- assign section_flag = true -%}
+{%- endif -%}
+
+{%- assign search_second_num = section.settings.search_second_num -%}
+
+{%- if section_flag -%}
+
+	<ul id="js-tab-search-second" class="c-tab">
+		{% for block in section.blocks %}
+		{% case block.type %}
+		{% when 'collection' %}
+			<li class="c-tab-item">
+				<a href="javascript:void(0);" data-tab="search-second-{{ forloop.index }}" class="c-tab-item__link js-tab {% if forloop.index0 == 0 %}c-tab-item__link--active{% endif %}">
+					<span>
+						{%- if block.settings.search_second_title != blank -%}
+							{{ block.settings.search_second_title | escape }}
+						{%- endif -%}
+					</span>
+				</a>
+			</li>
+		{% endcase %}
+		{% endfor %}
+	</ul>
+
+	{% for block in section.blocks %}
+	{% case block.type %}
+	{% when 'collection' %}
+		<div id="search-second-{{ forloop.index }}" class="js-tab-search-second {% if forloop.index0 != 0 %}u-hidden{% endif %}">
+			<div class="container c-product-loop">
+				{%- assign search_collection = collections[block.settings.search_second_collection] -%}
+				{%- for product in search_collection.products limit: search_second_num -%}
+					{% include 'product-loop' %}
+				{%- endfor -%}
+			</div>
+			{%- if block.settings.search_second_url != blank -%}
+				{%- assign search_second_url = block.settings.search_second_url -%}
+				<p class="u-mx-0">
+					<a href="{{ search_second_url | escape }}" class="c-button">
+						<span>{{ 'general.button.more_button_label' | t }}</span>
+					</a>
+				</p>
+			{%- endif -%}
+		</div>
+	{% endcase %}
+	{% endfor %}
+
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Search Second",
+	"max_blocks": 3,
+	"settings": [
+		{
+			"type": "range",
+			"id": "search_second_num",
+			"min": 6,
+			"max": 18,
+			"step": 6,
+			"label": "Product Display Number",
+			"default": 6
+		}
+	],
+	"blocks": [
+		{
+			"type": "collection",
+			"name": "Search Collection",
+			"settings": [
+				{
+					"type": "text",
+					"id": "search_second_title",
+					"label": "Heading"
+				},
+				{
+					"type": "collection",
+					"id": "search_second_collection",
+					"label": "Select collection"
+				},
+				{
+					"type": "url",
+					"id": "search_second_url",
+					"label": "Search Second More Url"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Search Second",
+			"category": "Index Customize"
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,54 @@
+<div id="main-product-image-{{ section.id }}" class="featured-image featured-image-div-{{ section.id }} main-image-{{ section.id }} text-center">
+  {%- assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+  
+  {% for image in product.images %}
+  {%- capture image_alt -%}{{ product.title }} Background{%- endcapture -%}
+  {%- assign linkCt1 = 0 -%}
+  {%- assign linkCt = 0 -%}
+
+  {% if image.alt == image_alt %}
+  {%- capture linkCt1 -%}{{ linkCt | plus:1 }}{%- endcapture -%}  
+  {% endif %} 
+  {%- assign total_size = product.images.size | minus: linkCt1 -%}  
+  
+  {% unless image.alt == image_alt %}  
+  <div id="variant-image-{{ image.id }}" style="max-width:{{image.width}}px;" class="variant-image variant-image-{{ section.id }}{% unless image == featured_image %} hidden{% endunless %}"{% unless image == featured_image %} aria-hidden="true"{% endunless %} data-image-id="{{ image.id }}" >      
+      {%- assign id = image.id -%}
+      {%- assign img_src = image -%}
+      {%- assign size = 600 -%}
+      {%- capture alt -%}{{ image.alt | escape }}{%- endcapture -%}
+      {% include 'image-load' %}  
+  </div>
+  {% endunless %}
+  {% endfor %}
+  
+</div>
+
+{% if total_size > 1 %}
+<div{% if total_size > 4 %} id="thumbnails-{{ section.id }}"{% endif %} class="swiper-container {% if total_size < 5 %}table-center negative-left negative-right {% endif %}thumbnails thumbs">
+  <div class="{% if total_size > 4 %}swiper-wrapper swiper-wrapper-{{ section.id }}{% else %}center{% endif %}">
+    {% for image in product.images %}
+    {%- capture id -%}thumb-{{ image.id }}{%- endcapture -%}
+    {%- capture image_alt -%}{{ product.title }} Background{%- endcapture -%}
+    {% unless image.alt == image_alt %}
+    <div class="{% if total_size > 4 %}swiper-slide{% else %}three mobile{% endif %} thumb-image-{{ section.id }} image" data-image-id="{{ image.id }}">  
+      <div{% if settings.title_align %} class="title-align"{% endif %}>
+        <div class="relative">
+          {%- assign img_src = image.src -%}
+          {%- assign size = 150 -%}
+          {%- capture alt -%}{{ image.alt | escape }}{%- endcapture -%}
+          <a title="{{ alt }}" class="img-align" tabindex="0">
+            {% include 'image-load' %}
+          </a>  
+        </div>
+      </div>
+    </div>
+    {% endunless %}
+    {% endfor %}
+  </div>
+  <div id="swiper-pagination-thumbs" class="swiper-pagination relative hidden">
+    <div id="swiper-button-prev-thumbs" class="tabindex swiper-button-prev thumbs icon icon-chevron-left" role="button" aria-label="{{ 'products.general.previous' | t }}"></div>
+    <div id="swiper-button-next-thumbs" class="tabindex swiper-button-next thumbs icon icon-chevron-right" role="button" aria-label="{{ 'products.general.next' | t }}"></div>
+  </div>
+</div>
+{% endif %}

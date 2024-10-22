@@ -1,0 +1,16 @@
+{{ 'cart-attributes.scss.css' | asset_url | stylesheet_tag }}
+<div class="cart-attribute__field cart-attributes-delivery-datetime" style="display: none;">
+    <label for="delivery-date">配送希望日</label>
+    <input id="delivery-date" type="date" name="attributes[配送希望日]" value="{{ cart.attributes["配送希望日"] }}" min='{{ "now" | date: "%Y-%m-%d" }}'>
+</div>
+
+<div class="cart-attribute__field cart-attributes-delivery-datetime" style="display: none;">
+    <label>配送時間帯</label>
+    <select id="delivery-time" name="attributes[配送時間帯]">
+        <option value="指定なし" {% if cart.attributes["配送時間帯"] == "指定なし" %} selected{% endif %}>指定なし</option>
+        {% for  delivery_timezone in shop.metafields.cart_delivery_app['delivery_timezones_key'] %}
+        <option value="{{ delivery_timezone }}" {% if cart.attributes["配送時間帯"] == delivery_timezone %} selected{% endif %}>{{ delivery_timezone }}</option>
+        {% endfor %}
+    </select>
+</div>
+

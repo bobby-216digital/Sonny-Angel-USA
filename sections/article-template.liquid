@@ -1,0 +1,119 @@
+
+<div class="container-row p-blog">
+
+	<div class="container-row__main" data-section-id="{{ section.id }}" data-section-type="blog-page">
+
+		<header class="p-blog-header">
+			<ul class="p-blog-header-info">
+				<li class="p-blog-header-info__date">
+					{{ article.published_at | date: '%Y.%m.%d' }}
+				</li>
+				{%- if article.tags.size != 0 -%}
+					<li class="p-blog-header-info__tag">
+						{%- for tag in article.tags -%}
+							{%- if forloop.index0 == 0 -%}
+								<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+							{%- else -%}
+								 ,<a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+							{%- endif -%}
+						{%- endfor -%}
+					</li>
+				{%- endif -%}
+			</ul>
+			<h1 class="p-blog-header__title">
+				{{ article.title }}
+			</h1>
+		</header>
+
+		<div class="p-blog-content">
+			{{ article.content }}
+		</div>
+
+		{% if section.settings.include_chare %}
+			{% include 'social-share', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+		{% endif %}
+
+	</div>
+
+	<div class="container-row__sub">
+		{% include 'blog-navigation' %}
+	</div>
+
+</div>
+
+
+{% schema %}
+{
+	"name": "Blog posts",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "include_chare",
+			"label": "Show social sharing buttons",
+			"default": true
+		}
+	]
+}
+{% endschema %}
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@graph": [
+	{
+		"@type": "BreadcrumbList",
+		"itemListElement": [{
+			"@type": "ListItem",
+			"position": 1,
+			"item": {
+				"@id": "{{ routes.root_url }}",
+				"name": "{{ shop.title }}"
+			}
+		},{
+			"@type": "ListItem",
+			"position": 2,
+			"item": {
+				"@id": "{{ routes.root_url }}{{ blog.url }}",
+				"name": "{{ blog.title }}"
+			}
+		},{
+			"@type": "ListItem",
+			"position": 3,
+			"item": {
+				"@id": "{{ routes.root_url }}{{ article.url }}",
+				"name": "{{ article.title }}",
+				"image": "{% if article.image %}{%- assign image_size = article.image.width | append: 'x' -%}{{ article.image | img_url: image_size | prepend: 'https//' }}{% else %}{{ 'no-image.gif' | shopify_asset_url | prepend: 'https:' }}{% endif %}"
+			}
+		}]
+	},
+	{
+		"@type": "Article",
+		"articleBody": "{{ article.content | strip_html }}",
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": "{{ routes.root_url }}{{ article.url }}"
+		},
+		"headline": "{{ article.title }}",
+		{% if article.excerpt != blank %}
+			"description": "{{ article.excerpt | strip_html }}",
+		{% endif %}
+		"image": "{% if article.image %}{%- assign image_size = article.image.width | append: 'x' -%}{{ article | img_url: image_size | prepend: 'https//' }}{% else %}{{ 'no-image.gif' | shopify_asset_url | img_url: master | prepend: 'https:' }}{% endif %}",
+		"datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+		"dateCreated": "{{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+		"dateModified": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+		"author": {
+			"@type": "Person",
+			"name": "{{ article.author }}"
+		},
+		"publisher": {
+		"@type": "Organization",
+		"name": "{{ shop.name }}",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "{% if settings.social_img != blank %}{{ settings.social_img | img_url: master | prepend:'https:' }}{% else %}{{ 'no-image.gif' | shopify_asset_url | img_url: master | prepend: 'https:' }}{% endif %}"
+			}
+		}
+	}
+	]
+}
+</script>

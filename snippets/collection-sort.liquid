@@ -1,0 +1,36 @@
+{% comment %}
+//
+// Collection Sort
+//
+{% endcomment %}
+
+<div class="c-filter-pull">
+	<p class="c-filter-pull-title">
+		<a href="javascript:void(0);" class="c-filter-pull-title__link js-filter-pull">
+			{{ 'collections.sorting.title' | t }}
+			<span class="c-filter-pull-title__icon"></span>
+		</a>
+	</p>
+
+	<div class="c-filter-pull-body c-filter-pull-body--right">
+		<ul class="c-filter-pull-list js-filter-sort">
+			<li class="c-filter-pull-list-item">
+				<a href="javascript:void(0);" class="c-filter-pull-list-item__link js-filter-sort-item {% if collection.default_sort_by == 'created-ascending' and collection.sort_by == '' %} c-filter-pull-list-item__link--active{% elsif collection.sort_by == 'created-ascending' %} c-filter-pull-list-item__link--active{% endif %}" data-sort="created-ascending">
+					{{ 'collections.sorting.default' | t }}
+				</a>
+			</li>
+			<li class="c-filter-pull-list-item">
+				<a href="javascript:void(0);" class="c-filter-pull-list-item__link js-filter-sort-item {% if collection.default_sort_by == 'created-descending' and collection.sort_by == '' %} c-filter-pull-list-item__link--active{% elsif collection.sort_by == 'created-descending' %} c-filter-pull-list-item__link--active{% endif %}" data-sort="created-descending">
+					{{ 'collections.sorting.new' | t }}
+				</a>
+			</li>
+			<li class="c-filter-pull-list-item">
+				<a href="javascript:void(0);" class="c-filter-pull-list-item__link js-filter-sort-item {% if collection.default_sort_by == 'best-selling' and collection.sort_by == '' %} c-filter-pull-list-item__link--active{% elsif collection.sort_by == 'best-selling' %} c-filter-pull-list-item__link--active{% endif %}" data-sort="best-selling">
+					{{ 'collections.sorting.best_selling' | t }}
+				</a>
+			</li>
+		</ul>
+	</div>
+
+</div>
+

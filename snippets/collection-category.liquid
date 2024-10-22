@@ -1,0 +1,52 @@
+{% comment %}
+//
+// Collection Page Setting
+//
+{% endcomment %}
+
+{%- assign current_handle = collection.handle -%}
+{{ current_url }}
+
+{%- if section.settings.products_category != blank -%}
+	{%- assign category = section.settings.products_category -%}
+	
+	<div class="c-filter-pull">
+		<p class="c-filter-pull-title">
+			<a href="javascript:void(0);" class="c-filter-pull-title__link js-filter-pull">
+				{{ 'collections.sorting.category' | t }}
+				<span class="c-filter-pull-title__icon"></span>
+			</a>
+		</p>
+		<div class="c-filter-pull-body">
+			<ul class="c-filter-pull-list">
+
+				{% for link in linklists[category].links %}
+					{%- assign sub_links = false -%}
+					{% for sub_link in link.links %}
+						{% if link.links.size > 0 %}{%- assign sub_links = true -%}{% endif %}
+					{% endfor %}
+					
+					<li class="c-filter-pull-list-item">
+						<a href="{{ link.url }}" class="c-filter-pull-list-item__link {% if link.handle == current_handle %}c-filter-pull-list-item__link--active{% endif %}">
+							{{ link.title }}
+						</a>
+						{% if sub_links %}
+							<ul class="c-filter-pull-list-child">
+								{% for sub_link in link.links %}
+									<li class="c-filter-pull-list-child-item">
+										<a href="{{ sub_link.url }}" class="c-filter-pull-list-child-item__link {% if sub_link.handle == current_handle %}c-filter-pull-list-child-item__link--active{% endif %}">
+											{{ sub_link.title }}
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</li>
+				{% endfor %}
+
+			</ul>
+		</div>
+	</div>
+
+{%- endif -%}
+
